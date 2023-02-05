@@ -7,12 +7,10 @@ class UserHome extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 300,
             pinned: true,
-            backgroundColor: Colors.black,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                color: Colors.grey,
+                color: Colors.black,
               ),
               title: Text('A p p N a m e'),
             ),
@@ -24,7 +22,7 @@ class UserHome extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 child: Container(
                   height: 200,
-                  color: Colors.grey,
+                  color: Colors.grey.shade200,
                 ),
               )
             )
@@ -36,7 +34,7 @@ class UserHome extends StatelessWidget {
                     borderRadius: BorderRadius.circular(24),
                     child: Container(
                       height: 200,
-                      color: Colors.grey,
+                      color: Colors.grey.shade200,
                     ),
                   )
               )
@@ -48,7 +46,7 @@ class UserHome extends StatelessWidget {
                     borderRadius: BorderRadius.circular(24),
                     child: Container(
                       height: 200,
-                      color: Colors.grey,
+                      color: Colors.grey.shade200,
                     ),
                   )
               )
@@ -60,7 +58,7 @@ class UserHome extends StatelessWidget {
                     borderRadius: BorderRadius.circular(24),
                     child: Container(
                       height: 200,
-                      color: Colors.grey,
+                      color: Colors.grey.shade200,
                     ),
                   )
               )

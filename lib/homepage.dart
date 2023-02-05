@@ -16,12 +16,6 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   var _pageController = PageController();
 
-  void _navigateBottomBar(int index){
-    setState((){
-      _selectedIndex = index;
-    });
-  }
-
   final List<Widget> _pages = [
     UserProfile(),
     UserHome(),
