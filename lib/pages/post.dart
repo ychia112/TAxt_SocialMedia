@@ -25,14 +25,14 @@ class _UserPostState extends State<UserPost> {
           children: [
             // display text
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
                   child:ClipRRect(
                     borderRadius: BorderRadius.circular(24),
                     child: Container(
                       height: 200,
                       color: Colors.grey.shade200,
                       child: Center(
-                        child: Text(userPost),
+                        child: Text(userPost, textAlign: TextAlign.left, maxLines: 10),
                       ),
                     ),
                   ),
@@ -41,7 +41,7 @@ class _UserPostState extends State<UserPost> {
             // input text
             TextFormField(
                 minLines: 1,
-                maxLines: 10,
+                maxLines: 3,
                 keyboardType: TextInputType.multiline,
                 controller: _textController,
                 decoration: InputDecoration(
