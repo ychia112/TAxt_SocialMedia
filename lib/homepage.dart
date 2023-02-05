@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   var _pageController = PageController();
+
   void _navigateBottomBar(int index){
     setState((){
       _selectedIndex = index;
@@ -33,7 +34,12 @@ class _HomePageState extends State<HomePage> {
       extendBody: true,
       body: PageView(
         children: _pages,
-        onPageChanged: _navigateBottomBar,
+        onPageChanged: (index){
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        controller: _pageController,
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
@@ -44,7 +50,12 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.all(Radius.circular(24)),
           ),
           child: GNav(
-            onTabChange: _navigateBottomBar,
+            onTabChange: (index){
+              setState(() {
+                _selectedIndex = index;
+                _pageController.animateToPage(_selectedIndex, duration: Duration(milliseconds: 900), curve: Curves.easeOutQuint);
+              });
+            },
             selectedIndex: _selectedIndex,
             padding: EdgeInsets.symmetric(horizontal:15, vertical:10),
             backgroundColor: Colors.transparent,
