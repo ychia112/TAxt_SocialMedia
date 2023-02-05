@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-
+  var _pageController = PageController();
   void _navigateBottomBar(int index){
     setState((){
       _selectedIndex = index;
@@ -31,7 +31,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: _pages[_selectedIndex],
+      body: PageView(
+        children: _pages,
+        onPageChanged: _navigateBottomBar,
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: EdgeInsets.all(12),
