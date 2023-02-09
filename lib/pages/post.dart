@@ -17,6 +17,7 @@ class _UserPostState extends State<UserPost> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 120),
         child: Column(
