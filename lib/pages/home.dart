@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'post.dart';
+
 var storing = store();
 
 class UserHome extends StatelessWidget {
@@ -10,7 +11,8 @@ class UserHome extends StatelessWidget {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+              },
               icon: const Icon(Icons.add_box_outlined,size: 30,),
               alignment: Alignment.center,
             ),
@@ -23,7 +25,9 @@ class UserHome extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  // _popupMenuButton(context);
+                },
                 icon: const Icon(Icons.account_circle_outlined,size: 30,),
                 alignment: Alignment.centerLeft,
               ),
@@ -101,100 +105,24 @@ class UserHome extends StatelessWidget {
                                 const Padding(padding: EdgeInsets.only(left: 420)),
                                 IconButton(
                                   icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
-                                  onPressed: (){},
+                                  onPressed: (
+
+                                      ){},
                                   alignment: Alignment.bottomRight,
                                 ),
                               ],
                             ),
-                    ],
-                    )
-
-    );
-    }
-
-    ),
-
-                ),
-             // slivers: [
-                // SliverAppBar(
-                //   pinned: true,
-                //   flexibleSpace: FlexibleSpaceBar(
-                //     background: Container(
-                //       color: Colors.black,
-                //     ),
-                //     title: const Text('A p p N a m e '),
-                //   ),
-                // ),
-              //   SliverSafeArea(sliver:
-              //     SliverGrid(
-              //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //           crossAxisCount: 1,
-              //           crossAxisSpacing: 15,
-              //           mainAxisSpacing:15,
-              //           childAspectRatio: 3
-              //       ),
-              //       delegate: SliverChildBuilderDelegate(
-              //             (BuildContext context, int index) {
-              //               const Padding(padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10));
-              //           return Container(
-              //             //padding: const EdgeInsets.only(top:80.0,bottom: 80),//size of block
-              //             alignment: Alignment.center,
-              //             // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
-              //             decoration: BoxDecoration(
-              //               borderRadius: BorderRadius.circular(24.0),
-              //               color:  Colors.grey.shade200,
-              //             ),
-              //             child:
-              //             Column(
-              //               children: [
-              //                 Row(
-              //                   children: [
-              //                     Padding(
-              //                         padding: const EdgeInsets.only(top:80.0,bottom: 80),
-              //                       child:Text("${storing[index]}",),
-              //                     ),
-              //                   ],
-              //                 ),
-              //                 Row(
-              //                   children: [
-              //                     IconButton(
-              //                       icon: const Icon(Icons.add_circle,size: 5,),
-              //                       onPressed: (){},
-              //                     ),
-              //                   ],
-              //                 ),
-              //
-              //               ],
-              //             ),
-              //
-              //           );
-              //         },
-              //         childCount:storing.length,
-              //       ),
-              //     ),
-              //
-
-              ]
-                // SliverToBoxAdapter(
-                //     child: Padding(
-                //         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                //         child: ClipRRect(
-                //           borderRadius: BorderRadius.circular(24),
-                //           child: Container(
-                //             height: 200,
-                //             color: Colors.grey.shade200,
-                //
-                //           ),
-                //
-                //         )
-                //     )
-                // ),
-
-
-          )
-    ),
+                          ],
+                         )
+                      );
+                      }
+                      ),
+                    ),
+                  ]
+                 )
+              ),
             )
-    );
+      );
     }
     else {
       return Scaffold(
@@ -218,3 +146,32 @@ class UserHome extends StatelessWidget {
   }
 }
 
+// PopupMenuButton _popupMenuButton(BuildContext context){
+//   SampleItem? selectedMenu;
+//   PopupMenuButton<SampleItem>(
+//     initialValue: selectedMenu,
+//     // Callback that sets the selected popup menu item.
+//     onSelected: (SampleItem item) {
+//       setState(() {
+//         selectedMenu = item;
+//       });
+//     },
+//     itemBuilder: (BuildContext context) => <PopupMenuEntry<SampleItem>>[
+//       const PopupMenuItem<SampleItem>(
+//         value: SampleItem.itemOne,
+//         child: Text('Item 1'),
+//       ),
+//       const PopupMenuItem<SampleItem>(
+//         value: SampleItem.itemTwo,
+//         child: Text('Item 2'),
+//       ),
+//       const PopupMenuItem<SampleItem>(
+//         value: SampleItem.itemThree,
+//         child: Text('Item 3'),
+//       ),
+//     ],
+//   ),
+//   ),
+//
+//   );
+// }
