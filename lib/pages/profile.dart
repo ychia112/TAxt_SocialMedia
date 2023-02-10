@@ -48,12 +48,12 @@ class _UserProfileState extends State<UserProfile> {
   Widget buildContent() => Column(
     children: [
       const SizedBox(height: 8),
-      Text(
+      const Text(
         'UserName',
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
             child: Container(
@@ -68,17 +68,17 @@ class _UserProfileState extends State<UserProfile> {
   Widget buildCoverImage() => Container(
     color: Colors.grey,
     child: Image.network('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-    width: double.infinity,
-    height: coverHeight,
-    fit: BoxFit.cover,
+      width: double.infinity,
+      height: coverHeight,
+      fit: BoxFit.cover,
     ),
   );
 
   Widget buildProfileImage() => CircleAvatar(
     radius: profileHeight / 2,
     backgroundColor: Colors.grey.shade800,
-    backgroundImage: NetworkImage(
-      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+    backgroundImage: const NetworkImage(
+        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
     ),
   );
 }
