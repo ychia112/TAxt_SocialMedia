@@ -1,177 +1,209 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'post.dart';
 
-final List _userpost = <String>[];
-int timecount=0;
+var storing = store();
+enum SampleItem { itemOne, itemTwo, itemThree }
 
-class UserPost extends StatefulWidget {
-  const UserPost({Key? key}) : super(key: key);
+String chosen="0";
+
+class UserHome extends StatefulWidget {
+  const UserHome({Key? key}) : super(key: key);
+
   @override
-  _UserPostState createState() => _UserPostState();
+  State<UserHome> createState() => _UserHome();
 }
 
-class _UserPostState extends State<UserPost> {
-  final _textController = TextEditingController();
-  // store the input text
-  String userPost = '';
-
-
-
+class _UserHome extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => {
-        FocusScope.of(context).unfocus(),
-      },
-      child: Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
 
-        flexibleSpace: FlexibleSpaceBar(
-          background: Container(
-            color: Colors.black,
-          ),
-          title: const Text('Y o u r t e x t'),
-          centerTitle: true
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 30,right :12, left: 12),
-        child:
-          SingleChildScrollView(
-            child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height-215,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.grey.shade50,
-                child:
-                ListView.separated(
-                    itemCount: _userpost.length,
-                    padding: const EdgeInsets.only(top:15.0,bottom:15 ),
-                    separatorBuilder: (BuildContext context,int index)=>
-                    const Divider(height: 16,color: Color(0xFFFFFFFF)),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (_userpost.isEmpty){
-                      }
-                      else {
-                        return Container(
-                          //padding: const EdgeInsets.only(top:80.0,bottom: 80),//size of block
-                          alignment: Alignment.center,
-                          // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24.0),
-                            color:  Colors.grey.shade200,
-                          ),
-                          child:
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-
-                                    Center(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        constraints: const BoxConstraints(
-                                            maxWidth: 515, maxHeight: 250, minWidth: 515, minHeight: 200
-                                        ),//should be more precise
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(24.0),
-                                          color:  Colors.grey.shade300,),
-                                        child:
-                                        Text(
-                                            _userpost[index], textAlign: TextAlign.center,
-                                            maxLines: 10),
-                                    )
-                                  ),
-
-                                  ]
-                                  ),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.add_circle,size: 30,),
-                                        onPressed: (){},
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
-
-
-                        );
-                      }
-                    }
+    if (storing.isNotEmpty){
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            leading: PopupMenuExample(),
+            flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  color: Colors.black,
                 ),
+                title: Text('A p p N a m e '),
+                centerTitle: true
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                },
+                icon: const Icon(Icons.mark_chat_unread_outlined,size: 30,),
+                alignment: Alignment.centerLeft,
               ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width-80,
-                      height: 80,
-                      child:
-                      TextFormField(
-                        minLines: 1,
-                        maxLines: 3,
-                        keyboardType: TextInputType.multiline,
-                        controller: _textController,
-                        decoration: InputDecoration(
-                          hintText: 'How is your day?',
-                          //contentPadding: const EdgeInsets.all(18.0),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide:
-                                const BorderSide( width: 3,color: Colors.black12),
-                          ),
-                          prefixIconConstraints: const BoxConstraints(
-                              minWidth: 8
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              _textController.clear();
-                            },
-                            icon: const Icon(Icons.clear),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 40,
-                      height: 60,
-                      child: IconButton(
-                        icon: const Icon(Icons.send_rounded),
-                        onPressed: (){
-                          setState(() {
-                            userPost=_textController.text;
-                            _textController.clear();
-                            _userpost.add(userPost) ;
-                            timecount++;
-                          });
-                        },
-                        color: Colors.black45,
-                        alignment: Alignment.centerRight,
-                      ),
-                    ),
-                  ]
-              )
-              // display text
-              // input text
-              // send text
             ],
           ),
+          body:
+          Padding(
+            padding: const EdgeInsets.only(right :12, left: 12),
+            child:
+            SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height-150,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.grey.shade50,
+                        child:
+                        ListView.separated(
+                            itemCount: storing.length,
+                            padding: const EdgeInsets.only(top:15.0,bottom:15.0),
+                            separatorBuilder: (BuildContext context,int index)=>
+                            const Divider(height: 16,color: Color(0xFFFFFFFF)),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                  alignment: Alignment.center,
+                                  // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(24.0),
+                                    color:  Colors.grey.shade300,
+                                  ),
+                                  child:
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+
+                                        children:[
+                                          const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
+                                          ClipOval(
+                                              child:
+                                              Image.asset('assets/images/2.jpg',width: 50,height: 50,fit: BoxFit.cover,)
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Center(
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                constraints: const BoxConstraints(
+                                                    maxWidth: 515, maxHeight: 250, minWidth: 515, minHeight: 200
+                                                ),//should be more precise
+                                                decoration: BoxDecoration(
+                                                  //borderRadius: BorderRadius.circular(24.0),
+                                                  color:  Colors.grey.shade200,),
+                                                child:
+                                                Text(
+                                                    storing[index], textAlign: TextAlign.center,
+                                                    maxLines: 10),
+                                              )
+                                          )
+
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          // const Padding(padding: EdgeInsets.only(top:20.0,bottom: 20)),
+                                          IconButton(
+                                            icon: const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
+                                            onPressed: (){},
+                                          ),
+                                          const Padding(padding: EdgeInsets.only(left: 420)),
+                                          IconButton(
+                                            icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
+                                            onPressed: (
+
+                                                ){},
+                                            alignment: Alignment.bottomRight,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                              );
+                            }
+                        ),
+                      ),
+                    ]
+                )
+            ),
+          )
+      );
+    }
+    else {
+      return Scaffold(
+        appBar: AppBar(
+          leading: PopupMenuExample(),
+          flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                color: Colors.black,
+              ),
+              title: Text('A p p N a m e '),
+              centerTitle: true
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                // _popupMenuButton(context);
+              },
+              icon: const Icon(Icons.account_circle_outlined,size: 30,),
+              alignment: Alignment.centerLeft,
+            ),
+          ],
         ),
+      );
+    }
 
-
-      )
-    ),
-
-    );
   }
 }
 
-List store()=>_userpost;
+class PopupMenuExample extends StatefulWidget {
+  PopupMenuExample({super.key});
+  @override
+  State<PopupMenuExample> createState() => _PopupMenuExampleState();
 
+}
 
+class _PopupMenuExampleState extends State<PopupMenuExample>{
+  SampleItem? selectedMenu;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          leading:
+          PopupMenuButton<SampleItem>(
+            offset: const Offset(50,50),
+            initialValue: selectedMenu,
+            // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
+            // Callback that sets the selected popup menu item.
+            onSelected: (SampleItem item) {
+              setState(() {
+                selectedMenu = item;
+                chosen=item.toString();
+              });
+            },
+            itemBuilder: (BuildContext context) =>
+            <PopupMenuEntry<SampleItem>>[
+              const PopupMenuItem<SampleItem>(
+                value: SampleItem.itemOne,
+                child: Icon(Icons.insert_emoticon,color: Colors.black45),
+              ),
+              const PopupMenuItem<SampleItem>(
+                value: SampleItem.itemTwo,
+                child: Icon(Icons.science_rounded,color: Colors.black45),
+              ),
+              const PopupMenuItem<SampleItem>(
+                value: SampleItem.itemThree,
+                child: Icon(Icons.ac_unit_outlined,color: Colors.black45),
+              ),
+            ],
+          ),
+
+          //backgroundColor: Colors.black,
+        )
+    );
+  }
+}
+String? chose()=> chosen;
