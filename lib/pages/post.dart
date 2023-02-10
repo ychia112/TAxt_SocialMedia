@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-//final List _userpost = <String>[];
-class userinfo{
-  int? number;
-  final List _userpost = <String>[];
-  final List _userpost_mood=<int>[];
-}
+final List _userpost = <String>[];
+// class userinfo(){
+//   int? number;
+//   final List _userpost = <String>[];
+//   //final List _userpost_mood=<int>[];
+// }
 var emotion=<String>["joy","anger","sad","scared","annoyed","amazed","jealous"];
 int timecount=0;
 
@@ -53,12 +53,12 @@ class _UserPostState extends State<UserPost> {
                     color: Colors.grey.shade50,
                     child:
                     ListView.separated(
-                        itemCount: userinfo()._userpost.length,
+                        itemCount: _userpost.length,
                         padding: const EdgeInsets.only(top:15.0,bottom:15 ),
                         separatorBuilder: (BuildContext context,int index)=>
                         const Divider(height: 16,color: Color(0xFFFFFFFF)),
                         itemBuilder: (BuildContext context, int index) {
-                          if ( userinfo()._userpost.isEmpty){
+                          if ( _userpost.isEmpty){
                           }
                           else {
                             return Container(
@@ -74,19 +74,19 @@ class _UserPostState extends State<UserPost> {
                                   children: [
                                     Row(
                                         children: [
-
                                           Center(
                                               child: Container(
                                                 alignment: Alignment.center,
+                                                width: MediaQuery.of(context).size.width-24,
                                                 constraints: const BoxConstraints(
-                                                    maxWidth: 515, maxHeight: 250, minWidth: 515, minHeight: 200
+                                                    maxHeight: 250, minHeight: 200
                                                 ),//should be more precise
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(24.0),
                                                   color:  Colors.grey.shade300,),
                                                 child:
                                                 Text(
-                                                    userinfo()._userpost[index], textAlign: TextAlign.center,
+                                                    _userpost[index], textAlign: TextAlign.center,
                                                     maxLines: 10),
                                               )
                                           ),
@@ -116,7 +116,7 @@ class _UserPostState extends State<UserPost> {
 
                       children:[
                         SizedBox(
-                          width: 460,
+                          width: MediaQuery.of(context).size.width-80,
                           height: 80,
                           child:
                           TextFormField(
@@ -153,7 +153,7 @@ class _UserPostState extends State<UserPost> {
                               setState(() {
                                 userPost=_textController.text;
                                 _textController.clear();
-                                userinfo()._userpost.add(userPost) ;
+                                _userpost.add(userPost) ;
                                 timecount++;
                               });
                             },
@@ -178,6 +178,6 @@ class _UserPostState extends State<UserPost> {
   }
 }
 
-List store()=> userinfo()._userpost;
+List store()=> _userpost;
 
 

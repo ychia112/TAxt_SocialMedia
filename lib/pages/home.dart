@@ -87,8 +87,9 @@ class _UserHome extends State<UserHome> {
                                           Center(
                                               child: Container(
                                                 alignment: Alignment.center,
+                                                width: MediaQuery.of(context).size.width-24,
                                                 constraints: const BoxConstraints(
-                                                    maxWidth: 515, maxHeight: 250, minWidth: 515, minHeight: 200
+                                                     maxHeight: 250, minHeight: 200
                                                 ),//should be more precise
                                                 decoration: BoxDecoration(
                                                   //borderRadius: BorderRadius.circular(24.0),
@@ -109,11 +110,10 @@ class _UserHome extends State<UserHome> {
                                             icon: const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
                                             onPressed: (){},
                                           ),
-                                          const Padding(padding: EdgeInsets.only(left: 420)),
+                                          Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-124)),
                                           IconButton(
                                             icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
                                             onPressed: (
-
                                                 ){},
                                             alignment: Alignment.bottomRight,
                                           ),
