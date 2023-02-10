@@ -108,10 +108,9 @@ class _UserPostState extends State<UserPost> {
               Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
-
                   children:[
                     SizedBox(
-                      width: 460,
+                      width: MediaQuery.of(context).size.width-80,
                       height: 80,
                       child:
                       TextFormField(
