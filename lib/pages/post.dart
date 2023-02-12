@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 final List _userpost = <String>[];
+// class userinfo(){
+//   int? number;
+//   final List _userpost = <String>[];
+//   //final List _userpost_mood=<int>[];
+// }
+var emotion=<String>["joy","anger","sad","scared","annoyed","amazed","jealous"];
 int timecount=0;
 
 class UserPost extends StatefulWidget {
@@ -13,7 +19,6 @@ class _UserPostState extends State<UserPost> {
   final _textController = TextEditingController();
   // store the input text
   String userPost = '';
-
 
 
   @override
@@ -53,7 +58,7 @@ class _UserPostState extends State<UserPost> {
                         separatorBuilder: (BuildContext context,int index)=>
                         const Divider(height: 16,color: Color(0xFFFFFFFF)),
                         itemBuilder: (BuildContext context, int index) {
-                          if (_userpost.isEmpty){
+                          if ( _userpost.isEmpty){
                           }
                           else {
                             return Container(
@@ -69,12 +74,12 @@ class _UserPostState extends State<UserPost> {
                                   children: [
                                     Row(
                                         children: [
-
                                           Center(
                                               child: Container(
                                                 alignment: Alignment.center,
+                                                width: MediaQuery.of(context).size.width-24,
                                                 constraints: const BoxConstraints(
-                                                    maxWidth: 515, maxHeight: 250, minWidth: 515, minHeight: 200
+                                                    maxHeight: 250, minHeight: 200
                                                 ),//should be more precise
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(24.0),
@@ -111,7 +116,7 @@ class _UserPostState extends State<UserPost> {
 
                       children:[
                         SizedBox(
-                          width: 460,
+                          width: MediaQuery.of(context).size.width-80,
                           height: 80,
                           child:
                           TextFormField(
@@ -173,4 +178,4 @@ class _UserPostState extends State<UserPost> {
   }
 }
 
-List store()=>_userpost;
+List store()=> _userpost;
