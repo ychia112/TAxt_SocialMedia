@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-final List _userpost = <String>[];
+final List _userpost = <String>["hello world"];
 // class userinfo(){
 //   int? number;
 //   final List _userpost = <String>[];
 //   //final List _userpost_mood=<int>[];
 // }
 var emotion=<String>["joy","anger","sad","scared","annoyed","amazed","jealous"];
-int timecount=0;
+int timecount=1;
+
 
 class UserPost extends StatefulWidget {
   const UserPost({Key? key}) : super(key: key);
@@ -19,8 +20,6 @@ class _UserPostState extends State<UserPost> {
   final _textController = TextEditingController();
   // store the input text
   String userPost = '';
-
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -52,19 +51,15 @@ class _UserPostState extends State<UserPost> {
                     width: MediaQuery.of(context).size.width,
                     color: Colors.grey.shade50,
                     child:
+
                     ListView.separated(
                         itemCount: _userpost.length,
                         padding: const EdgeInsets.only(top:15.0,bottom:15 ),
                         separatorBuilder: (BuildContext context,int index)=>
                         const Divider(height: 16,color: Color(0xFFFFFFFF)),
                         itemBuilder: (BuildContext context, int index) {
-                          if ( _userpost.isEmpty){
-                          }
-                          else {
-                            return Container(
-                              //padding: const EdgeInsets.only(top:80.0,bottom: 80),//size of block
+                          return Container(
                                 alignment: Alignment.center,
-                                // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(24.0),
                                   color:  Colors.grey.shade200,
@@ -107,7 +102,7 @@ class _UserPostState extends State<UserPost> {
 
                             );
                           }
-                        }
+
                     ),
                   ),
                   Row(
