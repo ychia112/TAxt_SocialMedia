@@ -52,15 +52,27 @@ class _UserProfileState extends State<UserProfile> {
         'UserName',
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
+      const Text(
+        '@UserLocation',
+        style: TextStyle(fontSize: 16, color: Colors.grey),
+      ),
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: Container(
-              height: 200,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
               color: Colors.grey.shade200,
             ),
-          )
+            margin: const EdgeInsets.all(20),
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child:Text(
+                'Hi, this is the introduction block of mine!',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            height: 200,
+            ),
       ),
     ],
 

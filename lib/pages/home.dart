@@ -89,7 +89,7 @@ class _UserHome extends State<UserHome> {
                                                 alignment: Alignment.center,
                                                 width: MediaQuery.of(context).size.width-24,
                                                 constraints: const BoxConstraints(
-                                                     maxHeight: 250, minHeight: 200
+                                                    maxHeight: 250, minHeight: 200
                                                 ),//should be more precise
                                                 decoration: BoxDecoration(
                                                   //borderRadius: BorderRadius.circular(24.0),
