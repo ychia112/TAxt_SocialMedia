@@ -48,7 +48,7 @@ class _UserPostState extends State<UserPost> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height-215,
+                    height: MediaQuery.of(context).size.height-275,
                     width: MediaQuery.of(context).size.width,
                     color: Colors.grey.shade50,
                     child:
@@ -162,7 +162,7 @@ class _UserPostState extends State<UserPost> {
                           ),
                         ),
                       ]
-                  )
+                  ),
                   // display text
                   // input text
                   // send text
