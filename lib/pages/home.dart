@@ -6,8 +6,8 @@ import 'post.dart';
 var storing = store();
 enum SampleItem { itemOne, itemTwo, itemThree }
 
-String chosen="0";
-
+//String chosen="0";
+final List chosen = <String>["0"];
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
 
@@ -23,7 +23,7 @@ class _UserHome extends State<UserHome> {
       return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            leading: PopupMenuExample(),
+            leading: Icon(Icons.account_tree_outlined),
             flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   color: Colors.black,
@@ -106,9 +106,30 @@ class _UserHome extends State<UserHome> {
                                       Row(
                                         children: [
                                           // const Padding(padding: EdgeInsets.only(top:20.0,bottom: 20)),
-                                          IconButton(
-                                            icon: const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
-                                            onPressed: (){},
+                                          PopupMenuButton<String>(
+                                              offset: const Offset(40,40),
+                                              icon:const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
+                                              // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
+                                              onSelected: (String value) {
+                                                setState(() {
+                                                  chosen[index]=value;
+                                                });
+                                              },
+                                              itemBuilder: (BuildContext context) =>
+                                              <PopupMenuEntry<String>>[
+                                                const PopupMenuItem<String>(
+                                                  value: "tryone",
+                                                  child: Icon(Icons.insert_emoticon,color: Colors.black45),
+                                                ),
+                                                const PopupMenuItem<String>(
+                                                  value:"trytwo",
+                                                  child: Icon(Icons.science_rounded,color: Colors.black45),
+                                                ),
+                                                const PopupMenuItem<String>(
+                                                  value: "trythree",
+                                                  child: Icon(Icons.ac_unit_outlined,color: Colors.black45),
+                                                ),
+                                              ]
                                           ),
                                           Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-124)),
                                           IconButton(
@@ -117,6 +138,7 @@ class _UserHome extends State<UserHome> {
                                                 ){},
                                             alignment: Alignment.bottomRight,
                                           ),
+
                                         ],
                                       ),
                                     ],
@@ -134,7 +156,7 @@ class _UserHome extends State<UserHome> {
     else {
       return Scaffold(
         appBar: AppBar(
-          leading: PopupMenuExample(),
+          leading:Icon(Icons.account_tree_outlined),
           flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 color: Colors.black,
@@ -158,52 +180,5 @@ class _UserHome extends State<UserHome> {
   }
 }
 
-class PopupMenuExample extends StatefulWidget {
-  PopupMenuExample({super.key});
-  @override
-  State<PopupMenuExample> createState() => _PopupMenuExampleState();
 
-}
-
-class _PopupMenuExampleState extends State<PopupMenuExample>{
-  SampleItem? selectedMenu;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          leading:
-          PopupMenuButton<SampleItem>(
-            offset: const Offset(50,50),
-            initialValue: selectedMenu,
-            // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
-            // Callback that sets the selected popup menu item.
-            onSelected: (SampleItem item) {
-              setState(() {
-                selectedMenu = item;
-                chosen=item.toString();
-              });
-            },
-            itemBuilder: (BuildContext context) =>
-            <PopupMenuEntry<SampleItem>>[
-              const PopupMenuItem<SampleItem>(
-                value: SampleItem.itemOne,
-                child: Icon(Icons.insert_emoticon,color: Colors.black45),
-              ),
-              const PopupMenuItem<SampleItem>(
-                value: SampleItem.itemTwo,
-                child: Icon(Icons.science_rounded,color: Colors.black45),
-              ),
-              const PopupMenuItem<SampleItem>(
-                value: SampleItem.itemThree,
-                child: Icon(Icons.ac_unit_outlined,color: Colors.black45),
-              ),
-            ],
-          ),
-
-          //backgroundColor: Colors.black,
-        )
-    );
-  }
-}
-String? chose()=> chosen;
+List? chose()=> chosen;
