@@ -45,6 +45,7 @@ class _UserHome extends State<UserHome> {
                   Expanded(
                     child:
                       SingleChildScrollView(
+                        padding: EdgeInsets.all(12),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
