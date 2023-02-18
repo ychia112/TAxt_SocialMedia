@@ -42,10 +42,10 @@ class _UserHome extends State<UserHome> {
             Column(
                 children:[
                   //const MyStatefulWidget(),
-                  Padding(
-                    padding: const EdgeInsets.only(right :12, left: 12,bottom: 50),
+                  Expanded(
                     child:
                       SingleChildScrollView(
+                        padding: EdgeInsets.all(12),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
