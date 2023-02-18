@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -74,12 +75,21 @@ class _UserProfileState extends State<UserProfile> {
             height: 200,
             ),
       ),
+      IconButton(
+          icon: const Icon(Icons.login_rounded,size: 30),
+          onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()
+            ));
+          }
+      ),
     ],
 
   );
   Widget buildCoverImage() => Container(
     color: Colors.grey,
-    child: Image.network('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+    child: Image.network('https://marmotamaps.com/de/fx/wallpaper/download/faszinationen/Marmotamaps_Wallpaper_Berchtesgaden_Desktop_1920x1080.jpg',
       width: double.infinity,
       height: coverHeight,
       fit: BoxFit.cover,
@@ -89,8 +99,6 @@ class _UserProfileState extends State<UserProfile> {
   Widget buildProfileImage() => CircleAvatar(
     radius: profileHeight / 2,
     backgroundColor: Colors.grey.shade800,
-    backgroundImage: const NetworkImage(
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-    ),
+    backgroundImage: AssetImage('assets/images/2.jpg')
   );
 }
