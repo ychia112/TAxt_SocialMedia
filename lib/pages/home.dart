@@ -4,7 +4,7 @@ import 'post.dart';
 import 'chat.dart';
 
 String _nowmood=""; //存目前版面的心情
-final List chosen = <int>[0,0]; //存每個貼文的心情
+final List chosen = <int>[0,0,0,0,0]; //存每個貼文的心情//先五篇
 var storing = store(); //每則貼文的文字// initial show post 0
 
 class UserHome extends StatefulWidget {
@@ -49,7 +49,7 @@ class _UserHome extends State<UserHome> {
                   Expanded(
                     child:
                       SingleChildScrollView(
-                        padding: EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,6 +66,9 @@ class _UserHome extends State<UserHome> {
                                     separatorBuilder: (BuildContext context,int index)=>
                                     const Divider(height: 16,color: Color(0xFFFFFFFF)),
                                     itemBuilder: (BuildContext context, int index) {
+                                      if(chosen.length<storing.length) {
+                                        chosen.add(0);
+                                      }
                                       return Container(
                                           alignment: Alignment.center,
                                           // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
@@ -79,7 +82,6 @@ class _UserHome extends State<UserHome> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Row(
-
                                                 children:[
                                                   const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
                                                   ClipOval(
@@ -111,17 +113,14 @@ class _UserHome extends State<UserHome> {
                                               ),
                                               Row(
                                                 children: [
-
                                                   // const Padding(padding: EdgeInsets.only(top:20.0,bottom: 20)),
                                                   PopupMenuButton<int>(
-
                                                       offset: const Offset(40,40),
                                                       icon:const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
-
                                                       // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
                                                       onSelected: (int value) {
                                                         setState(() {
-                                                          chosen[index]=value;
+                                                            chosen[index]=value;
                                                           //Color:Colors.red;
                                                         });
                                                       },
@@ -196,17 +195,6 @@ class _UserHome extends State<UserHome> {
 
   }
 }
-
-
-
-//
-// ExpansionTile(
-// title: Text(''),
-// subtitle: Text('Trailing expansion arrow icon'),
-// children: <Widget>[
-// ListTile(title: Text('This is tile number 1')),
-// ],
-// ),
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({super.key});

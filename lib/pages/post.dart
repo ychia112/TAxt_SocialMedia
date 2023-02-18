@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
-final List _userpost = <String>["hello world"];
-int timecount=1;
-var chosenmood=chose();
+
+
 
 class UserPost extends StatefulWidget {
   const UserPost({Key? key}) : super(key: key);
   @override
   _UserPostState createState() => _UserPostState();
 }
-
+final List _userpost = <String>["hello world",];
 class _UserPostState extends State<UserPost> {
+
+  int timecount=1;
+  var chosenmood=chose();
   final _textController = TextEditingController();
   // store the input text
   String userPost = '';
@@ -32,6 +34,10 @@ class _UserPostState extends State<UserPost> {
       return const Icon(Icons.add_circle,size: 30,);
     }
   }
+  // void affirming(var mood){
+  //   if(mood==null)
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -41,7 +47,6 @@ class _UserPostState extends State<UserPost> {
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-
             flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   color: Colors.black,
@@ -50,137 +55,141 @@ class _UserPostState extends State<UserPost> {
                 centerTitle: true
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.only(bottom: 30,right :12, left: 12),
-            child:
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
+          body:
+              Column(
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height-275,
-                    width: MediaQuery.of(context).size.width,
-                    child:
-                    ListView.separated(
-                        padding: const EdgeInsets.only(top:15.0,bottom:15 ),
-                        separatorBuilder: (BuildContext context,int index)=>
-                        const Divider(height: 16,color: Color(0xFFFFFFFF)),
-                        itemCount: _userpost.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24.0),
-                                  color:  Colors.grey.shade200,
-                                ),
-                                child:
-                                Column(
-                                  children: [
-                                    Row(
-                                        children: [
-                                          Center(
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                width: MediaQuery.of(context).size.width-24,
-                                                constraints: const BoxConstraints(
-                                                    maxHeight: 250, minHeight: 200
-                                                ),//should be more precise
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(24.0),
-                                                  color:  Colors.grey.shade300,),
-                                                child:
-                                                Text(
-                                                    _userpost[index], textAlign: TextAlign.center,
-                                                    maxLines: 10),
-                                              )
-                                          ),
-
-                                        ]
-                                    ),
-                                    Row(
-                                      children:[
-                                        Container(
-                                            height:40,
-                                            width:45,
-                                            child:updateicon(chosenmood?[index])
-                                        )
-
-                                      ]
-                                    )
-                                  ],
-                                ),
-                            );
-                          }
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top:8),
-                    child: Row(
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(12),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:[
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width-80,
-                          height: 80,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height-275,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.grey.shade50,
                           child:
-                          TextFormField(
-                            minLines: 1,
-                            maxLines: 3,
-                            keyboardType: TextInputType.multiline,
-                            controller: _textController,
-                            decoration: InputDecoration(
-                              hintText: 'How is your day?',
-                              //contentPadding: const EdgeInsets.all(18.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                                borderSide:
-                                const BorderSide( width: 3,color: Colors.black12),
-                              ),
-                              prefixIconConstraints: const BoxConstraints(
-                                  minWidth: 8
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  _textController.clear();
-                                },
-                                icon: const Icon(Icons.clear),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 40,
-                          height: 60,
-                          child: IconButton(
-                            icon: const Icon(Icons.send_rounded),
-                            onPressed: (){
-                              setState(() {
-                                userPost=_textController.text;
-                                _textController.clear();
-                                _userpost.add(userPost) ;
-                                timecount++;
-                              });
-                            },
-                            color: Colors.black45,
-                            alignment: Alignment.centerRight,
-                          ),
-                        ),
-                      ]
-                    ),
-                  ),
-                  // display text
-                  // input text
-                  // send text
-                ],
-              ),
-            ),
+                          ListView.separated(
+                              itemCount: _userpost.length,
+                              padding: const EdgeInsets.only(top:5.0,bottom:15 ),
+                              separatorBuilder: (BuildContext context,int index)=>
+                                const Divider(height: 16,color: Color(0xFFFFFFFF)),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(24.0),
+                                      color:  Colors.grey.shade200,
+                                    ),
+                                    child:
+                                    Column(
+                                      children: [
+                                        Row(
+                                            children: [
+                                              Center(
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    width: MediaQuery.of(context).size.width-24,
+                                                    constraints: const BoxConstraints(
+                                                        maxHeight: 250, minHeight: 200
+                                                    ),//should be more precise
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(24.0),
+                                                      color:  Colors.grey.shade300,),
+                                                    child:
+                                                    Text(
+                                                        _userpost[index], textAlign: TextAlign.center,
+                                                        maxLines: 10),
+                                                  )
+                                              ),
+                                            ]
+                                        ),
+                                        Row(
+                                            children:[
+                                              SizedBox(
+                                                height:40,
+                                                width:45,
+                                                child:updateicon(chosenmood[index]),
+                                              )
+                                            ]
+                                        )
+                                      ],
+                                    ),
+                                  );
 
+                              }
+                          ),
+                        ),
+                        // const Divider(
+                        //   height: 5,
+                        // ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:[
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width-80,
+                                height: 80,
+                                child:
+                                TextFormField(
+                                  minLines: 1,
+                                  maxLines: 3,
+                                  keyboardType: TextInputType.multiline,
+                                  controller: _textController,
+                                  decoration: InputDecoration(
+                                    hintText: 'How is your day?',
+                                    //contentPadding: const EdgeInsets.all(18.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      borderSide:
+                                      const BorderSide( width: 3,color: Colors.black12),
+                                    ),
+                                    prefixIconConstraints: const BoxConstraints(
+                                        minWidth: 8
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        _textController.clear();
+                                      },
+                                      icon: const Icon(Icons.clear),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 40,
+                                height: 60,
+                                child: IconButton(
+                                  icon: const Icon(Icons.send_rounded),
+                                  onPressed: (){
+                                    setState(() {
+                                      userPost=_textController.text;
+                                      _textController.clear();
+                                      _userpost.add(userPost) ;
+                                      timecount++;
+                                    });
+                                  },
+                                  color: Colors.black45,
+                                  alignment: Alignment.centerRight,
+                                ),
+                              ),
+                            ]
+                        ),
+                        // display text
+                        // input text
+                        // send text
+                      ],
+                    ),
+                  ),)
+
+                ],
+              )
 
           )
-      ),
+      );
 
-    );
+
   }
 
 }
