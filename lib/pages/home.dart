@@ -45,7 +45,7 @@ class _UserHome extends State<UserHome> {
                   Expanded(
                     child:
                       SingleChildScrollView(
-                        padding: EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +75,6 @@ class _UserHome extends State<UserHome> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Row(
-
                                                 children:[
                                                   const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
                                                   ClipOval(
@@ -107,13 +106,10 @@ class _UserHome extends State<UserHome> {
                                               ),
                                               Row(
                                                 children: [
-
                                                   // const Padding(padding: EdgeInsets.only(top:20.0,bottom: 20)),
                                                   PopupMenuButton<int>(
-
                                                       offset: const Offset(40,40),
                                                       icon:const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
-
                                                       // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
                                                       onSelected: (int value) {
                                                         setState(() {
