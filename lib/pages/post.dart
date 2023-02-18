@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 
-final List _userpost = <String>["hello world",];
-int timecount=3;
-var chosenmood=chose();
+
 
 class UserPost extends StatefulWidget {
   const UserPost({Key? key}) : super(key: key);
   @override
   _UserPostState createState() => _UserPostState();
 }
-
+final List _userpost = <String>["hello world",];
 class _UserPostState extends State<UserPost> {
+
+  int timecount=1;
+  var chosenmood=chose();
   final _textController = TextEditingController();
   // store the input text
   String userPost = '';
@@ -33,6 +34,10 @@ class _UserPostState extends State<UserPost> {
       return const Icon(Icons.add_circle,size: 30,);
     }
   }
+  // void affirming(var mood){
+  //   if(mood==null)
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -69,7 +74,7 @@ class _UserPostState extends State<UserPost> {
                               itemCount: _userpost.length,
                               padding: const EdgeInsets.only(top:5.0,bottom:15 ),
                               separatorBuilder: (BuildContext context,int index)=>
-                              const Divider(height: 16,color: Color(0xFFFFFFFF)),
+                                const Divider(height: 16,color: Color(0xFFFFFFFF)),
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
                                     alignment: Alignment.center,
@@ -78,47 +83,50 @@ class _UserPostState extends State<UserPost> {
                                       color:  Colors.grey.shade200,
                                     ),
                                     child:
-                                      Column(
-                                        children: [
-                                          Row(
-                                              children: [
-                                                Center(
-                                                    child: Container(
-                                                      alignment: Alignment.center,
-                                                      width: MediaQuery.of(context).size.width-24,
-                                                      constraints: const BoxConstraints(
-                                                          maxHeight: 250, minHeight: 200
-                                                      ),//should be more precise
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(24.0),
-                                                        color:  Colors.grey.shade300,),
-                                                      child:
-                                                      Text(
-                                                          _userpost[index], textAlign: TextAlign.center,
-                                                          maxLines: 10),
-                                                    )
-                                                ),
-                                              ]
-                                          ),
-                                          Row(
-                                              children:[
-                                                SizedBox(
-                                                    height:40,
-                                                    width:45,
-                                                    child:updateicon(chosenmood[index]),
-                                                )
-                                              ]
-                                          )
-                                        ],
-                                      ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                            children: [
+                                              Center(
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    width: MediaQuery.of(context).size.width-24,
+                                                    constraints: const BoxConstraints(
+                                                        maxHeight: 250, minHeight: 200
+                                                    ),//should be more precise
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(24.0),
+                                                      color:  Colors.grey.shade300,),
+                                                    child:
+                                                    Text(
+                                                        _userpost[index], textAlign: TextAlign.center,
+                                                        maxLines: 10),
+                                                  )
+                                              ),
+                                            ]
+                                        ),
+                                        Row(
+                                            children:[
+                                              SizedBox(
+                                                height:40,
+                                                width:45,
+                                                child:updateicon(chosenmood[index]),
+                                              )
+                                            ]
+                                        )
+                                      ],
+                                    ),
                                   );
+
                               }
                           ),
                         ),
+                        // const Divider(
+                        //   height: 5,
+                        // ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
-
                             children:[
                               SizedBox(
                                 width: MediaQuery.of(context).size.width-80,
@@ -159,7 +167,7 @@ class _UserPostState extends State<UserPost> {
                                       userPost=_textController.text;
                                       _textController.clear();
                                       _userpost.add(userPost) ;
-
+                                      timecount++;
                                     });
                                   },
                                   color: Colors.black45,

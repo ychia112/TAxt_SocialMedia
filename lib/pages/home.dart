@@ -4,7 +4,7 @@ import 'post.dart';
 import 'chat.dart';
 
 String _nowmood=""; //存目前版面的心情
-final List chosen = <int>[0,0]; //存每個貼文的心情
+final List chosen = <int>[0,0,0,0,0]; //存每個貼文的心情//先五篇
 var storing = store(); //每則貼文的文字// initial show post 0
 
 class UserHome extends StatefulWidget {
@@ -66,6 +66,9 @@ class _UserHome extends State<UserHome> {
                                     separatorBuilder: (BuildContext context,int index)=>
                                     const Divider(height: 16,color: Color(0xFFFFFFFF)),
                                     itemBuilder: (BuildContext context, int index) {
+                                      if(chosen.length<storing.length) {
+                                        chosen.add(0);
+                                      }
                                       return Container(
                                           alignment: Alignment.center,
                                           // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
@@ -117,7 +120,7 @@ class _UserHome extends State<UserHome> {
                                                       // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
                                                       onSelected: (int value) {
                                                         setState(() {
-                                                          chosen[index]=value;
+                                                            chosen[index]=value;
                                                           //Color:Colors.red;
                                                         });
                                                       },
@@ -192,17 +195,6 @@ class _UserHome extends State<UserHome> {
 
   }
 }
-
-
-
-//
-// ExpansionTile(
-// title: Text(''),
-// subtitle: Text('Trailing expansion arrow icon'),
-// children: <Widget>[
-// ListTile(title: Text('This is tile number 1')),
-// ],
-// ),
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({super.key});
