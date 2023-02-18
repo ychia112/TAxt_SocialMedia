@@ -49,9 +49,7 @@ class _UserPostState extends State<UserPost> {
                   Container(
                     height: MediaQuery.of(context).size.height-275,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.grey.shade50,
                     child:
-
                     ListView.separated(
                         itemCount: _userpost.length,
                         padding: const EdgeInsets.only(top:15.0,bottom:15 ),
@@ -105,10 +103,11 @@ class _UserPostState extends State<UserPost> {
 
                     ),
                   ),
-                  Row(
+                  Container(
+                    padding: EdgeInsets.only(top:8),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
-
                       children:[
                         SizedBox(
                           width: MediaQuery.of(context).size.width-80,
@@ -157,6 +156,7 @@ class _UserPostState extends State<UserPost> {
                           ),
                         ),
                       ]
+                    ),
                   ),
                   // display text
                   // input text

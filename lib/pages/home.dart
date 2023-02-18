@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'post.dart';
-
+import 'chat.dart';
 
 String _nowmood=""; //存目前版面的心情
 final List chosen = <String>["0"]; //每則貼文的文字// initial show post 0
@@ -32,6 +32,10 @@ class _UserHome extends State<UserHome> {
             actions: [
               IconButton(
                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => chatScreen()),
+                  );
                 },
                 icon: const Icon(Icons.mark_chat_unread_outlined,size: 30,),
                 alignment: Alignment.centerLeft,
