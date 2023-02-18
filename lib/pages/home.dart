@@ -4,8 +4,8 @@ import 'post.dart';
 
 
 String _nowmood=""; //存目前版面的心情
-final List chosen = <String>["0"]; //每則貼文的文字// initial show post 0
-var storing = store(); //存每個貼文的心情
+final List chosen = <int>[0,0]; //存每個貼文的心情
+var storing = store(); //每則貼文的文字// initial show post 0
 
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
@@ -109,33 +109,34 @@ class _UserHome extends State<UserHome> {
                                                 children: [
 
                                                   // const Padding(padding: EdgeInsets.only(top:20.0,bottom: 20)),
-                                                  PopupMenuButton<String>(
-                                                      offset: const Offset(40,40),
+                                                  PopupMenuButton<int>(
 
+                                                      offset: const Offset(40,40),
                                                       icon:const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
+
                                                       // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
-                                                      onSelected: (String value) {
+                                                      onSelected: (int value) {
                                                         setState(() {
                                                           chosen[index]=value;
                                                           //Color:Colors.red;
                                                         });
                                                       },
                                                       itemBuilder: (BuildContext context) =>
-                                                      <PopupMenuEntry<String>>[
-                                                        const PopupMenuItem<String>(
-                                                          value: "tryone",
+                                                      <PopupMenuEntry<int>>[
+                                                        const PopupMenuItem<int>(
+                                                          value: 1,
                                                           child: Icon(Icons.insert_emoticon,color: Colors.black45),
                                                         ),
-                                                        const PopupMenuItem<String>(
-                                                          value:"trytwo",
+                                                        const PopupMenuItem<int>(
+                                                          value:2,
                                                           child: Icon(Icons.emoji_emotions_rounded,color: Colors.black45),
                                                         ),
-                                                        const PopupMenuItem<String>(
-                                                          value: "trythree",
+                                                        const PopupMenuItem<int>(
+                                                          value: 3,
                                                           child: Icon(Icons.favorite_border_outlined,color: Colors.black45),
                                                         ),
-                                                        const PopupMenuItem<String>(
-                                                          value: "tryfour",
+                                                        const PopupMenuItem<int>(
+                                                          value: 4,
                                                           child: Icon(Icons.favorite_outlined,color: Colors.black45),
                                                         ),
                                                       ]
@@ -193,7 +194,7 @@ class _UserHome extends State<UserHome> {
 }
 
 
-List? chose()=> chosen;
+
 //
 // ExpansionTile(
 // title: Text(''),
@@ -209,7 +210,7 @@ class MyStatefulWidget extends StatefulWidget {
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int count=0;
+  // int count=0;
   GlobalKey<_TextWidgetState> textKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -229,30 +230,30 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               _nowmood="happy";
                               textKey.currentState?.onPressed();
                             },
-                            icon: Icon(Icons.insert_emoticon)),
+                            icon: const Icon(Icons.insert_emoticon)),
                         IconButton(
                             onPressed:(){
                               _nowmood="unhappy";
                               textKey.currentState?.onPressed();
                             },
-                            icon: Icon(Icons.emoji_emotions_rounded)),
+                            icon: const Icon(Icons.emoji_emotions_rounded)),
                         IconButton(
                             onPressed:(){
                               _nowmood="happy100";
                               textKey.currentState?.onPressed();
                             },
-                            icon: Icon(Icons.favorite_border_outlined)),
+                            icon: const Icon(Icons.favorite_border_outlined)),
                         IconButton(
                             onPressed:(){
                               _nowmood="unhappy1000";
                               textKey.currentState?.onPressed();
                             },
-                            icon: Icon(Icons.favorite_outlined)),
+                            icon: const Icon(Icons.favorite_outlined)),
 
                       ],
                     ),
                   ),
-                  contentPadding:EdgeInsets.symmetric(horizontal: 12.0),
+                  contentPadding:const EdgeInsets.symmetric(horizontal: 12.0),
 
               ),
             ],
@@ -266,13 +267,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
 class TextWidget extends StatefulWidget {
   final Key key;
-
   const TextWidget(this.key);
-
   @override
   _TextWidgetState createState() => _TextWidgetState();
 }
-
 class _TextWidgetState extends State<TextWidget> {
   String text = "filter the mood";
   void onPressed() {
@@ -280,10 +278,11 @@ class _TextWidgetState extends State<TextWidget> {
       text = _nowmood;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Text(text);
   }
 }
+
+List chose()=> chosen;
 

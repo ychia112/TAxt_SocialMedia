@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'home.dart';
 final List _userpost = <String>["hello world"];
-// class userinfo(){
-//   int? number;
-//   final List _userpost = <String>[];
-//   //final List _userpost_mood=<int>[];
-// }
-var emotion=<String>["joy","anger","sad","scared","annoyed","amazed","jealous"];
 int timecount=1;
-
+var chosenmood=chose();
 
 class UserPost extends StatefulWidget {
   const UserPost({Key? key}) : super(key: key);
@@ -20,6 +14,24 @@ class _UserPostState extends State<UserPost> {
   final _textController = TextEditingController();
   // store the input text
   String userPost = '';
+  Icon updateicon(int num){
+    if(num==1)
+    {
+      return const Icon(Icons.insert_emoticon,color: Colors.black,size: 30,);
+    }
+    else if (num==2){
+      return const Icon(Icons.emoji_emotions_rounded,color: Colors.black,size: 30,);
+    }
+    else if (num==3){
+      return const Icon(Icons.favorite_border_outlined,color: Colors.black,size: 30,);
+    }
+    else if (num==4){
+      return const Icon(Icons.favorite_outlined,color: Colors.black,size: 30,);
+    }
+    else{
+      return const Icon(Icons.add_circle,size: 30,);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -53,10 +65,10 @@ class _UserPostState extends State<UserPost> {
                     child:
 
                     ListView.separated(
-                        itemCount: _userpost.length,
                         padding: const EdgeInsets.only(top:15.0,bottom:15 ),
                         separatorBuilder: (BuildContext context,int index)=>
                         const Divider(height: 16,color: Color(0xFFFFFFFF)),
+                        itemCount: _userpost.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                                 alignment: Alignment.center,
@@ -89,20 +101,19 @@ class _UserPostState extends State<UserPost> {
                                         ]
                                     ),
                                     Row(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.add_circle,size: 30,),
-                                          onPressed: (){},
-                                        ),
-                                      ],
-                                    ),
+                                      children:[
+                                        Container(
+                                            height:40,
+                                            width:45,
+                                            child:updateicon(chosenmood?[index])
+                                        )
+
+                                      ]
+                                    )
                                   ],
-                                )
-
-
+                                ),
                             );
                           }
-
                     ),
                   ),
                   Row(
@@ -171,6 +182,7 @@ class _UserPostState extends State<UserPost> {
 
     );
   }
+
 }
 
 List store()=> _userpost;
