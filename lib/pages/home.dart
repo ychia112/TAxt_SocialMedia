@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'post.dart';
 import 'chat.dart';
+import '../utils/mood.dart';
 
 String _nowmood=""; //存目前版面的心情
 final List chosen = <int>[0,0,0,0,0]; //存每個貼文的心情//先五篇
@@ -36,7 +37,7 @@ class _UserHome extends State<UserHome> {
             background: Container(
               color: Colors.black,
             ),
-            title: Text('A p p N a m e '),
+            title: Text(dotenv.env['app_name']?? "load failed"),
             centerTitle: true
         ),
         actions: [
@@ -140,7 +141,7 @@ class _UserHome extends State<UserHome> {
                                               itemBuilder: (BuildContext context) =>
                                               <PopupMenuEntry<int>>[
                                                 PopupMenuItem<int>(
-                                                  value: 1,
+                                                  value: Mood.happy.index,
                                                   child: RawMaterialButton(
                                                     onPressed:(){},
                                                     fillColor: Colors.white,
@@ -152,7 +153,7 @@ class _UserHome extends State<UserHome> {
                                                   ),
                                                 ),
                                                 PopupMenuItem<int>(
-                                                  value:2,
+                                                  value: Mood.angry.index,
                                                   child: RawMaterialButton(
                                                     onPressed: () {
                                                       // Handle button press
@@ -166,7 +167,7 @@ class _UserHome extends State<UserHome> {
                                                   ),
                                                 ),
                                                 PopupMenuItem<int>(
-                                                  value:3,
+                                                  value: Mood.disappointed.index,
                                                   child: RawMaterialButton(
                                                     onPressed: () {
                                                       // Handle button press
@@ -180,7 +181,7 @@ class _UserHome extends State<UserHome> {
                                                   ),
                                                 ),
                                                 PopupMenuItem<int>(
-                                                  value:4,
+                                                  value: Mood.peaceful.index,
                                                   child: RawMaterialButton(
                                                     onPressed: () {
                                                       // Handle button press
@@ -194,7 +195,7 @@ class _UserHome extends State<UserHome> {
                                                   ),
                                                 ),
                                                 PopupMenuItem<int>(
-                                                  value:5,
+                                                  value: Mood.disgusted.index,
                                                   child: RawMaterialButton(
                                                     onPressed: () {
                                                       // Handle button press
@@ -208,7 +209,7 @@ class _UserHome extends State<UserHome> {
                                                   ),
                                                 ),
                                                 PopupMenuItem<int>(
-                                                  value:6,
+                                                  value: Mood.fearful.index,
                                                   child: RawMaterialButton(
                                                     onPressed: () {
                                                       // Handle button press
@@ -222,7 +223,7 @@ class _UserHome extends State<UserHome> {
                                                   ),
                                                 ),
                                                 PopupMenuItem<int>(
-                                                  value:7,
+                                                  value: Mood.shocked.index,
                                                   child: RawMaterialButton(
                                                     onPressed: () {
                                                       // Handle button press
@@ -236,7 +237,7 @@ class _UserHome extends State<UserHome> {
                                                   ),
                                                 ),
                                                 PopupMenuItem<int>(
-                                                  value:8,
+                                                  value: Mood.fascinated.index,
                                                   child: RawMaterialButton(
                                                     onPressed: () {
                                                       // Handle button press
