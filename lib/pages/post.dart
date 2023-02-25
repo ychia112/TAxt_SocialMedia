@@ -1,7 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:walletconnect_dart/walletconnect_dart.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'home.dart';
-
-
+import '../providers/metamask_provider.dart';
+import '../utils/blockchain.dart';
 
 class UserPost extends StatefulWidget {
   const UserPost({Key? key}) : super(key: key);
@@ -37,6 +44,57 @@ class _UserPostState extends State<UserPost> {
   // void affirming(var mood){
   //   if(mood==null)
   // }
+  Future<String> uploadToIPFS(BuildContext context, String msg) async {
+    http.Response res = await http.post(Uri.parse("${dotenv.env['backend_address']}/api/post"), body: jsonEncode({
+      "author": context.read<MetaMask>().session.accounts[0],
+      "title": "test_post",
+      "context": msg,
+      "emotion": "exciting"
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      }
+    );
+    print(res.body);
+    return res.body;
+  }
+
+  void postWithMetamask(BuildContext context, String cid) async {
+    var metamask = context.read<MetaMask>();
+    var connector = metamask.connector;
+    var session = metamask.session;
+    if (connector.connected) {
+      try {
+        print("CID received");
+        print(cid);
+
+        EthereumWalletConnectProvider provider =
+            EthereumWalletConnectProvider(connector);
+        launchUrlString('wc:', mode: LaunchMode.externalApplication);
+        final contract = await Blockchain.getContract();
+        final function = contract.function("post");
+        var signature = await provider.sendTransaction(
+          from: session.accounts[0],
+          to: dotenv.env['contract_address'],
+          data: Transaction.callContract(
+            contract: contract,
+            function: function,
+            parameters: [EthereumAddress.fromHex(session.accounts[0]), cid]
+          ).data,
+          gas: 300000
+        );
+        print(signature);
+      } catch (exp) {
+        print("Error while signing transaction");
+        print(exp);
+      }
+    }
+  }
+
+  void post(BuildContext context, String msg) async {
+    final cid = await uploadToIPFS(context, msg);
+    postWithMetamask(context, cid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +222,7 @@ class _UserPostState extends State<UserPost> {
                                   icon: const Icon(Icons.send_rounded),
                                   onPressed: (){
                                     setState(() {
+                                      post(context, _textController.text);
                                       userPost=_textController.text;
                                       _textController.clear();
                                       _userpost.add(userPost) ;

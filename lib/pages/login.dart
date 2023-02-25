@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slider_button/slider_button.dart';
-import '../providers/session_provider.dart';
+import '../providers/metamask_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -25,17 +25,17 @@ class _LoginPageState extends State<LoginPage> {
     )
   );
 
-  loginUsingMetamask(BuildContext context) async {
+  void loginUsingMetamask(BuildContext context) async {
     if (!connector.connected) {
       try {
         var session = await connector.createSession(onDisplayUri: (uri) async {
-          context.read<Session>().setUrl(uri);
+          context.read<MetaMask>().setUrl(uri);
           await launchUrlString(uri, mode: LaunchMode.externalApplication);
         });
         print(session.accounts[0]);
         print(session.chainId);
         setState(() {
-          context.read<Session>().setSession(session);
+          context.read<MetaMask>().setSession(session);
         });
       } catch (exp) {
         print(exp);
@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  getNetworkName(chainId) {
+  String getNetworkName(chainId) {
     switch (chainId) {
       case 1:
         return 'Ethereum Mainnet';
@@ -69,27 +69,27 @@ class _LoginPageState extends State<LoginPage> {
     connector.on(
       'connect',
       (session) => setState(() {
-          context.read<Session>().setSession(session);
+          context.read<MetaMask>().setSession(session);
       })
     );
 
     connector.on(
       'session_update',
       (payload) => setState(() {
-          context.read<Session>().setSession(payload);
-          print(context.read<Session>().session.accounts[0]);
-          print(context.read<Session>().session.chainId);
+          context.read<MetaMask>().setSession(payload);
+          print(context.read<MetaMask>().session.accounts[0]);
+          print(context.read<MetaMask>().session.chainId);
       })
     );
 
     connector.on(
       'disconnect',
       (payload) => setState(() {
-        context.read<Session>().setSession(null);
+        context.read<MetaMask>().setSession(null);
       })
     );
 
-    var session = context.watch<Session>().session;
+    var session = context.watch<MetaMask>().session;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -146,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.center,
                     child: SliderButton(
                       action: () async {
+                        context.read<MetaMask>().setConnector(connector);
                         Navigator.pushNamed(context, MyRoutes.homeRoute);
                       },
                       label: const Text('Slide to login'),
