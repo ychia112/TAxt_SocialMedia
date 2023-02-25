@@ -253,38 +253,38 @@ class _ChatPageState extends State<ChatPage> {
               avatar: 'assets/images/5.png',
               chat: 1,
               message:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                'Everything ok? ',
               time: '18.00',
             ),
             _itemChat(
               chat: 0,
-              message: 'Okey 🐣',
+              message: 'Ummmm... kind of?',
               time: '18.00',
             ),
             _itemChat(
               avatar: 'assets/images/5.png',
               chat: 1,
-              message: 'It has survived not only five centuries, 😀',
+              message: 'What happened?😀',
               time: '18.00',
             ),
             _itemChat(
               chat: 0,
               message:
-                'Contrary to popular belief, Lorem Ipsum is not simply random text. 😎',
+                'Building a social app within 2 months is impossible!!!',
               time: '18.00',
             ),
             _itemChat(
               avatar: 'assets/images/5.png',
               chat: 1,
               message:
-                'The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
-              time: '18.00',
+                'But it seems like your partners are all elites, they carry all the problems!',
+              time: '18.01',
             ),
             _itemChat(
               avatar: 'assets/images/5.png',
               chat: 1,
-              message: '😅 😂 🤣',
-              time: '18.00',
+              message: ' 😂 🤣',
+              time: '18.01',
             ),
           ],
         ),
