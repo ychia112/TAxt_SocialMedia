@@ -139,21 +139,115 @@ class _UserHome extends State<UserHome> {
                                               },
                                               itemBuilder: (BuildContext context) =>
                                               <PopupMenuEntry<int>>[
-                                                const PopupMenuItem<int>(
+                                                PopupMenuItem<int>(
                                                   value: 1,
-                                                  child: Icon(Icons.insert_emoticon,color: Colors.black45),
+                                                  child: RawMaterialButton(
+                                                    onPressed:(){},
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '😄', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
                                                 ),
-                                                const PopupMenuItem<int>(
+                                                PopupMenuItem<int>(
                                                   value:2,
-                                                  child: Icon(Icons.emoji_emotions_rounded,color: Colors.black45),
+                                                  child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      // Handle button press
+                                                    },
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '😡', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
                                                 ),
-                                                const PopupMenuItem<int>(
-                                                  value: 3,
-                                                  child: Icon(Icons.favorite_border_outlined,color: Colors.black45),
+                                                PopupMenuItem<int>(
+                                                  value:3,
+                                                  child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      // Handle button press
+                                                    },
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '😞', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
                                                 ),
-                                                const PopupMenuItem<int>(
-                                                  value: 4,
-                                                  child: Icon(Icons.favorite_outlined,color: Colors.black45),
+                                                PopupMenuItem<int>(
+                                                  value:4,
+                                                  child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      // Handle button press
+                                                    },
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '😌', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                PopupMenuItem<int>(
+                                                  value:5,
+                                                  child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      // Handle button press
+                                                    },
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '🤢', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                PopupMenuItem<int>(
+                                                  value:6,
+                                                  child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      // Handle button press
+                                                    },
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '😨', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                PopupMenuItem<int>(
+                                                  value:7,
+                                                  child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      // Handle button press
+                                                    },
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '😱', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                PopupMenuItem<int>(
+                                                  value:8,
+                                                  child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      // Handle button press
+                                                    },
+                                                    fillColor: Colors.white,
+                                                    shape: CircleBorder(),
+                                                    child: Text(
+                                                      '🤩', // Replace with desired emoji
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ),
                                                 ),
                                               ]
                                             ),
