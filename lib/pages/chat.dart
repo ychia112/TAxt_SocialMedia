@@ -27,46 +27,18 @@ class _chatScreenState extends State<chatScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          Padding(
+            padding: EdgeInsets.only(top: 12, bottom: 12),
+            child: Text(
             'Chat',
             style: TextStyle(
-              fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
             ),
           ),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  color: Colors.black12,
-                ),
-                child: Icon(
-                  Icons.search_rounded,
-                  size: 30,
-                    color: Colors.white,
-                ),
-              ),
-              SizedBox(width: 15,),
-              Expanded(
-                child: Container(
-                  height: 100,
-                  child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: 4,
-                    itemBuilder: (context, index){
-                      return Avatar(
-                        margin: EdgeInsets.only(right: 15),
-                        image: 'assets/image/${index+3}.png',
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
           ),
+          Row()
         ],
       ),
     );
@@ -87,25 +59,25 @@ class _chatScreenState extends State<chatScreen> {
           physics: BouncingScrollPhysics(),
           children: [
             _itemChats(
-              avatar: 'assets/image/3.png',
+              avatar: 'assets/images/3.png',
               name: 'John',
               chat: 'Flutter is a wonderful tool!',
               time: '08.10',
             ),
             _itemChats(
-              avatar: 'assets/image/4.png',
+              avatar: 'assets/images/4.png',
               name: 'Alex',
               chat: 'Google is the best company in the world...',
               time: '10.23',
             ),
             _itemChats(
-              avatar: 'assets/image/5.png',
+              avatar: 'assets/images/5.png',
               name: 'Emma',
               chat: 'Thank you flutter, you help me a lot!',
               time: '11.09',
             ),
             _itemChats(
-              avatar: 'assets/image/6.png',
+              avatar: 'assets/images/6.png',
               name: 'Fiona',
               chat: 'It is my dream to work at Google.',
               time: '03.19',
@@ -183,7 +155,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Stack(
           children: [
@@ -196,6 +168,7 @@ class _ChatPageState extends State<ChatPage> {
                 )
               ],
             ),
+            _formChat(),
           ],
         ),
       ),
@@ -219,7 +192,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ),
               Text(
-                'Fiona',
+                'Emma',
                 style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -270,11 +243,131 @@ class _ChatPageState extends State<ChatPage> {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(45), topRight: Radius.circular(45)),
+              topLeft: Radius.circular(24), topRight: Radius.circular(24)),
           color: Colors.white,
         ),
         child: ListView(
           physics: BouncingScrollPhysics(),
+          children: [
+            _itemChat(
+              avatar: 'assets/images/5.png',
+              chat: 1,
+              message:
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+              time: '18.00',
+            ),
+            _itemChat(
+              chat: 0,
+              message: 'Okey 🐣',
+              time: '18.00',
+            ),
+            _itemChat(
+              avatar: 'assets/images/5.png',
+              chat: 1,
+              message: 'It has survived not only five centuries, 😀',
+              time: '18.00',
+            ),
+            _itemChat(
+              chat: 0,
+              message:
+                'Contrary to popular belief, Lorem Ipsum is not simply random text. 😎',
+              time: '18.00',
+            ),
+            _itemChat(
+              avatar: 'assets/images/5.png',
+              chat: 1,
+              message:
+                'The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
+              time: '18.00',
+            ),
+            _itemChat(
+              avatar: 'assets/images/5.png',
+              chat: 1,
+              message: '😅 😂 🤣',
+              time: '18.00',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _itemChat({required int chat, String avatar = '', message, time}){
+    return Row(
+      mainAxisAlignment:
+      chat == 0 ? MainAxisAlignment.end : MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        avatar != null
+            ? Avatar(image: avatar, size: 50,)
+            : Text('$time', style: TextStyle(color: Colors.grey.shade400),),
+        Flexible(
+          child: Container(
+            margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: chat == 0 ? Colors.grey.shade100 : Colors.grey.shade400,
+              borderRadius: chat == 0
+                  ? BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+                bottomLeft: Radius.circular(24),
+              )
+                  : BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+                bottomRight: Radius.circular(24),
+              ),
+            ),
+            child: Text('$message'),
+          ),
+        ),
+        chat == 1
+            ? Text(
+              '$time',
+              style: TextStyle(color: Colors.grey.shade400),
+            )
+            : SizedBox(),
+      ],
+    );
+  }
+
+  Widget _formChat() {
+    return Positioned(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 120,
+          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          color: Colors.white,
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Type your message...',
+              suffixIcon: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    color: Colors.black),
+                padding: EdgeInsets.all(14),
+                child: Icon(
+                  Icons.send_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade100,
+              labelStyle: TextStyle(fontSize: 12),
+              contentPadding: EdgeInsets.all(20),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade100),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade100),
+                borderRadius: BorderRadius.circular(25),
+              ),
+            ),
+          ),
         ),
       ),
     );

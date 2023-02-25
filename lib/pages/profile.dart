@@ -75,15 +75,6 @@ class _UserProfileState extends State<UserProfile> {
             height: 200,
             ),
       ),
-      IconButton(
-          icon: const Icon(Icons.login_rounded,size: 30),
-          onPressed: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()
-            ));
-          }
-      ),
     ],
 
   );
