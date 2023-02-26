@@ -9,41 +9,20 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'home.dart';
 import '../providers/metamask_provider.dart';
 import '../utils/blockchain.dart';
+import '../utils/mood.dart';
 
 class UserPost extends StatefulWidget {
-  const UserPost({Key? key}) : super(key: key);
+  UserPost({Key? key}) : super(key: key);
   @override
   _UserPostState createState() => _UserPostState();
 }
-final List _userpost = <String>["hello world",];
 class _UserPostState extends State<UserPost> {
+  List chosenmood=<int>[]; //目前使用者曾經按過的表情符號 (本地)
+  int _usermood=-1; //temporarily store the input emotion//default -1
+  String userPost = '';// temporarily store the input text
+  final List _userpost = <String>[];
 
-  int timecount=1;
-  var chosenmood=chose();
   final _textController = TextEditingController();
-  // store the input text
-  String userPost = '';
-  Icon updateicon(int num){
-    if(num==1)
-    {
-      return const Icon(Icons.insert_emoticon,color: Colors.black,size: 30,);
-    }
-    else if (num==2){
-      return const Icon(Icons.emoji_emotions_rounded,color: Colors.black,size: 30,);
-    }
-    else if (num==3){
-      return const Icon(Icons.favorite_border_outlined,color: Colors.black,size: 30,);
-    }
-    else if (num==4){
-      return const Icon(Icons.favorite_outlined,color: Colors.black,size: 30,);
-    }
-    else{
-      return const Icon(Icons.add_circle,size: 30,);
-    }
-  }
-  // void affirming(var mood){
-  //   if(mood==null)
-  // }
   Future<String> uploadToIPFS(BuildContext context, String msg) async {
     http.Response res = await http.post(Uri.parse("${dotenv.env['backend_address']}/api/post"), body: jsonEncode({
       "author": context.read<MetaMask>().session.accounts[0],
@@ -109,7 +88,7 @@ class _UserPostState extends State<UserPost> {
                 background: Container(
                   color: Colors.black,
                 ),
-                title: const Text('Y o u r t e x t'),
+                title: const Text('TAxt'),
                 centerTitle: true
             ),
           ),
@@ -168,7 +147,8 @@ class _UserPostState extends State<UserPost> {
                                               SizedBox(
                                                 height:40,
                                                 width:45,
-                                                child:updateicon(chosenmood[index]),
+                                                child:
+                                                  updateicon(chosenmood[index])
                                               )
                                             ]
                                         )
@@ -183,11 +163,140 @@ class _UserPostState extends State<UserPost> {
                         //   height: 5,
                         // ),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children:[
                               SizedBox(
-                                width: MediaQuery.of(context).size.width-80,
+                                width: 38,
+                                height: 60,
+
+                                child: PopupMenuButton<int>(
+                                    offset: const Offset(40,40),
+                                    icon:updateiconpure(_usermood),
+                                    onSelected: (int value) {
+                                      setState(() {
+                                        _usermood=-1;
+                                      });
+                                    },
+                                    itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<int>>[
+                                      PopupMenuItem<int>(
+                                        value: Mood.happy.index,
+                                        child: RawMaterialButton(
+                                          onPressed:(){
+                                            _usermood=Mood.happy.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '😄', // Replace with desired emoji//happy
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<int>(
+                                        value: Mood.angry.index,
+                                        child: RawMaterialButton(
+                                          onPressed: () {
+                                            _usermood=Mood.angry.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '😡', // Replace with desired emoji//angry
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<int>(
+                                        value: Mood.disappointed.index,
+                                        child: RawMaterialButton(
+                                          onPressed: () {
+                                            _usermood=Mood.disappointed.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '😞', // Replace with desired emoji//disappointed
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<int>(
+                                        value: Mood.peaceful.index,
+                                        child: RawMaterialButton(
+                                          onPressed: () {
+                                            _usermood=Mood.peaceful.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '😌', // Replace with desired emoji//peaceful,
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<int>(
+                                        value: Mood.disgusted.index,
+                                        child: RawMaterialButton(
+                                          onPressed: () {
+                                            _usermood=Mood.disgusted.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '🤢', // Replace with desired emoji//disgusted,
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<int>(
+                                        value: Mood.fearful.index,
+                                        child: RawMaterialButton(
+                                          onPressed: () {
+                                            _usermood=Mood.fearful.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '😨', // Replace with desired emoji//fearful,
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<int>(
+                                        value: Mood.shocked.index,
+                                        child: RawMaterialButton(
+                                          onPressed: () {
+                                            _usermood=Mood.shocked.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '😱', // Replace with desired emoji//shocked,
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<int>(
+                                        value: Mood.fascinated.index,
+                                        child: RawMaterialButton(
+                                          onPressed: () {
+                                            _usermood=Mood.fascinated.index;
+                                          },
+                                          fillColor: Colors.white,
+                                          shape: const CircleBorder(),
+                                          child: const Text(
+                                            '🤩', // Replace with desired emoji//fascinated
+                                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ]
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width-95,
                                 height: 80,
                                 child:
                                 TextFormField(
@@ -216,7 +325,7 @@ class _UserPostState extends State<UserPost> {
                                 ),
                               ),
                               SizedBox(
-                                width: 40,
+                                width: 20,
                                 height: 60,
                                 child: IconButton(
                                   icon: const Icon(Icons.send_rounded),
@@ -226,7 +335,8 @@ class _UserPostState extends State<UserPost> {
                                       userPost=_textController.text;
                                       _textController.clear();
                                       _userpost.add(userPost) ;
-                                      timecount++;
+                                      chosenmood.add(_usermood);
+                                      _usermood=-1;
                                     });
                                   },
                                   color: Colors.black45,
@@ -253,6 +363,170 @@ class _UserPostState extends State<UserPost> {
 
 }
 
-List store()=> _userpost;
+Widget updateicon(int num) {
+  if (num == 0) {
+    return RawMaterialButton(
+      onPressed: () {},
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '😄', // Replace with desired emoji//happy
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else if (num == 1) {
+    return RawMaterialButton(
+      onPressed: () {
+        // Handle button press
+      },
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '😡', // Replace with desired emoji//angry
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else if (num == 2) {
+    return RawMaterialButton(
+      onPressed: () {
+        // Handle button press
+      },
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '😞', // Replace with desired emoji//disappointed
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else if (num == 3) {
+    return RawMaterialButton(
+      onPressed: () {
+        // Handle button press
+      },
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '😌', // Replace with desired emoji//peaceful,
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else if (num == 4) {
+    return RawMaterialButton(
+      onPressed: () {
+        // Handle button press
+      },
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '🤢', // Replace with desired emoji//disgusted,
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else if (num == 5) {
+    return RawMaterialButton(
+      onPressed: () {
+        // Handle button press
+      },
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '😨', // Replace with desired emoji//fearful,
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else if (num == 6) {
+    return RawMaterialButton(
+      onPressed: () {
+        // Handle button press
+      },
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '😱', // Replace with desired emoji//shocked,
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else if (num == 7) {
+    return RawMaterialButton(
+      onPressed: () {
+        // Handle button press
+      },
+      fillColor: Colors.white,
+      shape: const CircleBorder(),
+      child: const Text(
+        '🤩', // Replace with desired emoji//fascinated
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      ),
+    );
+  }
+  else {
+    return RawMaterialButton(
+        onPressed: () {},
+        fillColor: Colors.white,
+        shape: const CircleBorder(),
 
+        child: const Icon(Icons.circle_outlined, size: 30,color: Colors.black45,)
 
+    );
+  }
+}
+
+Widget updateiconpure(int num){
+  if(num==0){
+      return const Text(
+          '😄', // Replace with desired emoji//happy
+          style: TextStyle(fontSize: 20.0, color: Colors.white));
+    }
+  else if(num==1){
+      return const Text(
+        '😡', // Replace with desired emoji//angry
+        style: TextStyle(fontSize: 20.0, color: Colors.white),
+      );
+    }
+  else if (num==2){
+    return const Text(
+      '😞', // Replace with desired emoji//disappointed
+      style: TextStyle(fontSize: 20.0, color: Colors.white),
+    );
+  }
+  else if(num==3){
+    return const Text(
+      '😌', // Replace with desired emoji//peaceful,
+      style: TextStyle(fontSize: 20.0, color: Colors.white),
+    );
+  }
+  else if (num==4){
+    return const Text(
+      '🤢', // Replace with desired emoji//disgusted,
+      style: TextStyle(fontSize: 20.0, color: Colors.white),
+    );
+  }
+  else if(num==5){
+    return const Text(
+      '😨', // Replace with desired emoji//fearful,
+      style: TextStyle(fontSize: 20.0, color: Colors.white),
+    );
+  }
+  else if(num==6){
+    return const Text(
+      '😱', // Replace with desired emoji//shocked,
+      style: TextStyle(fontSize: 20.0, color: Colors.white),
+    );
+  }
+  else if(num==7){
+    return const Text(
+      '🤩', // Replace with desired emoji//fascinated
+      style: TextStyle(fontSize: 20.0, color: Colors.white),
+    );
+  }
+  else{
+   return const Icon(Icons.add_circle, size: 30,color: Colors.black45,);
+  }
+}

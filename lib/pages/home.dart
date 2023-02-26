@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'post.dart';
-import 'chat.dart';
 import '../utils/mood.dart';
 
 String _nowmood=""; //存目前版面的心情
-final List chosen = <int>[0,0,0,0,0]; //存每個貼文的心情//先五篇
-// var storing = store(); //每則貼文的文字// initial show post 0
+final List chosen = <int>[-1,-1,-1,-1,-1]; //存每個貼文的心情//先五篇//-1為blank
 
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
@@ -20,8 +18,6 @@ class UserHome extends StatefulWidget {
 
 class _UserHome extends State<UserHome> {
   late final Future<List<dynamic>> _posts = getAllPosts();
-
-
   Future<List<dynamic>> getAllPosts() async {
     http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
     return jsonDecode(res.body);
@@ -83,7 +79,7 @@ class _UserHome extends State<UserHome> {
                                 const Divider(height: 16,color: Color(0xFFFFFFFF)),
                                 itemBuilder: (BuildContext context, int index) {
                                   if(chosen.length < snapshot.data!.length) {
-                                    chosen.add(0);
+                                    chosen.add(-1);
                                   }
                                   return Container(
                                     alignment: Alignment.center,
@@ -128,139 +124,20 @@ class _UserHome extends State<UserHome> {
                                         ),
                                         Row(
                                           children: [
-                                            // const Padding(padding: EdgeInsets.only(top:20.0,bottom: 20)),
-                                            PopupMenuButton<int>(
-                                              offset: const Offset(40,40),
-                                              icon:const Icon(Icons.add_circle,size: 30,color: Colors.black54,),
-                                              // icon:const Icon(Icons.import_export_rounded,color: Colors.white,),
-                                              onSelected: (int value) {
-                                                setState(() {
-                                                  chosen[index]=value;
-                                                  //Color:Colors.red;
-                                                });
-                                              },
-                                              itemBuilder: (BuildContext context) =>
-                                              <PopupMenuEntry<int>>[
-                                                PopupMenuItem<int>(
-                                                  value: Mood.happy.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed:(){},
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '😄', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem<int>(
-                                                  value: Mood.angry.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed: () {
-                                                      // Handle button press
-                                                    },
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '😡', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem<int>(
-                                                  value: Mood.disappointed.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed: () {
-                                                      // Handle button press
-                                                    },
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '😞', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem<int>(
-                                                  value: Mood.peaceful.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed: () {
-                                                      // Handle button press
-                                                    },
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '😌', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem<int>(
-                                                  value: Mood.disgusted.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed: () {
-                                                      // Handle button press
-                                                    },
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '🤢', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem<int>(
-                                                  value: Mood.fearful.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed: () {
-                                                      // Handle button press
-                                                    },
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '😨', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem<int>(
-                                                  value: Mood.shocked.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed: () {
-                                                      // Handle button press
-                                                    },
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '😱', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem<int>(
-                                                  value: Mood.fascinated.index,
-                                                  child: RawMaterialButton(
-                                                    onPressed: () {
-                                                      // Handle button press
-                                                    },
-                                                    fillColor: Colors.white,
-                                                    shape: CircleBorder(),
-                                                    child: Text(
-                                                      '🤩', // Replace with desired emoji
-                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ]
-                                            ),
-                                            Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-124)),
-                                            IconButton(
-                                              icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
-                                              onPressed: (){
+                                            SizedBox(
+                                              width: 40,
+                                              height: 40,
+                                              //color: Colors.black26,
+                                              child: updateicon(chosen[index]),
+                                            )
 
-                                              },
-                                              alignment: Alignment.bottomRight,
-                                            ),
+                                            //Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-124)),
+                                            // IconButton(
+                                            //   icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
+                                            //   onPressed: (){
+                                            //   },
+                                            //   alignment: Alignment.bottomRight,
+                                            // ),
                                           ],
                                         ),
                                       ],
@@ -323,25 +200,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       children: [
                         IconButton(
                             onPressed:() {
-                              _nowmood="happy";
+                              _nowmood=Mood.happy.name;
                               textKey.currentState?.onPressed();
                             },
                             icon: const Icon(Icons.insert_emoticon)),
                         IconButton(
                             onPressed:(){
-                              _nowmood="unhappy";
+                              _nowmood=Mood.angry.name;
                               textKey.currentState?.onPressed();
                             },
                             icon: const Icon(Icons.emoji_emotions_rounded)),
                         IconButton(
                             onPressed:(){
-                              _nowmood="happy100";
+                              _nowmood=Mood.disappointed.name;
                               textKey.currentState?.onPressed();
                             },
                             icon: const Icon(Icons.favorite_border_outlined)),
                         IconButton(
                             onPressed:(){
-                              _nowmood="unhappy1000";
+                              _nowmood=Mood.peaceful.name;
                               textKey.currentState?.onPressed();
                             },
                             icon: const Icon(Icons.favorite_outlined)),
