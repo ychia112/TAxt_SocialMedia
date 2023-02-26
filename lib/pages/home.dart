@@ -11,7 +11,6 @@ final List chosen = <int>[-1,-1,-1,-1,-1]; //存每個貼文的心情//先五篇
 
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
-
   @override
   State<UserHome> createState() => _UserHome();
 }
@@ -184,60 +183,168 @@ class MyStatefulWidget extends StatefulWidget {
 }
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // int count=0;
+  final GlobalKey expansionTileKey = GlobalKey();
   GlobalKey<_TextWidgetState> textKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SingleChildScrollView(
-          child: ExpansionTile(
+        ExpansionTile(
+          key: expansionTileKey,
+          onExpansionChanged: (value) {
+            if (value) {
+              _scrollToSelectedContent(expansionTileKey: expansionTileKey);
+            }
+          },
             title: TextWidget(textKey),
             controlAffinity: ListTileControlAffinity.leading,
-            children: <Widget>[
-              ListTile(
-                  title: Center(
-                    child: Row(
-                      children: [
-                        IconButton(
-                            onPressed:() {
-                              _nowmood=Mood.happy.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.insert_emoticon)),
-                        IconButton(
-                            onPressed:(){
-                              _nowmood=Mood.angry.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.emoji_emotions_rounded)),
-                        IconButton(
-                            onPressed:(){
-                              _nowmood=Mood.disappointed.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.favorite_border_outlined)),
-                        IconButton(
-                            onPressed:(){
-                              _nowmood=Mood.peaceful.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.favorite_outlined)),
-
-                      ],
+            children: [
+              Row(
+                children:[
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.happy.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '😄', // Replace with desired emoji//happy
+                        style: TextStyle(fontSize: 20.0),
+                      ),
                     ),
                   ),
-                  contentPadding:const EdgeInsets.symmetric(horizontal: 12.0),
-
-              ),
-            ],
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.angry.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '😡', // Replace with desired emoji//angry
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.disappointed.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '😞', // Replace with desired emoji//disappointed
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.peaceful.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '😌', // Replace with desired emoji//peaceful
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.disgusted.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '🤢', // Replace with desired emoji//disgusted
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.fearful.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '😨', // Replace with desired emoji//fearful
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.shocked.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '😱', // Replace with desired emoji//shocked
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        _nowmood = Mood.fascinated.name;
+                        textKey.currentState?.onPressed();
+                      },
+                      //fillColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Text(
+                        '🤩', // Replace with desired emoji//fascinated
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                //contentPadding:const EdgeInsets.symmetric(horizontal: 12.0),
+           ] ),]
           ),
-        )
-
       ],
     );
   }
 }
-
+void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
+  final keyContext = expansionTileKey.currentContext;
+  if (keyContext != null) {
+    Future.delayed(const Duration(milliseconds: 200)).then((value) {
+      Scrollable.ensureVisible(keyContext,
+          duration: const Duration(milliseconds: 200));
+    });
+  }
+}
 class TextWidget extends StatefulWidget {
   final Key key;
   const TextWidget(this.key);
