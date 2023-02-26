@@ -98,6 +98,11 @@ class _UserHome extends State<UserHome> {
                                               child:
                                               Image.asset('assets/images/2.jpg',width: 50,height: 50,fit: BoxFit.cover,)
                                             ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              snapshot.data![index]['author'], // Replace with desired emoji//happy
+                                              style: const TextStyle(fontSize: 11.0, color: Colors.black),
+                                            ),
                                           ],
                                         ),
                                         Row(
