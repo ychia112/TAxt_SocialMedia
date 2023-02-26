@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
@@ -10,6 +11,7 @@ import 'home.dart';
 import '../providers/metamask_provider.dart';
 import '../utils/blockchain.dart';
 import '../utils/mood.dart';
+int _usermood=-1; //temporarily store the input emotion//default -1
 
 class UserPost extends StatefulWidget {
   UserPost({Key? key}) : super(key: key);
@@ -18,9 +20,9 @@ class UserPost extends StatefulWidget {
 }
 class _UserPostState extends State<UserPost> {
   List chosenmood=<int>[]; //目前使用者曾經按過的表情符號 (本地)
-  int _usermood=-1; //temporarily store the input emotion//default -1
   String userPost = '';// temporarily store the input text
   final List _userpost = <String>[];
+  GlobalKey<_IconWidgetState> iconKey = GlobalKey();
 
   final _textController = TextEditingController();
   Future<String> uploadToIPFS(BuildContext context, String msg) async {
@@ -178,29 +180,29 @@ class _UserPostState extends State<UserPost> {
                                           onSelected: (int value) {
                                             setState(() {
                                               _usermood=-1;
+                                              value=_usermood;
                                             });
                                           },
-                                          itemBuilder: (BuildContext context) {
+                                          itemBuilder: (BuildContext int) {
                                             return [
                                               PopupMenuWidget(
                                                 height: 40.0,
                                                 width: 380,
                                                 child:Row(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    mainAxisSize:MainAxisSize.max,
                                                     children: [
                                                       SizedBox(
                                                         height: 40,
                                                         width: 35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood = Mood.happy.index;
+                                                            setState(() {
+                                                              _usermood = Mood.happy.index;
+                                                            });
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
                                                           child: const Text(
-                                                            '😄',
-                                                            // Replace with desired emoji//happy
+                                                            '😄', //happy
                                                             style: TextStyle(
                                                                 fontSize: 20.0,
                                                                 color: Colors.white),
@@ -212,8 +214,11 @@ class _UserPostState extends State<UserPost> {
                                                         width: 35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood =
-                                                                Mood.angry.index;
+                                                            setState(() {
+                                                              _usermood =
+                                                                  Mood.angry.index;
+                                                            });
+
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
@@ -231,9 +236,11 @@ class _UserPostState extends State<UserPost> {
                                                         width: 35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood =
-                                                                Mood.disappointed
-                                                                    .index;
+                                                            setState(() {
+                                                              _usermood =
+                                                                  Mood.disappointed
+                                                                      .index;
+                                                            });
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
@@ -251,8 +258,10 @@ class _UserPostState extends State<UserPost> {
                                                         width: 35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood =
-                                                                Mood.peaceful.index;
+                                                            setState(() {
+                                                              _usermood =
+                                                                  Mood.peaceful.index;
+                                                            });
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
@@ -270,8 +279,11 @@ class _UserPostState extends State<UserPost> {
                                                         width:35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood =
-                                                                Mood.disgusted.index;
+                                                            setState(() {
+                                                              _usermood =
+                                                                  Mood.disgusted.index;
+                                                            });
+
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
@@ -289,8 +301,10 @@ class _UserPostState extends State<UserPost> {
                                                         width: 35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood =
-                                                                Mood.fearful.index;
+                                                            setState(() {
+                                                              _usermood =
+                                                                  Mood.fearful.index;
+                                                            });
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
@@ -308,8 +322,11 @@ class _UserPostState extends State<UserPost> {
                                                         width: 35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood =
-                                                                Mood.shocked.index;
+                                                            setState(() {
+                                                              _usermood =
+                                                                  Mood.shocked.index;
+                                                            });
+
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
@@ -327,8 +344,10 @@ class _UserPostState extends State<UserPost> {
                                                         width: 35,
                                                         child: RawMaterialButton(
                                                           onPressed: () {
-                                                            _usermood =
-                                                                Mood.fascinated.index;
+                                                            setState(() {
+                                                              _usermood =
+                                                                  Mood.fascinated.index;
+                                                            });
                                                           },
                                                           fillColor: Colors.white,
                                                           shape: const CircleBorder(),
@@ -443,6 +462,25 @@ class PopupMenuWidget<int> extends PopupMenuEntry<int> {
 class _PopupMenuWidgetState extends State<PopupMenuWidget> {
   @override
   Widget build(BuildContext context) => widget.child;
+}
+
+class IconWidget extends StatefulWidget {
+  final Key key;
+  const IconWidget(this.key);
+  @override
+  _IconWidgetState createState() => _IconWidgetState();
+}
+class _IconWidgetState extends State<IconWidget> {
+  int iconnum = -1;
+  void onPressed() {
+    setState((){
+      iconnum = _usermood;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return updateiconpure(iconnum);
+  }
 }
 
 Widget updateicon(int num) {
