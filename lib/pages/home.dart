@@ -6,7 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'post.dart';
 import '../utils/mood.dart';
 
-String _nowmood=""; //存目前版面的心情
+String _nowmood=""; //存目前版面的心情(string)
+int _nowmoodvalue=-1; //存目前版面的心情(int)
 final List chosen = <int>[-1,-1,-1,-1,-1]; //存每個貼文的心情//先五篇//-1為blank
 
 class UserHome extends StatefulWidget {
@@ -207,6 +208,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.happy.name;
+                        _nowmoodvalue=Mood.happy.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
@@ -223,6 +225,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.angry.name;
+                        _nowmoodvalue = Mood.angry.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
@@ -239,6 +242,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.disappointed.name;
+                        _nowmoodvalue==Mood.disappointed.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
@@ -255,6 +259,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.peaceful.name;
+                        _nowmoodvalue=Mood.peaceful.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
@@ -271,6 +276,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.disgusted.name;
+                        _nowmoodvalue=Mood.disgusted.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
@@ -287,6 +293,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.fearful.name;
+                        _nowmoodvalue= Mood.fearful.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
@@ -303,6 +310,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.shocked.name;
+                        _nowmoodvalue=Mood.shocked.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
@@ -319,6 +327,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: RawMaterialButton(
                       onPressed: () {
                         _nowmood = Mood.fascinated.name;
+                        _nowmoodvalue=Mood.fascinated.index;
                         textKey.currentState?.onPressed();
                       },
                       //fillColor: Colors.white,
