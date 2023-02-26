@@ -32,6 +32,7 @@ class _UserHome extends State<UserHome> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        elevation: 0,
         // leading:
         flexibleSpace: FlexibleSpaceBar(
             background: Container(
