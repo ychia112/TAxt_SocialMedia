@@ -45,10 +45,10 @@ class _UserHome extends State<UserHome> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => chatScreen()),
+                MaterialPageRoute(builder: (context) => UserPost()),
               );
             },
-            icon: const Icon(Icons.mark_chat_unread_outlined,size: 30,),
+            icon: const Icon(Icons.post_add_rounded,size: 30,),
             alignment: Alignment.centerLeft,
           ),
         ],
