@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'pages/home.dart';
-import 'pages/post.dart';
+import 'pages/diary.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
 
@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     UserProfile(),
     UserHome(),
-    const UserPost(),
+    DiaryPage(),
     Search(),
   ];
   @override
@@ -67,8 +67,8 @@ class _HomePageState extends State<HomePage> {
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.add_box_outlined,
-                text: 'Post',
+                icon: Icons.book_rounded,
+                text: 'Diary',
               ),
               GButton(
                 icon: Icons.search_rounded,
