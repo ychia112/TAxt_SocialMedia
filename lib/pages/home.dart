@@ -6,9 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'post.dart';
 import '../utils/mood.dart';
 
-String _nowmood=""; //存目前版面的心情(string)
-int _nowmoodvalue=-1; //存目前版面的心情(int)
-final List chosen = <int>[-1,-1,-1,-1,-1]; //存每個貼文的心情//先五篇//-1為blank
+Mood filter_mood = Mood.none; //存目前版面的心情(int)
 
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
@@ -18,6 +16,8 @@ class UserHome extends StatefulWidget {
 
 class _UserHome extends State<UserHome> {
   late final Future<List<dynamic>> _posts = getAllPosts();
+  List<dynamic> filtered_posts = [];
+
   Future<List<dynamic>> getAllPosts() async {
     http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
     return jsonDecode(res.body);
@@ -28,6 +28,7 @@ class _UserHome extends State<UserHome> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         // leading:
         flexibleSpace: FlexibleSpaceBar(
@@ -78,9 +79,6 @@ class _UserHome extends State<UserHome> {
                                 separatorBuilder: (BuildContext context,int index)=>
                                 const Divider(height: 16,color: Color(0xFFFFFFFF)),
                                 itemBuilder: (BuildContext context, int index) {
-                                  if(chosen.length < snapshot.data!.length) {
-                                    chosen.add(-1);
-                                  }
                                   return Container(
                                     alignment: Alignment.center,
                                     // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
@@ -128,16 +126,16 @@ class _UserHome extends State<UserHome> {
                                               width: 40,
                                               height: 40,
                                               //color: Colors.black26,
-                                              child: updateicon(chosen[index]),
+                                              child: RawMaterialButton(
+                                                onPressed: () {},
+                                                fillColor: Colors.white,
+                                                shape: const CircleBorder(),
+                                                child: Text(
+                                                  moodEmoji[snapshot.data![index]['mood']], // Replace with desired emoji//happy
+                                                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                                                ),
+                                              )
                                             )
-
-                                            //Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-124)),
-                                            // IconButton(
-                                            //   icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
-                                            //   onPressed: (){
-                                            //   },
-                                            //   alignment: Alignment.bottomRight,
-                                            // ),
                                           ],
                                         ),
                                       ],
@@ -182,10 +180,11 @@ class MyStatefulWidget extends StatefulWidget {
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
+
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // int count=0;
   final GlobalKey expansionTileKey = GlobalKey();
-  GlobalKey<_TextWidgetState> textKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -197,154 +196,38 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               _scrollToSelectedContent(expansionTileKey: expansionTileKey);
             }
           },
-            title: TextWidget(textKey),
+            title: const Text("filter the mood"),
             controlAffinity: ListTileControlAffinity.leading,
             children: [
               Row(
                 children:[
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.happy.name;
-                        _nowmoodvalue=Mood.happy.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '😄', // Replace with desired emoji//happy
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.angry.name;
-                        _nowmoodvalue = Mood.angry.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '😡', // Replace with desired emoji//angry
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.disappointed.name;
-                        _nowmoodvalue==Mood.disappointed.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '😞', // Replace with desired emoji//disappointed
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.peaceful.name;
-                        _nowmoodvalue=Mood.peaceful.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '😌', // Replace with desired emoji//peaceful
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.disgusted.name;
-                        _nowmoodvalue=Mood.disgusted.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '🤢', // Replace with desired emoji//disgusted
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.fearful.name;
-                        _nowmoodvalue= Mood.fearful.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '😨', // Replace with desired emoji//fearful
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.shocked.name;
-                        _nowmoodvalue=Mood.shocked.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '😱', // Replace with desired emoji//shocked
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        _nowmood = Mood.fascinated.name;
-                        _nowmoodvalue=Mood.fascinated.index;
-                        textKey.currentState?.onPressed();
-                      },
-                      //fillColor: Colors.white,
-                      shape: const CircleBorder(),
-                      child: const Text(
-                        '🤩', // Replace with desired emoji//fascinated
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                //contentPadding:const EdgeInsets.symmetric(horizontal: 12.0),
+                  for(var i = 1; i < Mood.values.length; i++)
+                    emojiSizedBox(Mood.values[i])
            ] ),]
           ),
       ],
     );
   }
+
+  Widget emojiSizedBox(Mood mood){
+    return SizedBox(
+      height: 40,
+      width: 40,
+      child: RawMaterialButton(
+        onPressed: () {
+          filter_mood = mood;
+        },
+        //fillColor: Colors.white,
+        shape: const CircleBorder(),
+        child: Text(
+          moodEmoji[mood.index], // Replace with desired emoji//happy
+          style: const TextStyle(fontSize: 20.0),
+        ),
+      ),
+    );
+  }
 }
+
 void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
   final keyContext = expansionTileKey.currentContext;
   if (keyContext != null) {
@@ -354,25 +237,3 @@ void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
     });
   }
 }
-class TextWidget extends StatefulWidget {
-  final Key key;
-  const TextWidget(this.key);
-  @override
-  _TextWidgetState createState() => _TextWidgetState();
-}
-
-class _TextWidgetState extends State<TextWidget> {
-  String text = "filter the mood";
-  void onPressed() {
-    setState((){
-      text = _nowmood;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Text(text);
-  }
-}
-
-List chose()=> chosen;
-
