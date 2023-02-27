@@ -179,6 +179,11 @@ class _UserProfileState extends State<UserProfile> {
                   }
                 ),
               ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 85,
+                color: Colors.transparent,
+              )
             ]
           )
         );
