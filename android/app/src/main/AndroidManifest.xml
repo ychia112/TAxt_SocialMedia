@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.Ychia.test.ios_proj01">
    <application
-        android:label="ios_proj01"
+        android:label="TAxt"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
