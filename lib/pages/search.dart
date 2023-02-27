@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
@@ -13,12 +13,21 @@ class _SearchState extends State<Search> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        centerTitle: false,
         elevation: 0,
-        backgroundColor: Colors.black,
-        title: const Text('Search'),
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Search',
+          style: GoogleFonts.abrilFatface(
+              textStyle: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+              )),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search,color: Colors.black,size: 30,),
             onPressed: (){
               showSearch(context: context, delegate: MySearchDelegate(),
               );

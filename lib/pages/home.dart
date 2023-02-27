@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'post.dart';
 import '../utils/mood.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
 
 Mood filter_mood = Mood.none; //存目前版面的心情(int)
 
@@ -28,16 +30,20 @@ class _UserHome extends State<UserHome> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        centerTitle: false,
         automaticallyImplyLeading: false,
         elevation: 0,
+        backgroundColor: Colors.transparent,
         // leading:
-        flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              color: Colors.black,
+            title: Text(
+                dotenv.env['app_name']?? "load failed",
+                style: GoogleFonts.abrilFatface(
+                    textStyle: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black
+                  )),
             ),
-            title: Text(dotenv.env['app_name']?? "load failed"),
-            centerTitle: true
-        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -48,6 +54,7 @@ class _UserHome extends State<UserHome> {
             },
             icon: const Icon(Icons.post_add_rounded,size: 30,),
             alignment: Alignment.centerLeft,
+            color: Colors.black,
           ),
         ],
       ),

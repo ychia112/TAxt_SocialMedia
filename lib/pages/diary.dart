@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Diarydata.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 class DiaryPage extends StatefulWidget {
   @override
   State<DiaryPage> createState() => _DiaryPageState();
@@ -35,17 +35,17 @@ class _DiaryPageState extends State<DiaryPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        toolbarHeight: 80,
         centerTitle: false,
         backgroundColor: Colors.transparent,
         title: Text(
-          'Diary Books',
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 28),
+          'Diaries',
+          style: GoogleFonts.abrilFatface(
+              textStyle: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+              )),
         ),
-
       ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

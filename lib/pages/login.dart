@@ -95,8 +95,18 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.black,
-        title: Text('Login'),
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Login',
+          style: GoogleFonts.abrilFatface(
+              textStyle: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+              )),
+        ),
       ),
       body: Center(
         child: 
@@ -106,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(padding: EdgeInsets.all(24)),
                   Text(
                     'Account',
                     style: GoogleFonts.merriweather(
@@ -115,11 +126,11 @@ class _LoginPageState extends State<LoginPage> {
                     '${session.accounts[0]}',
                     style: GoogleFonts.inconsolata(fontSize: 16),
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 24,),
                   Row(
                     children: [
                       Text(
-                        'Chain: ',
+                        'Chain : ',
                         style: GoogleFonts.merriweather(
                           fontWeight: FontWeight.bold, fontSize: 16),
                         ),
@@ -150,7 +161,15 @@ class _LoginPageState extends State<LoginPage> {
                         context.read<MetaMask>().setConnector(connector);
                         Navigator.pushNamed(context, MyRoutes.homeRoute);
                       },
-                      label: const Text('Slide to login'),
+                      label: Text(
+                        'Slide to login',
+                        style: GoogleFonts.merriweather(
+                            textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black
+                            )),
+                      ),
                       icon: const Icon(Icons.check),
                     ),
                   )
@@ -180,9 +199,14 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(width: 6),
                     Text(
                       'Connect to MetaMask',
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: GoogleFonts.abrilFatface(
+                          textStyle: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black
+                          )),
                     ),
-                    SizedBox(width: 12)
+                    SizedBox(width: 16)
                   ],
                 ),
               ),
