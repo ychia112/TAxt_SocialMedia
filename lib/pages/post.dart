@@ -10,7 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../providers/metamask_provider.dart';
 import '../utils/blockchain.dart';
 import '../utils/mood.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 
 class UserPost extends StatefulWidget {
@@ -86,12 +86,22 @@ class _UserPostState extends State<UserPost> {
       child: Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        elevation: 0,
+        centerTitle: false,
+        backgroundColor: Colors.transparent,
         flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              color: Colors.black,
+              color: Colors.transparent,
             ),
-            title: Text(dotenv.env['app_name']?? "load failed"),
-            centerTitle: true
+            title: Text(
+              dotenv.env['app_name']?? "load failed",
+              style: GoogleFonts.abrilFatface(
+                  textStyle: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black
+                  )),
+            ),
         ),
       ),
       body:
