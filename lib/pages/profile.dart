@@ -36,8 +36,8 @@ class _UserProfileState extends State<UserProfile> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           buildTop(),
-          buildContent(),
-          const SizedBox(height: 30,),
+          buildContent(context),
+          const SizedBox(height: 5,),
           buildPosts(_posts),
         ],
       ),
@@ -63,14 +63,15 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  Widget buildContent() => Column(
-    children: const [
-      SizedBox(height: 8),
+  Widget buildContent(BuildContext context) => Column(
+    children: [
+      const SizedBox(height: 8),
       Text(
-        'UserName',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        context.read<MetaMask>().session.accounts[0],
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
-      Text(
+      const SizedBox(height: 10,),
+      const Text(
         '@UserLocation',
         style: TextStyle(fontSize: 16, color: Colors.grey),
       )
@@ -113,9 +114,6 @@ class _UserProfileState extends State<UserProfile> {
                   separatorBuilder: (BuildContext context,int index)=>
                   const Divider(height: 16,color: Color(0xFFFFFFFF)),
                   itemBuilder: (BuildContext context, int index) {
-                    if(chosen.length < snapshot.data!.length) {
-                      chosen.add(0);
-                    }
                     return Container(
                       alignment: Alignment.center,
                       // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
@@ -159,22 +157,20 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           Row(
                             children: [
-                              // const Padding(padding: EdgeInsets.only(top:20.0,bottom: 20)),
                               SizedBox(
                                 width: 40,
                                 height: 40,
                                 //color: Colors.black26,
-                                child: updateicon(chosen[index]),
+                                child: RawMaterialButton(
+                                  onPressed: () {},
+                                  fillColor: Colors.white,
+                                  shape: const CircleBorder(),
+                                  child: Text(
+                                    moodEmoji[snapshot.data![index]['mood']], // Replace with desired emoji//happy
+                                    style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                                  ),
+                                )
                               )
-
-                              // Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-124)),
-                              // IconButton(
-                              //   icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
-                              //   onPressed: (){
-                              //
-                              //   },
-                              //   alignment: Alignment.bottomRight,
-                              // ),
                             ],
                           ),
                         ],

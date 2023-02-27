@@ -1,4 +1,5 @@
 enum Mood{
+  none,
   happy,
   angry,
   disappointed,
@@ -6,5 +7,7 @@ enum Mood{
   disgusted,
   fearful,
   shocked,
-  fascinated
+  fascinated,
 }
+
+const moodEmoji = ['❤️', '😄', '😡', '😞', '😌', '🤢', '😨', '😱', '🤩'];

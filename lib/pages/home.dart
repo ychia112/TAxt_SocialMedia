@@ -6,18 +6,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'post.dart';
 import '../utils/mood.dart';
 
-String _nowmood=""; //存目前版面的心情
-final List chosen = <int>[-1,-1,-1,-1,-1]; //存每個貼文的心情//先五篇//-1為blank
+Mood filter_mood = Mood.none; //存目前版面的心情(int)
 
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
-
   @override
   State<UserHome> createState() => _UserHome();
 }
 
 class _UserHome extends State<UserHome> {
   late final Future<List<dynamic>> _posts = getAllPosts();
+  List<dynamic> filtered_posts = [];
+
   Future<List<dynamic>> getAllPosts() async {
     http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
     return jsonDecode(res.body);
@@ -28,6 +28,7 @@ class _UserHome extends State<UserHome> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         // leading:
         flexibleSpace: FlexibleSpaceBar(
@@ -78,9 +79,6 @@ class _UserHome extends State<UserHome> {
                                 separatorBuilder: (BuildContext context,int index)=>
                                 const Divider(height: 16,color: Color(0xFFFFFFFF)),
                                 itemBuilder: (BuildContext context, int index) {
-                                  if(chosen.length < snapshot.data!.length) {
-                                    chosen.add(-1);
-                                  }
                                   return Container(
                                     alignment: Alignment.center,
                                     // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
@@ -99,6 +97,11 @@ class _UserHome extends State<UserHome> {
                                             ClipOval(
                                               child:
                                               Image.asset('assets/images/2.jpg',width: 50,height: 50,fit: BoxFit.cover,)
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              snapshot.data![index]['author'], // Replace with desired emoji//happy
+                                              style: const TextStyle(fontSize: 11.0, color: Colors.black),
                                             ),
                                           ],
                                         ),
@@ -128,16 +131,16 @@ class _UserHome extends State<UserHome> {
                                               width: 40,
                                               height: 40,
                                               //color: Colors.black26,
-                                              child: updateicon(chosen[index]),
+                                              child: RawMaterialButton(
+                                                onPressed: () {},
+                                                fillColor: Colors.white,
+                                                shape: const CircleBorder(),
+                                                child: Text(
+                                                  moodEmoji[snapshot.data![index]['mood']], // Replace with desired emoji//happy
+                                                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                                                ),
+                                              )
                                             )
-
-                                            //Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width-124)),
-                                            // IconButton(
-                                            //   icon: const Icon(Icons.account_circle,size: 30,color: Colors.black54,),
-                                            //   onPressed: (){
-                                            //   },
-                                            //   alignment: Alignment.bottomRight,
-                                            // ),
                                           ],
                                         ),
                                       ],
@@ -182,80 +185,60 @@ class MyStatefulWidget extends StatefulWidget {
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
+
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // int count=0;
-  GlobalKey<_TextWidgetState> textKey = GlobalKey();
+  final GlobalKey expansionTileKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SingleChildScrollView(
-          child: ExpansionTile(
-            title: TextWidget(textKey),
+        ExpansionTile(
+          key: expansionTileKey,
+          onExpansionChanged: (value) {
+            if (value) {
+              _scrollToSelectedContent(expansionTileKey: expansionTileKey);
+            }
+          },
+            title: const Text("filter the mood"),
             controlAffinity: ListTileControlAffinity.leading,
-            children: <Widget>[
-              ListTile(
-                  title: Center(
-                    child: Row(
-                      children: [
-                        IconButton(
-                            onPressed:() {
-                              _nowmood=Mood.happy.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.insert_emoticon)),
-                        IconButton(
-                            onPressed:(){
-                              _nowmood=Mood.angry.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.emoji_emotions_rounded)),
-                        IconButton(
-                            onPressed:(){
-                              _nowmood=Mood.disappointed.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.favorite_border_outlined)),
-                        IconButton(
-                            onPressed:(){
-                              _nowmood=Mood.peaceful.name;
-                              textKey.currentState?.onPressed();
-                            },
-                            icon: const Icon(Icons.favorite_outlined)),
-
-                      ],
-                    ),
-                  ),
-                  contentPadding:const EdgeInsets.symmetric(horizontal: 12.0),
-
-              ),
-            ],
+            children: [
+              Row(
+                children:[
+                  for(var i = 1; i < Mood.values.length; i++)
+                    emojiSizedBox(Mood.values[i])
+           ] ),]
           ),
-        )
-
       ],
+    );
+  }
+
+  Widget emojiSizedBox(Mood mood){
+    return SizedBox(
+      height: 40,
+      width: 40,
+      child: RawMaterialButton(
+        onPressed: () {
+          filter_mood = mood;
+        },
+        //fillColor: Colors.white,
+        shape: const CircleBorder(),
+        child: Text(
+          moodEmoji[mood.index], // Replace with desired emoji//happy
+          style: const TextStyle(fontSize: 20.0),
+        ),
+      ),
     );
   }
 }
 
-class TextWidget extends StatefulWidget {
-  final Key key;
-  const TextWidget(this.key);
-  @override
-  _TextWidgetState createState() => _TextWidgetState();
-}
-class _TextWidgetState extends State<TextWidget> {
-  String text = "filter the mood";
-  void onPressed() {
-    setState((){
-      text = _nowmood;
+void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
+  final keyContext = expansionTileKey.currentContext;
+  if (keyContext != null) {
+    Future.delayed(const Duration(milliseconds: 200)).then((value) {
+      Scrollable.ensureVisible(keyContext,
+          duration: const Duration(milliseconds: 200));
     });
   }
-  @override
-  Widget build(BuildContext context) {
-    return Text(text);
-  }
 }
-
-List chose()=> chosen;
-
