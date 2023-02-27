@@ -33,6 +33,7 @@ class _DiaryPageState extends State<DiaryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         toolbarHeight: 80,
         centerTitle: false,
