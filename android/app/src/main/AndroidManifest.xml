@@ -3,7 +3,7 @@
    <application
         android:label="TAxt"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/_taxt_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
