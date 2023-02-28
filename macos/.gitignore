@@ -5,3 +5,7 @@
 # Xcode-related
 **/dgph
 **/xcuserdata/
+
+# Signing-related
+Runner.xcodeproj
+Runner.xcworkspace

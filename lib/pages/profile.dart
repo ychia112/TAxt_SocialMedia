@@ -114,6 +114,7 @@ class _UserProfileState extends State<UserProfile> {
                   separatorBuilder: (BuildContext context,int index)=>
                   const Divider(height: 16,color: Color(0xFFFFFFFF)),
                   itemBuilder: (BuildContext context, int index) {
+                    index = snapshot.data!.length - 1 - index;
                     return Container(
                       alignment: Alignment.center,
                       // tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
