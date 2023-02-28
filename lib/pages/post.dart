@@ -185,10 +185,10 @@ class _UserPostState extends State<UserPost> {
                       ),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 50,
                       height: 60,
                       child: IconButton(
-                        icon: const Icon(Icons.send_rounded),
+                        icon: const Icon(Icons.send_rounded,size: 28,),
                         onPressed: (){
                           setState(() {
                             post(context, _textController.text, _usermood);
@@ -197,7 +197,7 @@ class _UserPostState extends State<UserPost> {
                           });
                         },
                         color: Colors.black45,
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.center,
                       ),
                     ),
                   ]
