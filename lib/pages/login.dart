@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: SliderButton(
                       action: () async {
                         context.read<MetaMask>().setConnector(connector);
-                        Navigator.pushNamed(context, MyRoutes.homeRoute);
+                        Navigator.pushReplacementNamed(context, MyRoutes.homeRoute);
                       },
                       label: Text(
                         'Slide to login',
