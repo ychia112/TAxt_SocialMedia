@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -20,11 +21,10 @@ class UserPost extends StatefulWidget {
 }
 
 class _UserPostState extends State<UserPost> {
-  final List _userpost = <String>[];
   Mood _usermood = Mood.none; //temporarily store the input emotion (default: none)
   final _textController = TextEditingController();
 
-  Future<String> uploadToIPFS(BuildContext context, String msg, Mood mood) async {
+  Future<String> uploadToIPFS(String msg, Mood mood) async {
     http.Response res = await http.post(
       Uri.parse("${dotenv.env['backend_address']}/api/post"),
       body: jsonEncode({
@@ -37,25 +37,21 @@ class _UserPostState extends State<UserPost> {
         'Content-Type': 'application/json; charset=UTF-8'
       }
     );
-    print(res.body);
     return res.body;
   }
 
-  void postWithMetamask(BuildContext context, String cid) async {
+  Future<bool> postWithMetamask(String cid) async {
     var metamask = context.read<MetaMask>();
     var connector = metamask.connector;
     var session = metamask.session;
     if (connector.connected) {
       try {
-        print("CID received");
-        print(cid);
-
         EthereumWalletConnectProvider provider =
             EthereumWalletConnectProvider(connector);
         launchUrlString('wc:', mode: LaunchMode.externalApplication);
         final contract = await Blockchain.getContract();
         final function = contract.function("post");
-        var signature = await provider.sendTransaction(
+        await provider.sendTransaction(
           from: session.accounts[0],
           to: dotenv.env['contract_address'],
           data: Transaction.callContract(
@@ -65,12 +61,14 @@ class _UserPostState extends State<UserPost> {
           ).data,
           gas: 300000
         );
-        print(signature);
+        return true;
       } catch (exp) {
         print("Error while signing transaction");
         print(exp);
+        return false;
       }
     }
+    return false;
   }
 
   snackBar({String? label}) {
@@ -80,24 +78,69 @@ class _UserPostState extends State<UserPost> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(label!),
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               color: Colors.white,
             )
           ],
         ),
-        duration: Duration(days: 1),
+        duration: const Duration(days: 1),
         backgroundColor: Colors.black,
       ),
     );
   }
 
-  void post(BuildContext context, String msg, Mood mood) async {
-    snackBar(label: "Uploading");
-    final cid = await uploadToIPFS(context, msg, mood);
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    postWithMetamask(context, cid);
-    ScaffoldMessenger.of(context).clearSnackBars();
+  snackBarError({String? label}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Icon(Icons.close, color: Colors.white),
+            const SizedBox(width: 10,),
+            Text(label!),
+          ],
+        ),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
+
+  snackBarSuccess({String? label}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Icon(Icons.done, color: Colors.white),
+            const SizedBox(width: 10,),
+            Text(label!),
+          ],
+        ),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  void post(String msg, Mood mood) async {
+    if(mood == Mood.none){
+      snackBarError(label: "Please select a mood!");
+      return;
+    }
+
+    snackBar(label: "Uploading");
+    String cid = await uploadToIPFS(msg, mood);
+    bool success = await postWithMetamask(cid);
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    if(success){
+      snackBarSuccess(label: "Success");
+    }
+    else{
+      snackBarError(label: "Transaction failed!");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +153,7 @@ class _UserPostState extends State<UserPost> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: false,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black, //change your color here
         ),
         backgroundColor: Colors.transparent,
@@ -119,9 +162,9 @@ class _UserPostState extends State<UserPost> {
               color: Colors.transparent,
             ),
             title: Text(
-              dotenv.env['app_name']?? "load failed",
+              dotenv.env['app_name']!,
               style: GoogleFonts.abrilFatface(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: Colors.black
@@ -215,10 +258,13 @@ class _UserPostState extends State<UserPost> {
                       child: IconButton(
                         icon: const Icon(Icons.send_rounded,size: 28,),
                         onPressed: (){
+                          post(_textController.text, _usermood);
+                          if(!mounted)  return;
                           setState(() {
-                            post(context, _textController.text, _usermood);
-                            _textController.clear();
-                            _usermood = Mood.none;
+                            if(_usermood != Mood.none){
+                              _textController.clear();
+                              _usermood = Mood.none;
+                            }
                           });
                         },
                         color: Colors.black45,
