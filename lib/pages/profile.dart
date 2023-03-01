@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:ios_proj01/pages/post.dart';
 import 'package:ios_proj01/providers/metamask_provider.dart';
 import 'package:provider/provider.dart';
 import 'home.dart';
@@ -171,7 +170,11 @@ class _UserProfileState extends State<UserProfile> {
                                     style: const TextStyle(fontSize: 20.0, color: Colors.white),
                                   ),
                                 )
-                              )
+                              ),
+                              const Spacer(),
+                              if(snapshot.data![index].containsKey('datetime'))
+                                Text(DisplayDateTime(snapshot.data![index]['datetime'])),
+                              const SizedBox(width: 10,)
                             ],
                           ),
                         ],
@@ -209,4 +212,24 @@ class _UserProfileState extends State<UserProfile> {
       }
     },
   );
+
+  String DisplayDateTime(String dateTimeString){
+    DateTime postDateTime = DateTime.parse(dateTimeString);
+    Duration duration = DateTime.now().difference(postDateTime);
+    String output = postDateTime.toLocal().toString().substring(0, 16) + ' (';
+    if(duration.inDays != 0){
+      output += '${duration.inDays}';
+      output += (duration.inDays == 1? ' day ago': 'days ago');
+    }
+    else if(duration.inHours != 0){
+      output += '${duration.inHours}';
+      output += (duration.inHours == 1? ' hour ago': 'hours ago');
+    }
+    else {
+      output += '${duration.inMinutes}';
+      output += (duration.inMinutes <= 1? ' min ago': 'mins ago');
+    }
+    output += ')';
+    return output;
+  }
 }

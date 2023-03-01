@@ -30,7 +30,8 @@ class _UserPostState extends State<UserPost> {
       body: jsonEncode({
         "author": context.read<MetaMask>().session.accounts[0],
         "context": msg,
-        "mood": mood.index
+        "mood": mood.index,
+        "datetime": DateTime.now().toUtc().toString()
       }),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
@@ -95,6 +96,7 @@ class _UserPostState extends State<UserPost> {
     final cid = await uploadToIPFS(context, msg, mood);
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     postWithMetamask(context, cid);
+    ScaffoldMessenger.of(context).clearSnackBars();
   }
 
   @override
