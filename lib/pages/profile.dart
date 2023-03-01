@@ -219,15 +219,15 @@ class _UserProfileState extends State<UserProfile> {
     String output = postDateTime.toLocal().toString().substring(0, 16) + ' (';
     if(duration.inDays != 0){
       output += '${duration.inDays}';
-      output += (duration.inDays == 1? ' day ago': 'days ago');
+      output += (duration.inDays == 1? ' day ago': ' days ago');
     }
     else if(duration.inHours != 0){
       output += '${duration.inHours}';
-      output += (duration.inHours == 1? ' hour ago': 'hours ago');
+      output += (duration.inHours == 1? ' hour ago': ' hours ago');
     }
     else {
       output += '${duration.inMinutes}';
-      output += (duration.inMinutes <= 1? ' min ago': 'mins ago');
+      output += (duration.inMinutes <= 1? ' min ago': ' mins ago');
     }
     output += ')';
     return output;
