@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ios_proj01",
+            "name": "TAxT",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "ios_proj01 (profile mode)",
+            "name": "TAxT (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "ios_proj01 (release mode)",
+            "name": "TAxT (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

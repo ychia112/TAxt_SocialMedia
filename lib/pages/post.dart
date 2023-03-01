@@ -72,8 +72,28 @@ class _UserPostState extends State<UserPost> {
     }
   }
 
+  snackBar({String? label}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label!),
+            CircularProgressIndicator(
+              color: Colors.white,
+            )
+          ],
+        ),
+        duration: Duration(days: 1),
+        backgroundColor: Colors.black,
+      ),
+    );
+  }
+
   void post(BuildContext context, String msg, Mood mood) async {
+    snackBar(label: "Uploading");
     final cid = await uploadToIPFS(context, msg, mood);
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     postWithMetamask(context, cid);
   }
 
@@ -88,6 +108,9 @@ class _UserPostState extends State<UserPost> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: false,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
         backgroundColor: Colors.transparent,
         flexibleSpace: FlexibleSpaceBar(
             background: Container(
