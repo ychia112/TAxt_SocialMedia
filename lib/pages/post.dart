@@ -193,9 +193,13 @@ class _UserPostState extends State<UserPost> {
                             PopupMenuButton<int>(
                                 offset: const Offset(5,-55),
                                 color: Colors.black12,
-                                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),side: const BorderSide(
-                                //   style: BorderStyle.none,
-                                // )),
+                                constraints:const BoxConstraints(
+                                  minWidth: 7.0 * 56.0,
+                                  maxWidth: 8.0 * 56.0,
+                                ),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),side: const BorderSide(
+                                  style: BorderStyle.none,
+                                )),
                                 icon:Text(
                                   moodEmoji[_usermood.index], // Replace with desired emoji//happy
                                   style: const TextStyle(fontSize: 20.0, color: Colors.white)
@@ -212,6 +216,7 @@ class _UserPostState extends State<UserPost> {
                                       width: 380,
                                       child:Row(
                                           children: [
+                                            const Padding(padding: EdgeInsets.only(left:16,right:16),),
                                             for(var i = 1; i < Mood.values.length; i++)
                                               emojiSizedBox(Mood.values[i])
                                           ]
@@ -290,10 +295,10 @@ class _UserPostState extends State<UserPost> {
             _usermood = mood;
           });
         },
-        fillColor: Colors.white,
+        //fillColor: Colors.transparent,
         shape: const CircleBorder(),
         child: Text(
-          moodEmoji[mood.index], //happy
+          moodEmoji[mood.index],
           style: const TextStyle(
               fontSize: 20.0,
               color: Colors.white),
@@ -304,7 +309,6 @@ class _UserPostState extends State<UserPost> {
 }
 class PopupMenuWidget<int> extends PopupMenuEntry<int> {
   const PopupMenuWidget({ Key? key, required this.height,required this.width, required this.child }) : super(key: key);
-
   final Widget child;
   final double width;
   @override
@@ -319,12 +323,8 @@ class PopupMenuWidget<int> extends PopupMenuEntry<int> {
 
    @override
   bool represents(int? value) => false;
-  // bool represents(int? value) {
-  //   // TODO: implement represents
-  //   throw UnimplementedError();
 
 }
-
 class _PopupMenuWidgetState extends State<PopupMenuWidget> {
   @override
   Widget build(BuildContext context) => widget.child;

@@ -158,12 +158,15 @@ class _UserProfileState extends State<UserProfile> {
                           Row(
                             children: [
                               SizedBox(
-                                width: 40,
+                                width: 50,
                                 height: 40,
                                 //color: Colors.black26,
                                 child: RawMaterialButton(
                                   onPressed: () {},
-                                  fillColor: Colors.white,
+                                  // fillColor: Colors.transparent,
+                                  highlightColor:Colors.transparent,
+                                  splashColor:Colors.transparent,
+                                  hoverColor:Colors.transparent,
                                   shape: const CircleBorder(),
                                   child: Text(
                                     moodEmoji[snapshot.data![index]['mood']], // Replace with desired emoji//happy
