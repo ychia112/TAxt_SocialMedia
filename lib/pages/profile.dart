@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ios_proj01/providers/metamask_provider.dart';
+import 'package:ios_proj01/widgets/post_viewing.dart';
 import 'package:provider/provider.dart';
 import 'home.dart';
 import '../utils/mood.dart';
@@ -28,9 +29,6 @@ class _UserProfileState extends State<UserProfile> {
   
   @override
   Widget build(BuildContext context) {
-    final top = coverHeight - profileHeight / 2;
-    late final Future<List<dynamic>> _posts = getUserPosts(context);
-
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -49,12 +47,11 @@ class _UserProfileState extends State<UserProfile> {
           ),
         ),
       body: ListView(
-        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(height: 12,),
           const SizedBox(height: 5,),
-          buildPosts(_posts),
+          const PostViewingWidget(),
         ],
       ),
     );
@@ -74,7 +71,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget buildProfileImage() => CircleAvatar(
     radius: profileHeight / 2,
     backgroundColor: Colors.grey.shade800,
-    backgroundImage: AssetImage('assets/images/2.jpg')
+    backgroundImage: const AssetImage('assets/images/2.jpg')
   );
 
   Widget buildPosts(_posts) => FutureBuilder<List<dynamic>>(
