@@ -78,24 +78,22 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       future: filteredPosts,
       builder: (context, snapshot) {
         if(snapshot.hasData){
-          return Expanded(
-            child: Column(
-              children: [
-                filterBlock(),
-                for(int i = snapshot.data!.length - 1; i >= 0; i--)
-                  ...[
-                    singlePost(
-                      snapshot.data![i]['author'],
-                      snapshot.data![i]['context'],
-                      snapshot.data![i]['mood'],
-                      snapshot.data![i].containsKey('datetime')? snapshot.data![i]['datetime'] : "",
-                    ),
-                    const SizedBox(height: 20,),
-                  ]
-              ]
-            )
+          return Column(
+            children: [
+              filterBlock(),
+              for(int i = snapshot.data!.length - 1; i >= 0; i--)
+                ...[
+                  singlePost(
+                    snapshot.data![i]['author'],
+                    snapshot.data![i]['context'],
+                    snapshot.data![i]['mood'],
+                    snapshot.data![i].containsKey('datetime')? snapshot.data![i]['datetime'] : "",
+                  ),
+                  const SizedBox(height: 20,),
+                ]
+            ]
           );
-        }
+    }
         else{
           return Center(
             child: Column(
