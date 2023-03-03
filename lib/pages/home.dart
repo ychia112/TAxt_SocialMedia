@@ -25,6 +25,26 @@ class _UserHome extends State<UserHome> {
     return jsonDecode(res.body);
   }
 
+  String DisplayDateTime(String dateTimeString){
+    DateTime postDateTime = DateTime.parse(dateTimeString);
+    Duration duration = DateTime.now().difference(postDateTime);
+    String output = postDateTime.toLocal().toString().substring(0, 16) + ' (';
+    if(duration.inDays != 0){
+      output += '${duration.inDays}';
+      output += (duration.inDays == 1? ' day ago': ' days ago');
+    }
+    else if(duration.inHours != 0){
+      output += '${duration.inHours}';
+      output += (duration.inHours == 1? ' hour ago': ' hours ago');
+    }
+    else {
+      output += '${duration.inMinutes}';
+      output += (duration.inMinutes <= 1? ' min ago': ' mins ago');
+    }
+    output += ')';
+    return output;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,19 +156,26 @@ class _UserHome extends State<UserHome> {
                                         Row(
                                           children: [
                                             SizedBox(
-                                              width: 40,
+                                              width: 50,
                                               height: 40,
                                               //color: Colors.black26,
                                               child: RawMaterialButton(
                                                 onPressed: () {},
-                                                fillColor: Colors.white,
+                                                // fillColor: Colors.transparent,
+                                                highlightColor:Colors.transparent,
+                                                splashColor:Colors.transparent,
+                                                hoverColor:Colors.transparent,
                                                 shape: const CircleBorder(),
                                                 child: Text(
                                                   moodEmoji[snapshot.data![index]['mood']], // Replace with desired emoji//happy
                                                   style: const TextStyle(fontSize: 20.0, color: Colors.white),
                                                 ),
                                               )
-                                            )
+                                            ),
+                                            const Spacer(),
+                                            if(snapshot.data![index].containsKey('datetime'))
+                                              Text(DisplayDateTime(snapshot.data![index]['datetime'])),
+                                            const SizedBox(width: 10,)
                                           ],
                                         ),
                                       ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:ios_proj01/utils/routes.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -68,25 +69,34 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     connector.on(
       'connect',
-      (session) => setState(() {
+      (session){
+        if(!mounted) return;
+        setState(() {
           context.read<MetaMask>().setSession(session);
-      })
+        });
+      } 
     );
 
     connector.on(
       'session_update',
-      (payload) => setState(() {
+      (payload){
+        if(!mounted) return;
+        setState(() {
           context.read<MetaMask>().setSession(payload);
           print(context.read<MetaMask>().session.accounts[0]);
           print(context.read<MetaMask>().session.chainId);
-      })
+        });
+      }
     );
 
     connector.on(
       'disconnect',
-      (payload) => setState(() {
-        context.read<MetaMask>().setSession(null);
-      })
+      (payload){
+        if(!mounted) return;
+        setState(() {
+          context.read<MetaMask>().setSession(null);
+        });
+      }
     );
 
     var session = context.watch<MetaMask>().session;
@@ -159,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: SliderButton(
                       action: () async {
                         context.read<MetaMask>().setConnector(connector);
-                        Navigator.pushNamed(context, MyRoutes.homeRoute);
+                        Navigator.pushReplacementNamed(context, MyRoutes.homeRoute);
                       },
                       label: Text(
                         'Slide to login',
