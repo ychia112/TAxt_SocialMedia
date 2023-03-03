@@ -45,6 +45,7 @@ dependencies:
   web3dart: ^2.6.1
   http: ^0.13.5
   flutter_dotenv: ^5.0.2
+  tuple: ^1.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

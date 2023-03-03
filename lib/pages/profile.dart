@@ -7,6 +7,7 @@ import 'package:ios_proj01/providers/metamask_provider.dart';
 import 'package:provider/provider.dart';
 import 'home.dart';
 import '../utils/mood.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -31,11 +32,27 @@ class _UserProfileState extends State<UserProfile> {
     late final Future<List<dynamic>> _posts = getUserPosts(context);
 
     return Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          // leading:
+          title: Text(
+            'Profile',
+            style: GoogleFonts.abrilFatface(
+                textStyle: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black
+                )),
+          ),
+        ),
       body: ListView(
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         children: <Widget>[
-          buildTop(),
-          buildContent(context),
+          Container(height: 12,),
           const SizedBox(height: 5,),
           buildPosts(_posts),
         ],
@@ -43,46 +60,15 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  Widget buildTop(){
-    final top = coverHeight - profileHeight / 2;
-
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(bottom: profileHeight / 2),
-          child: buildCoverImage(),
-        ),
-        Positioned(
-          top: top,
-          child: buildProfileImage(),
-        ),
-      ],
-    );
-  }
-
   Widget buildContent(BuildContext context) => Column(
     children: [
       const SizedBox(height: 8),
       Text(
-        context.read<MetaMask>().session.accounts[0],
+        '@'+context.read<MetaMask>().session.accounts[0],
         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
       const SizedBox(height: 10,),
-      const Text(
-        '@UserLocation',
-        style: TextStyle(fontSize: 16, color: Colors.grey),
-      )
     ],
-  );
-  Widget buildCoverImage() => Container(
-    color: Colors.grey,
-    child: Image.network('https://marmotamaps.com/de/fx/wallpaper/download/faszinationen/Marmotamaps_Wallpaper_Berchtesgaden_Desktop_1920x1080.jpg',
-      width: double.infinity,
-      height: coverHeight,
-      fit: BoxFit.cover,
-    ),
   );
 
   Widget buildProfileImage() => CircleAvatar(
@@ -95,7 +81,7 @@ class _UserProfileState extends State<UserProfile> {
     future: _posts,
     builder: (context, snapshot) {
       if(snapshot.hasData){
-        return SingleChildScrollView(
+        return Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -105,14 +91,22 @@ class _UserProfileState extends State<UserProfile> {
               Container(
                 height: MediaQuery.of(context).size.height-260,
                 width: MediaQuery.of(context).size.width,
-                color: Colors.grey.shade50,
-                child:
-                ListView.separated(
+                color: Colors.transparent,
+                child: ListView.separated(
                   itemCount: snapshot.data!.length,
                   padding: const EdgeInsets.only(top:5.0,bottom:15.0),
                   separatorBuilder: (BuildContext context,int index)=>
-                  const Divider(height: 16,color: Color(0xFFFFFFFF)),
+                  const Divider(height: 16,color: Colors.transparent),
                   itemBuilder: (BuildContext context, int index) {
+                    if (index == 0){
+                      return Column(
+                        children: [
+                          buildProfileImage(),
+                          buildContent(context),
+
+                        ],
+                      );
+                    }
                     index = snapshot.data!.length - 1 - index;
                     return Container(
                       alignment: Alignment.center,
