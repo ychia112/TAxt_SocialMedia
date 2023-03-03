@@ -46,7 +46,9 @@ class _UserHome extends State<UserHome> {
           ),
         ],
       ),
-      body: const PostViewingWidget()
+      body: ListView(
+        children:const [PostViewingWidget()]
+      ),
     );
   }
 }

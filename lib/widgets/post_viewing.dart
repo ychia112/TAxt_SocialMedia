@@ -16,7 +16,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   late Future<List<dynamic>> _posts;
   late Future<List<dynamic>> filteredPosts;
   
-  Mood filterMood = Mood.none; //存目前版面的心情(int)
+  Mood filterMood = Mood.none;
 
   Future<List<dynamic>> getAllPosts() async {
     http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
@@ -53,6 +53,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     DateTime postDateTime = DateTime.parse(dateTimeString);
     Duration duration = DateTime.now().difference(postDateTime);
     String output = '${postDateTime.toLocal().toString().substring(0, 16)} (';
+    
     if(duration.inDays != 0){
       output += '${duration.inDays}';
       output += (duration.inDays == 1? ' day ago': ' days ago');
@@ -65,44 +66,32 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       output += '${duration.inMinutes}';
       output += (duration.inMinutes <= 1? ' min ago': ' mins ago');
     }
+
     output += ')';
+
     return output;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
       future: filteredPosts,
       builder: (context, snapshot) {
         if(snapshot.hasData){
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(12),
+          return Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 filterBlock(),
-                Container(
-                  height: MediaQuery.of(context).size.height-250,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.grey.shade50,
-                  child:
-                  ListView.separated(
-                    itemCount: snapshot.data!.length,
-                    padding: const EdgeInsets.only(top:5.0,bottom:15.0),
-                    separatorBuilder: (BuildContext context,int index)=>
-                    const Divider(height: 16,color: Color(0xFFFFFFFF)),
-                    itemBuilder: (BuildContext context, int index) {
-                      index = snapshot.data!.length - 1 - index;
-                      return singlePost(
-                        snapshot.data![index]['author'],
-                        snapshot.data![index]['context'],
-                        snapshot.data![index]['mood'],
-                        snapshot.data![index].containsKey('datetime')? snapshot.data![index]['datetime'] : "",
-                      );
-                    }
-                  ),
-                ),
+                for(int i = snapshot.data!.length - 1; i >= 0; i--)
+                  ...[
+                    singlePost(
+                      snapshot.data![i]['author'],
+                      snapshot.data![i]['context'],
+                      snapshot.data![i]['mood'],
+                      snapshot.data![i].containsKey('datetime')? snapshot.data![i]['datetime'] : "",
+                    ),
+                    const SizedBox(height: 20,),
+                  ]
               ]
             )
           );
@@ -180,8 +169,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
         borderRadius: BorderRadius.circular(24.0),
         color:  Colors.grey.shade300,
       ),
-      child:
-      Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -204,15 +192,14 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               Center(
                 child: Container(
                   alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width-24,
+                  width: MediaQuery.of(context).size.width,
                   constraints: const BoxConstraints(
                       maxHeight: 250, minHeight: 200
                   ),//should be more precise
                   decoration: BoxDecoration(
-                    //borderRadius: BorderRadius.circular(24.0),
-                    color:  Colors.grey.shade200,),
-                  child:
-                  Text(
+                  //borderRadius: BorderRadius.circular(24.0),
+                  color:  Colors.grey.shade200,),
+                  child: Text(
                     postContext, 
                     textAlign: TextAlign.center,
                     maxLines: 10
@@ -250,6 +237,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       )
     );
   }
+
   void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
     final keyContext = expansionTileKey.currentContext;
     if (keyContext != null) {
@@ -260,4 +248,3 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     }
   }
 }
-
