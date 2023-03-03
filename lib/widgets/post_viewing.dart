@@ -102,7 +102,9 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                 SizedBox(
                   width: 60,
                   height: 60,
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
@@ -175,8 +177,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             children:[
               const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
               ClipOval(
-                child:
-                Image.asset('assets/images/2.jpg',width: 50,height: 50,fit: BoxFit.cover,)
+                child: Image.asset('assets/images/2.jpg', width: 50, height: 50, fit: BoxFit.cover,)
               ),
               const SizedBox(width: 8),
               Text(
@@ -190,17 +191,16 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               Center(
                 child: Container(
                   alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  constraints: const BoxConstraints(
-                      maxHeight: 250, minHeight: 200
-                  ),//should be more precise
+                  constraints: BoxConstraints(
+                    minHeight: 200,
+                    maxWidth: MediaQuery.of(context).size.width,
+                  ),
                   decoration: BoxDecoration(
-                  //borderRadius: BorderRadius.circular(24.0),
-                  color:  Colors.grey.shade200,),
+                    color:  Colors.grey.shade200,
+                  ),
                   child: Text(
                     postContext, 
-                    textAlign: TextAlign.center,
-                    maxLines: 10
+                    textAlign: TextAlign.center
                   ),
                 )
               )
