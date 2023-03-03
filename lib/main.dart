@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,10 +7,17 @@ import './utils/routes.dart';
 import 'providers/metamask_provider.dart';
 import './homepage.dart';
 import './pages/login.dart';
+import 'package:flutter/services.dart';
 
 Future<void> main() async{
   await dotenv.load();
   HttpOverrides.global = MyHttpOverrides();
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.dark,
+    ),
+  );
   runApp(
     MultiProvider(
       providers: [
@@ -25,6 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.light(),
       initialRoute: MyRoutes.loginRoute,
       routes: {
         MyRoutes.loginRoute: (context) => const LoginPage(),
