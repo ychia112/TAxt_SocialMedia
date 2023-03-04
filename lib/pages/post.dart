@@ -176,17 +176,18 @@ class _UserPostState extends State<UserPost> {
         SafeArea(
           child:
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children:[
-                    SizedBox(
+                    Container(
                       width: 48,
                       height: 60,
+                      alignment: Alignment.bottomCenter,
                       child:
                         Row(
                           children: [
@@ -228,18 +229,20 @@ class _UserPostState extends State<UserPost> {
                           ],
                         ),
                       ),
-                    SizedBox(
+                    Container(
                       width: MediaQuery.of(context).size.width-105,
-                      height: 80,
+                      height: 280,
+                      alignment: Alignment.bottomCenter,
                       child:
                       TextFormField(
-                        minLines: 1,
-                        maxLines: 3,
                         keyboardType: TextInputType.multiline,
+                        minLines: 1,
+                        maxLines:10,
                         controller: _textController,
                         decoration: InputDecoration(
                           hintText: 'How is your day?',
-                          //contentPadding: const EdgeInsets.all(18.0),
+                          filled: true,
+                          fillColor:Colors.black12,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide:
@@ -257,9 +260,10 @@ class _UserPostState extends State<UserPost> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    Container(
                       width: 50,
                       height: 60,
+                      alignment: Alignment.bottomCenter,
                       child: IconButton(
                         icon: const Icon(Icons.send_rounded,size: 28,),
                         onPressed: (){
@@ -278,6 +282,14 @@ class _UserPostState extends State<UserPost> {
                     ),
                   ]
                 ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 10,
+                    )
+                  ],
+                )
               ],
             )
         )

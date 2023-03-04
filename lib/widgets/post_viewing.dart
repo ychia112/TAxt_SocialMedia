@@ -43,9 +43,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     filteredPosts = filterPosts();
     super.initState();
   }
-
-
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
@@ -91,7 +88,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       },
     );
   }
-
   Widget filterBlock(){
     return Column(
       children: <Widget>[
@@ -205,8 +201,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                           postContext,
                         ),
                 )
-
-
                 )
               )
             ]),
@@ -299,23 +293,5 @@ String displayDateTime(String dateTimeString){
   output += ')';
 
   return output;
-}
-
-List templist(String author,String postContent, int moodIndex, String date){
-  List tempstore=[];
-  if(author.isEmpty){
-    tempstore.add("");
-    tempstore.add("");
-    tempstore.add(0);
-    tempstore.add("");
-    return tempstore;
-  }
-  else{
-    tempstore.add(author);
-    tempstore.add(postContent);
-    tempstore.add(moodIndex);
-    tempstore.add(date);
-    return tempstore;
-  }
 }
 
