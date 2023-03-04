@@ -6,7 +6,6 @@ import '../widgets/post_viewing.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
-
   @override
   State<UserProfile> createState() => _UserProfileState();
 }

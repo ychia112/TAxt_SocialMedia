@@ -8,14 +8,6 @@ import '../utils/mood.dart';
 
 class PostViewingWidget extends StatefulWidget{
   const PostViewingWidget({super.key});
-  //final String text;
-  //final TextStyle style;
-  //final String additionText;
-  //final TextStyle additionStyle;
-  // final int maxLines;
-  // final String additionUrl;
-  // final Map<String, dynamic> additionParams;
-
   @override
   State<PostViewingWidget> createState() => _PostViewingWidgetState();
 }
@@ -24,14 +16,11 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   final GlobalKey expansionTileKey = GlobalKey();
   late Future<List<dynamic>> _posts;
   late Future<List<dynamic>> filteredPosts;
-  
   Mood filterMood = Mood.none;
-
   Future<List<dynamic>> getAllPosts() async {
     http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
     return jsonDecode(res.body);
   }
-  
   Future<List<dynamic>> filterPosts() async {
     List<dynamic> filteredPosts = [];
     filteredPosts.clear();
@@ -48,7 +37,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     }
     return filteredPosts;
   }
-
   @override
   void initState() {
     _posts = getAllPosts();
@@ -56,28 +44,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     super.initState();
   }
 
-  String displayDateTime(String dateTimeString){
-    DateTime postDateTime = DateTime.parse(dateTimeString);
-    Duration duration = DateTime.now().difference(postDateTime);
-    String output = '${postDateTime.toLocal().toString().substring(0, 16)} (';
-    
-    if(duration.inDays != 0){
-      output += '${duration.inDays}';
-      output += (duration.inDays == 1? ' day ago': ' days ago');
-    }
-    else if(duration.inHours != 0){
-      output += '${duration.inHours}';
-      output += (duration.inHours == 1? ' hour ago': ' hours ago');
-    }
-    else {
-      output += '${duration.inMinutes}';
-      output += (duration.inMinutes <= 1? ' min ago': ' mins ago');
-    }
 
-    output += ')';
-
-    return output;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +136,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   }
 
   Widget singlePost(String author, String postContext, int moodIndex, String dateTimeString){
-
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -211,17 +177,23 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                           //text:postContext,
                           text: postContext.substring(0, _fontNum(postContext)),
                           style: const TextStyle(color: Colors.black),
+                          recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Extratext()),
+                          );},
                           children: [
                             TextSpan(
-                              text: "...read more",
+                              text: "...read more   ",
                               style: const TextStyle(color: Colors.black26),
                               recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => extratext()),
+                                  MaterialPageRoute(builder: (context) => Extratext()),
                                   );
-                              }),
+                              } )
                           ]
                         ),
                         textAlign: TextAlign.center,
@@ -306,3 +278,44 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   }
 
 }
+String displayDateTime(String dateTimeString){
+  DateTime postDateTime = DateTime.parse(dateTimeString);
+  Duration duration = DateTime.now().difference(postDateTime);
+  String output = '${postDateTime.toLocal().toString().substring(0, 16)} (';
+
+  if(duration.inDays != 0){
+    output += '${duration.inDays}';
+    output += (duration.inDays == 1? ' day ago': ' days ago');
+  }
+  else if(duration.inHours != 0){
+    output += '${duration.inHours}';
+    output += (duration.inHours == 1? ' hour ago': ' hours ago');
+  }
+  else {
+    output += '${duration.inMinutes}';
+    output += (duration.inMinutes <= 1? ' min ago': ' mins ago');
+  }
+
+  output += ')';
+
+  return output;
+}
+
+List templist(String author,String postContent, int moodIndex, String date){
+  List tempstore=[];
+  if(author.isEmpty){
+    tempstore.add("");
+    tempstore.add("");
+    tempstore.add(0);
+    tempstore.add("");
+    return tempstore;
+  }
+  else{
+    tempstore.add(author);
+    tempstore.add(postContent);
+    tempstore.add(moodIndex);
+    tempstore.add(date);
+    return tempstore;
+  }
+}
+
