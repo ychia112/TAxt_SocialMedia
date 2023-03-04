@@ -1,11 +1,20 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:ios_proj01/widgets/additionaltext.dart';
 import '../utils/mood.dart';
 
 class PostViewingWidget extends StatefulWidget{
   const PostViewingWidget({super.key});
+  //final String text;
+  //final TextStyle style;
+  //final String additionText;
+  //final TextStyle additionStyle;
+  // final int maxLines;
+  // final String additionUrl;
+  // final Map<String, dynamic> additionParams;
 
   @override
   State<PostViewingWidget> createState() => _PostViewingWidgetState();
@@ -37,7 +46,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
         filteredPosts.add(post);
       }
     }
-
     return filteredPosts;
   }
 
@@ -45,7 +53,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   void initState() {
     _posts = getAllPosts();
     filteredPosts = filterPosts();
-
     super.initState();
   }
 
@@ -140,7 +147,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       ],
     );
   }
-
   Widget emojiSizedBox(Mood mood){
     return SizedBox(
       height: 40,
@@ -163,6 +169,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   }
 
   Widget singlePost(String author, String postContext, int moodIndex, String dateTimeString){
+
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -190,6 +197,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             children: [
               Center(
                 child: Container(
+                  padding: const EdgeInsets.all(16),
                   alignment: Alignment.center,
                   constraints: BoxConstraints(
                     minHeight: 200,
@@ -198,14 +206,38 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   decoration: BoxDecoration(
                     color:  Colors.grey.shade200,
                   ),
-                  child: Text(
-                    postContext, 
-                    textAlign: TextAlign.center
-                  ),
+                  child: _textPaint([TextSpan(text: postContext)]).didExceedMaxLines ? RichText(
+                      text: TextSpan(
+                          //text:postContext,
+                          text: postContext.substring(0, _fontNum(postContext)),
+                          style: const TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text: "...read more",
+                              style: const TextStyle(color: Colors.black26),
+                              recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => extratext()),
+                                  );
+                              }),
+                          ]
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 25,
+                      ):Container( //未超出指定行数的话全部显示
+                          child: Text(
+                          postContext,
+                        ),
+                )
+
+
                 )
               )
-            ],
-          ),
+            ]),
           Row(
             children: [
               SizedBox(
@@ -232,7 +264,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             ],
           ),
         ],
-      )
+      ),
     );
   }
 
@@ -245,4 +277,32 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       });
     }
   }
+  TextPainter _textPaint(List<InlineSpan> children) {
+    return TextPainter(
+        maxLines: 25,
+        text: TextSpan(
+            children: children
+        ),
+        textDirection: TextDirection.ltr)
+      ..layout(maxWidth: MediaQuery.of(context).size.width - 40);
+  }
+  int _fontNum(String postContext){ //计算最多可容纳正常字的数目，可优化
+    int num = 0;
+    int skip = 1;
+    String additionText="";
+    while(true){
+      bool isExceed = postContext.length < num + skip ||  _textPaint([TextSpan(text: "${postContext.substring(0, num + skip)}...", ),
+        TextSpan(text: additionText)]).didExceedMaxLines;
+      if(!isExceed) {
+        num = num + skip;
+        skip *= 2;
+        continue;
+      }
+      if(isExceed && skip == 1){
+        return num;
+      }
+      skip = skip ~/ 2;
+    }
+  }
+
 }
