@@ -4,7 +4,7 @@ import 'pages/home.dart';
 import 'pages/diary.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
-
+import 'pages/profile_edit.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   @override

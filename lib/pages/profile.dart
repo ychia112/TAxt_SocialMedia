@@ -3,6 +3,10 @@ import 'package:ios_proj01/providers/metamask_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/post_viewing.dart';
+import 'profile_edit.dart';
+import 'package:ios_proj01/utils/user_preferences.dart';
+import 'package:ios_proj01/widgets/profile_widget.dart';
+import 'package:ios_proj01/model/user.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -16,6 +20,8 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
+    final user = UserPreferences.myUser;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -26,18 +32,25 @@ class _UserProfileState extends State<UserProfile> {
         title: Text(
           'Profile',
           style: GoogleFonts.abrilFatface(
-          textStyle: const TextStyle(
-              fontSize: 48,
-              fontWeight: FontWeight.bold,
-              color: Colors.black
-          )),
+              textStyle: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+              )),
         ),
       ),
       body: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          buildProfileImage(),
-          buildContent(),
+          ProfileWidget(
+            imagePath: user.imagePath,
+            onClicked: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context)=> ProfileEdit())
+              );
+            },
+          ),
+          buildName(user),
           Container(height: 12,),
           const PostViewingWidget(),
         ],
@@ -45,24 +58,22 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  Widget buildContent() => Column(
-    children: [
-      const SizedBox(height: 8),
-      Text(
-        context.read<MetaMask>().session.accounts[0],
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 10,),
-      const Text(
-        '@UserLocation',
-        style: TextStyle(fontSize: 16, color: Colors.grey),
-      )
-    ],
-  );
-
-  Widget buildProfileImage() => CircleAvatar(
-    radius: profileHeight / 2,
-    backgroundColor: Colors.grey.shade800,
-    backgroundImage: const AssetImage('assets/images/2.jpg')
-  );
+  Widget buildName(User user) => Column(
+        children: [
+          const SizedBox(height: 8),
+          Text(//name
+            user.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          Container(height: 6,color: Colors.transparent,),
+          Text(//address
+            context
+                .read<MetaMask>()
+                .session
+                .accounts[0],
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+          ),
+          const SizedBox(height: 10,),
+        ],
+      );
 }
