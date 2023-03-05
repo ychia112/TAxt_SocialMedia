@@ -2,14 +2,16 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import '../utils/mood.dart';
 import 'post_viewing.dart';
+import 'package:ios_proj01/homepage.dart';
 
 class Extratext extends StatefulWidget{
   @override
+  var num=postnum();
   _Extratext createState() => _Extratext();
 }
 class _Extratext extends State<Extratext> {
-  int moodIndex=0;
-  String dateTimeString="";
+  //int moodIndex=0;
+  //String dateTimeString="";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +49,7 @@ class _Extratext extends State<Extratext> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                "author", // Replace with desired emoji//happy
+                                num[0], // Replace with desired emoji//happy
                                 style: TextStyle(fontSize: 11.0, color: Colors.black),
                               ),
                             ],
@@ -66,7 +68,8 @@ class _Extratext extends State<Extratext> {
                                           color:  Colors.grey.shade200,
                                         ),
                                         child: Text(
-                                          "postContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContext",
+                                          //"postContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContext",
+                                          num[1],
                                           style: TextStyle(color: Colors.black),
                                         )
 
@@ -88,14 +91,14 @@ class _Extratext extends State<Extratext> {
                                     hoverColor:Colors.transparent,
                                     shape: const CircleBorder(),
                                     child: Text(
-                                      moodEmoji[moodIndex], // Replace with desired emoji//happy
+                                      moodEmoji[num[2]], // Replace with desired emoji//happy
                                       style: const TextStyle(fontSize: 20.0, color: Colors.white),
                                     ),
                                   )
                               ),
                               const Spacer(),
-                              if(dateTimeString != "")
-                                Text(displayDateTime(dateTimeString)),
+                              if(num[3] != "")
+                                Text(displayDateTime(num[3])),
                               const SizedBox(width: 10,)
                             ],
                           ),
