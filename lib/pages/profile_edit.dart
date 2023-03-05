@@ -46,7 +46,7 @@ class _ProfileEditState extends State<ProfileEdit> {
           ),
           const SizedBox(height: 24,),
           TextFieldWidget(
-            label: 'address',
+            label: 'Location',
             text: user.address,
             onChanged: (address){},
           ),
