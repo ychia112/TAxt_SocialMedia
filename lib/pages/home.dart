@@ -4,7 +4,7 @@ import 'post.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/post_viewing.dart';
 
-
+List num=[];
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
   @override
@@ -51,4 +51,8 @@ class _UserHome extends State<UserHome> {
       ),
     );
   }
+}
+
+List postnum (){
+  return num;
 }

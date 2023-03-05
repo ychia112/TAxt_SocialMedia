@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:ios_proj01/widgets/additionaltext.dart';
 import '../utils/mood.dart';
 
+List num=[];
+
 class PostViewingWidget extends StatefulWidget{
   const PostViewingWidget({super.key});
   @override
@@ -185,6 +187,11 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                               style: const TextStyle(color: Colors.black26),
                               recognizer: TapGestureRecognizer()
                               ..onTap = () {
+                                  num.clear();
+                                  num.add(author);
+                                  num.add(postContext);
+                                  num.add(moodIndex);
+                                  num.add(dateTimeString);
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => Extratext()),
@@ -295,3 +302,6 @@ String displayDateTime(String dateTimeString){
   return output;
 }
 
+List postnum (){
+  return num;
+}
