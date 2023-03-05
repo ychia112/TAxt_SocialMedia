@@ -202,7 +202,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                         textAlign: TextAlign.center,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 25,
+                        maxLines: 10,
                       ):Container( //未超出指定行数的话全部显示
                           child: Text(
                           postContext,
@@ -252,7 +252,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   }
   TextPainter _textPaint(List<InlineSpan> children) {
     return TextPainter(
-        maxLines: 25,
+        maxLines: 10,
         text: TextSpan(
             children: children
         ),

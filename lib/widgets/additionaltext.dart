@@ -99,7 +99,7 @@ class _Extratext extends State<Extratext> {
                               const Spacer(),
                               if(num[3] != "")
                                 Text(displayDateTime(num[3])),
-                              const SizedBox(width: 10,)
+                              //const SizedBox(width: 10,)
                             ],
                           ),
                         ],
