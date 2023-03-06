@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
       initialRoute: MyRoutes.loginRoute,
       theme: ThemeData(
          appBarTheme: const AppBarTheme(
-           systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Brightness.light)
+           systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+           iconTheme: IconThemeData(color: Colors.black,),
          ),
        ),
       routes: {

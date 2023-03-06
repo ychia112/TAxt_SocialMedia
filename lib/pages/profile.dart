@@ -52,7 +52,7 @@ class _UserProfileState extends State<UserProfile> {
           ),
           buildName(user),
           Container(height: 12,),
-          const PostViewingWidget(),
+          PostViewingWidget(address: context.read<MetaMask>().session.accounts[0]),
         ],
       ),
     );

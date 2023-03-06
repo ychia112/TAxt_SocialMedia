@@ -16,7 +16,6 @@ class _ProfileEditState extends State<ProfileEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
@@ -30,7 +29,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         children: [
           const SizedBox(height: 24,),
           ProfileWidget(

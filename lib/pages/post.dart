@@ -153,9 +153,6 @@ class _UserPostState extends State<UserPost> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: false,
-        iconTheme: const IconThemeData(
-          color: Colors.black, //change your color here
-        ),
         backgroundColor: Colors.transparent,
         flexibleSpace: FlexibleSpaceBar(
             background: Container(
