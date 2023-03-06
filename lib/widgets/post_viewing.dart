@@ -9,7 +9,13 @@ import '../utils/mood.dart';
 List num=[];
 
 class PostViewingWidget extends StatefulWidget{
-  const PostViewingWidget({super.key});
+  final String? address;
+
+  const PostViewingWidget({
+    super.key,
+    this.address,
+  });
+
   @override
   State<PostViewingWidget> createState() => _PostViewingWidgetState();
 }
@@ -39,12 +45,20 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     }
     return filteredPosts;
   }
+
+  Future<List<dynamic>> getUserPosts() async {
+    final url = Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts-owned-by?owner=${widget.address}");
+    http.Response res = await http.get(url);
+    return jsonDecode(res.body);
+  }
+
   @override
   void initState() {
-    _posts = getAllPosts();
+    _posts = (widget.address == null ? getAllPosts(): getUserPosts());
     filteredPosts = filterPosts();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
@@ -282,7 +296,11 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
 String displayDateTime(String dateTimeString){
   DateTime postDateTime = DateTime.parse(dateTimeString);
   Duration duration = DateTime.now().difference(postDateTime);
-  String output = '${postDateTime.toLocal().toString().substring(0, 16)} (';
+  if(duration.inDays >= 7){
+    return postDateTime.toLocal().toString().substring(0, 16);
+  }
+
+  String output = "";
 
   if(duration.inDays != 0){
     output += '${duration.inDays}';
@@ -296,8 +314,6 @@ String displayDateTime(String dateTimeString){
     output += '${duration.inMinutes}';
     output += (duration.inMinutes <= 1? ' min ago': ' mins ago');
   }
-
-  output += ')';
 
   return output;
 }

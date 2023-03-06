@@ -1,16 +1,45 @@
-# ios_proj01
+# TAxt Front-End
 
-A new Flutter project.
+This is the front-end of our social media platform, TAxt.
 
-## Getting Started
+<img src="./TAxt_appIcon.png" width = "200" height = "200">
 
-This project is a starting point for a Flutter application.
+## How to use it
 
-A few resources to get you started if this is your first Flutter project:
+**Step 1:**
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Download or clone this repo by using the link below:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+git clone https://github.com/ychia112/TAxt_SocialMedia.git
+```
+
+**Step 2:**
+
+Go to project root and execute the following command in console to get the required dependencies: 
+
+```
+flutter pub get 
+```
+
+**Step 3:**
+
+Connect your device with the target smartphone.
+
+**Step 4:**
+
+Check that your device is recognized using the following command.
+
+```
+flutter devices
+```
+
+**Step 5:**
+
+Install the application to your target device with the following command.
+
+```
+flutter run -d <deviceID> --release
+```
+
+* deviceID: the ID shown in Step 4.
