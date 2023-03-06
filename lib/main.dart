@@ -7,11 +7,15 @@ import './utils/routes.dart';
 import 'providers/metamask_provider.dart';
 import './homepage.dart';
 import './pages/login.dart';
+import 'package:ios_proj01/utils/user_preferences.dart';
 
 Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
+
   HttpOverrides.global = MyHttpOverrides();
-  
+  await UserPreferences.init();
+
   runApp(
     MultiProvider(
       providers: [
