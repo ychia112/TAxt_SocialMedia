@@ -53,6 +53,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             borderRadius: BorderRadius.circular(24)
           ),
         ),
+        onChanged: widget.onChanged,
       ),
     ],
   );

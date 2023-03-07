@@ -20,7 +20,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final user = UserPreferences.myUser;
+    final user = UserPreferences.getUser();
 
     return Scaffold(
       appBar: AppBar(
@@ -44,10 +44,11 @@ class _UserProfileState extends State<UserProfile> {
         children: <Widget>[
           ProfileWidget(
             imagePath: user.imagePath,
-            onClicked: (){
-              Navigator.of(context).push(
+            onClicked: () async{
+              await Navigator.of(context).push(
                 MaterialPageRoute(builder: (context)=> ProfileEdit())
               );
+              setState(() {});
             },
           ),
           buildName(user),
@@ -66,12 +67,9 @@ class _UserProfileState extends State<UserProfile> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           Container(height: 6,color: Colors.transparent,),
-          Text(//address
-            context
-                .read<MetaMask>()
-                .session
-                .accounts[0],
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+          Text(
+            user.address,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
           ),
           const SizedBox(height: 10,),
         ],
