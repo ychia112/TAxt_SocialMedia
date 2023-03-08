@@ -24,34 +24,48 @@ class PostViewingWidget extends StatefulWidget{
 
 class _PostViewingWidgetState extends State<PostViewingWidget> {
   final GlobalKey expansionTileKey = GlobalKey();
-  late Future<List<dynamic>> _posts;
-  late Future<List<dynamic>> filteredPosts;
+  late Future<List<Post>> _posts;
+  late Future<List<Post>> filteredPosts;
   Mood filterMood = Mood.none;
-  Future<List<dynamic>> getAllPosts() async {
-    http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
-    return jsonDecode(res.body);
-  }
-  Future<List<dynamic>> filterPosts() async {
-    List<dynamic> filteredPosts = [];
-    filteredPosts.clear();
 
-    if(filterMood == Mood.none){
-      filteredPosts = await _posts;
-      return filteredPosts;
+  Future<List<Post>> getAllPosts() async {
+    http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
+    final rawPosts = jsonDecode(res.body);
+    List<Post> ret = [];
+    for(dynamic post in rawPosts){
+      ret.add(Post(
+        userInfo: post.containsKey('userInfo')? UserInfo.fromJson(post['userInfo']): UserInfo(),
+        context: PostContext.fromJson(post['context'])
+      ));
     }
-    
-    for(dynamic post in await _posts){
-      if(post['mood'] == filterMood.index){
-        filteredPosts.add(post);
+    return ret;
+  }
+
+  Future<List<Post>> filterPosts() async {
+    if(filterMood == Mood.none){
+      return _posts;
+    }
+    List<Post> ret = [];
+    for(Post post in await _posts){
+      if(post.context.mood == filterMood){
+        ret.add(post);
       }
     }
-    return filteredPosts;
+    return ret;
   }
 
-  Future<List<dynamic>> getUserPosts() async {
+  Future<List<Post>> getUserPosts() async {
     final url = Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts-owned-by?owner=${widget.address}");
     http.Response res = await http.get(url);
-    return jsonDecode(res.body);
+    final rawPosts = jsonDecode(res.body);
+    List<Post> ret = [];
+    for(dynamic post in rawPosts){
+      ret.add(Post(
+        userInfo: post.containsKey('userInfo')? UserInfo.fromJson(post['userInfo']): UserInfo(),
+        context: PostContext.fromJson(post['context'])
+      ));
+    }
+    return ret;
   }
 
   @override
@@ -72,10 +86,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               filterBlock(),
               for(int i = snapshot.data!.length - 1; i >= 0; i--)
                 ...[
-                  singlePost(
-                    snapshot.data![i].containsKey('userInfo')? UserInfo.fromJson(snapshot.data![i]['userInfo']): UserInfo(),
-                    Post.fromJson(snapshot.data![i]['postContext'])
-                  ),
+                  singlePost(snapshot.data![i]),
                   const SizedBox(height: 20,),
                 ]
             ]
@@ -114,7 +125,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               _scrollToSelectedContent(expansionTileKey: expansionTileKey);
             }
           },
-            title: const Text("filter the mood"),
+            title: const Text("Filter"),
             controlAffinity: ListTileControlAffinity.leading,
             children: [
               Row(
@@ -147,7 +158,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     );
   }
 
-  Widget singlePost(UserInfo userInfo, Post post){
+  Widget singlePost(Post post){
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -162,11 +173,11 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             children:[
               const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
               ClipOval(
-                child: Image.network(userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
+                child: Image.network(post.userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
               ),
               const SizedBox(width: 8),
               Text(
-                userInfo.name, // Replace with desired emoji//happy
+                post.userInfo.name, // Replace with desired emoji//happy
                 style: const TextStyle(fontSize: 11.0, color: Colors.black),
               ),
             ],
@@ -184,10 +195,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   decoration: BoxDecoration(
                     color:  Colors.grey.shade200,
                   ),
-                  child: _textPaint([TextSpan(text: post.context)]).didExceedMaxLines ? RichText(
+                  child: _textPaint([TextSpan(text: post.context.text)]).didExceedMaxLines ? RichText(
                       text: TextSpan(
                           //text:postContext,
-                          text: post.context.substring(0, _fontNum(post.context)),
+                          text: post.context.text.substring(0, _fontNum(post.context.text)),
                           style: const TextStyle(color: Colors.black),
                           recognizer: TapGestureRecognizer()
                           ..onTap = () {
@@ -202,10 +213,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                               recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   num.clear();
-                                  num.add(post.author);
-                                  num.add(post.context);
-                                  num.add(post.mood.index);
-                                  num.add(post.datetime);
+                                  num.add(post.context.author);
+                                  num.add(post.context.text);
+                                  num.add(post.context.mood.index);
+                                  num.add(post.context.datetime);
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => Extratext()),
@@ -219,7 +230,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                         maxLines: 25,
                       ):Container( //未超出指定行数的话全部显示
                           child: Text(
-                          post.context,
+                          post.context.text,
                         ),
                 )
                 )
@@ -239,14 +250,14 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   hoverColor:Colors.transparent,
                   shape: const CircleBorder(),
                   child: Text(
-                    moodEmoji[post.mood.index], // Replace with desired emoji//happy
+                    moodEmoji[post.context.mood.index], // Replace with desired emoji//happy
                     style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                 )
               ),
               const Spacer(),
-              if(post.datetime != "")
-                Text(displayDateTime(post.datetime!)),
+              if(post.context.datetime != "")
+                Text(displayDateTime(post.context.datetime!)),
               const SizedBox(width: 10,)
             ],
           ),
