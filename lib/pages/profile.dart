@@ -83,7 +83,7 @@ class _UserProfileState extends State<UserProfile> {
             },
           ),
           Container(height: 12,),
-          PostViewingWidget(address: context.read<MetaMask>().session.accounts[0]),
+          PostViewingWidget(address: context.read<MetaMask>().getAddress()),
         ],
       ),
     );
@@ -123,7 +123,7 @@ class _UserProfileState extends State<UserProfile> {
   );
 
   Future<UserInfo> getProfileInfo() async {
-    final url = Uri.parse("${dotenv.env['backend_address']}/api/getUserInfo?address=${context.read<MetaMask>().session.accounts[0]}");
+    final url = Uri.parse("${dotenv.env['backend_address']}/api/getUserInfo?address=${context.read<MetaMask>().getAddress()}");
     http.Response res = await http.get(url);
     final infoObject = jsonDecode(res.body);
     if (!infoObject.containsKey('name')){

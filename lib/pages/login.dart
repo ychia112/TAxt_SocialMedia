@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ios_proj01/utils/routes.dart';
@@ -17,7 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+  
   var connector = WalletConnect(
     bridge: 'https://bridge.walletconnect.org',
     clientMeta: const PeerMeta(
@@ -26,19 +28,20 @@ class _LoginPageState extends State<LoginPage> {
         url: 'https://walletconnect.org',
     )
   );
+  var _session;
 
-  void loginUsingMetamask(BuildContext context) async {
+  void loginUsingMetamask() async {
     if (!connector.connected) {
       try {
         var session = await connector.createSession(onDisplayUri: (uri) async {
           context.read<MetaMask>().setUrl(uri);
           await launchUrlString(uri, mode: LaunchMode.externalApplication);
         });
-        print(session.accounts[0]);
-        print(session.chainId);
         setState(() {
-          context.read<MetaMask>().setSession(session);
+          _session = session;
         });
+        print(_session?.accounts[0]);
+        print(_session?.chainId);
       } catch (exp) {
         print(exp);
       }
@@ -73,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
       (session){
         if(!mounted) return;
         setState(() {
-          context.read<MetaMask>().setSession(session);
+          _session = session;
         });
       } 
     );
@@ -83,9 +86,9 @@ class _LoginPageState extends State<LoginPage> {
       (payload){
         if(!mounted) return;
         setState(() {
-          context.read<MetaMask>().setSession(payload);
-          print(context.read<MetaMask>().session.accounts[0]);
-          print(context.read<MetaMask>().session.chainId);
+          _session = payload;
+          print(_session?.accounts[0]);
+          print(_session?.chainId);
         });
       }
     );
@@ -95,12 +98,10 @@ class _LoginPageState extends State<LoginPage> {
       (payload){
         if(!mounted) return;
         setState(() {
-          context.read<MetaMask>().setSession(null);
+          _session = null;
         });
       }
     );
-
-    var session = context.watch<MetaMask>().session;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -121,20 +122,20 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Center(
         child: 
-          (session != null)? 
+          (_session != null)? 
             Container(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(padding: EdgeInsets.all(24)),
+                  const Padding(padding: EdgeInsets.all(24)),
                   Text(
                     'Account',
                     style: GoogleFonts.merriweather(
                       fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
-                    '${session.accounts[0]}',
+                    '${_session?.accounts[0]}',
                     style: GoogleFonts.inconsolata(fontSize: 16),
                   ),
                   const SizedBox(height: 24,),
@@ -146,13 +147,13 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       Text(
-                        getNetworkName(session.chainId),
+                        getNetworkName(_session?.chainId),
                         style: GoogleFonts.inconsolata(fontSize: 16),
                       )
                     ],
                   ),
                   const SizedBox(height: 20,),
-                  (session.chainId != 5)?
+                  (_session?.chainId != 5)?
                     Row(
                       children: const [
                         Icon(Icons.warning,
@@ -168,10 +169,10 @@ class _LoginPageState extends State<LoginPage> {
                   : Container(
                     alignment: Alignment.center,
                     child: SliderButton(
-                      action: () async {
+                      action: () {
                         context.read<MetaMask>().setConnector(connector);
-                        checkIfUserInfoShouldUpdate();
-                        Navigator.pushReplacementNamed(context, MyRoutes.homeRoute);
+                        context.read<MetaMask>().setSession(_session);
+                        login();
                       },
                       label: Text(
                         'Slide to login',
@@ -197,13 +198,13 @@ class _LoginPageState extends State<LoginPage> {
               child: InkWell(
                 splashColor: Colors.black26,
                 onTap: (){
-                  loginUsingMetamask(context);
+                  loginUsingMetamask();
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Ink.image(
-                      image: AssetImage('assets/images/metamask.svg.png'),
+                      image: const AssetImage('assets/images/metamask.svg.png'),
                       height:60,
                       width: 60,
                       fit: BoxFit.cover,
@@ -227,9 +228,11 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  void checkIfUserInfoShouldUpdate() async{
-    final url = Uri.parse("${dotenv.env['backend_address']}/api/check-if-user-info-should-update?address=${context.read<MetaMask>().session.accounts[0]}");
-    http.get(url);
+  
+  void login(){
+    final url = Uri.parse("${dotenv.env['backend_address']}/api/check-if-user-info-should-update?address=${context.read<MetaMask>().getAddress()}");
+    http.get(url).then((value) {
+      Navigator.pushReplacementNamed(context, MyRoutes.homeRoute);
+    });
   }
 }

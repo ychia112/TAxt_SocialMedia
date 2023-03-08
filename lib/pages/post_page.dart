@@ -28,7 +28,7 @@ class _UserPostState extends State<UserPost> {
     http.Response res = await http.post(
       Uri.parse("${dotenv.env['backend_address']}/api/post"),
       body: jsonEncode({
-        "author": context.read<MetaMask>().session.accounts[0],
+        "author": context.read<MetaMask>().getAddress(),
         "context": msg,
         "mood": mood.index,
         "datetime": DateTime.now().toUtc().toString()
@@ -43,7 +43,6 @@ class _UserPostState extends State<UserPost> {
   Future<bool> postWithMetamask(String cid) async {
     var metamask = context.read<MetaMask>();
     var connector = metamask.connector;
-    var session = metamask.session;
     if (connector.connected) {
       try {
         EthereumWalletConnectProvider provider =
@@ -52,12 +51,12 @@ class _UserPostState extends State<UserPost> {
         final contract = await Blockchain.getContract('PostNFT');
         final function = contract.function("post");
         await provider.sendTransaction(
-          from: session.accounts[0],
+          from: metamask.getAddress(),
           to: dotenv.env['contract_address_PostNFT'],
           data: Transaction.callContract(
             contract: contract,
             function: function,
-            parameters: [EthereumAddress.fromHex(session.accounts[0]), cid]
+            parameters: [EthereumAddress.fromHex(metamask.getAddress()), cid]
           ).data,
           gas: 300000
         );

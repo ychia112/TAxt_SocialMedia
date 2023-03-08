@@ -157,7 +157,6 @@ class _ProfileEditState extends State<ProfileEdit> {
   Future<bool> setUserInfoWithMetaMask(String cid) async {
     var metamask = context.read<MetaMask>();
     var connector = metamask.connector;
-    var session = metamask.session;
     if (connector.connected) {
       try {
         EthereumWalletConnectProvider provider =
@@ -166,7 +165,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         final contract = await Blockchain.getContract('UserInfo');
         final function = contract.function("setUserInfo");
         await provider.sendTransaction(
-          from: session.accounts[0],
+          from: metamask.getAddress(),
           to: dotenv.env['contract_address_UserInfo'],
           data: Transaction.callContract(
             contract: contract,
