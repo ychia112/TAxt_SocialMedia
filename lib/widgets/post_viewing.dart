@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:ios_proj01/utils/post.dart';
+import 'package:ios_proj01/utils/user_info.dart';
 import 'package:ios_proj01/widgets/additionaltext.dart';
 import '../utils/mood.dart';
 
@@ -71,16 +73,14 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               for(int i = snapshot.data!.length - 1; i >= 0; i--)
                 ...[
                   singlePost(
-                    snapshot.data![i]['author'],
-                    snapshot.data![i]['context'],
-                    snapshot.data![i]['mood'],
-                    snapshot.data![i].containsKey('datetime')? snapshot.data![i]['datetime'] : "",
+                    snapshot.data![i].containsKey('userInfo')? UserInfo.fromJson(snapshot.data![i]['userInfo']): UserInfo(),
+                    Post.fromJson(snapshot.data![i]['postContext'])
                   ),
                   const SizedBox(height: 20,),
                 ]
             ]
           );
-    }
+        }
         else{
           return Center(
             child: Column(
@@ -147,7 +147,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     );
   }
 
-  Widget singlePost(String author, String postContext, int moodIndex, String dateTimeString){
+  Widget singlePost(UserInfo userInfo, Post post){
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -162,11 +162,11 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             children:[
               const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
               ClipOval(
-                child: Image.asset('assets/images/2.jpg', width: 50, height: 50, fit: BoxFit.cover,)
+                child: Image.network(userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
               ),
               const SizedBox(width: 8),
               Text(
-                author, // Replace with desired emoji//happy
+                userInfo.name, // Replace with desired emoji//happy
                 style: const TextStyle(fontSize: 11.0, color: Colors.black),
               ),
             ],
@@ -184,10 +184,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   decoration: BoxDecoration(
                     color:  Colors.grey.shade200,
                   ),
-                  child: _textPaint([TextSpan(text: postContext)]).didExceedMaxLines ? RichText(
+                  child: _textPaint([TextSpan(text: post.context)]).didExceedMaxLines ? RichText(
                       text: TextSpan(
                           //text:postContext,
-                          text: postContext.substring(0, _fontNum(postContext)),
+                          text: post.context.substring(0, _fontNum(post.context)),
                           style: const TextStyle(color: Colors.black),
                           recognizer: TapGestureRecognizer()
                           ..onTap = () {
@@ -202,10 +202,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                               recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   num.clear();
-                                  num.add(author);
-                                  num.add(postContext);
-                                  num.add(moodIndex);
-                                  num.add(dateTimeString);
+                                  num.add(post.author);
+                                  num.add(post.context);
+                                  num.add(post.mood.index);
+                                  num.add(post.datetime);
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => Extratext()),
@@ -219,7 +219,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                         maxLines: 25,
                       ):Container( //未超出指定行数的话全部显示
                           child: Text(
-                          postContext,
+                          post.context,
                         ),
                 )
                 )
@@ -239,14 +239,14 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   hoverColor:Colors.transparent,
                   shape: const CircleBorder(),
                   child: Text(
-                    moodEmoji[moodIndex], // Replace with desired emoji//happy
+                    moodEmoji[post.mood.index], // Replace with desired emoji//happy
                     style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                 )
               ),
               const Spacer(),
-              if(dateTimeString != "")
-                Text(displayDateTime(dateTimeString)),
+              if(post.datetime != "")
+                Text(displayDateTime(post.datetime!)),
               const SizedBox(width: 10,)
             ],
           ),

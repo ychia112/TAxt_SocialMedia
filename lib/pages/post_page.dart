@@ -49,11 +49,11 @@ class _UserPostState extends State<UserPost> {
         EthereumWalletConnectProvider provider =
             EthereumWalletConnectProvider(connector);
         launchUrlString('wc:', mode: LaunchMode.externalApplication);
-        final contract = await Blockchain.getContract();
+        final contract = await Blockchain.getContract('PostNFT');
         final function = contract.function("post");
         await provider.sendTransaction(
           from: session.accounts[0],
-          to: dotenv.env['contract_address'],
+          to: dotenv.env['contract_address_PostNFT'],
           data: Transaction.callContract(
             contract: contract,
             function: function,

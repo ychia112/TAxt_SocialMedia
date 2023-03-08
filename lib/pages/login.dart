@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ios_proj01/utils/routes.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slider_button/slider_button.dart';
+import 'package:http/http.dart' as http;
 import '../providers/metamask_provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -111,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(
           'Login',
           style: GoogleFonts.abrilFatface(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
                   color: Colors.black
@@ -169,12 +170,13 @@ class _LoginPageState extends State<LoginPage> {
                     child: SliderButton(
                       action: () async {
                         context.read<MetaMask>().setConnector(connector);
+                        checkIfUserInfoShouldUpdate();
                         Navigator.pushReplacementNamed(context, MyRoutes.homeRoute);
                       },
                       label: Text(
                         'Slide to login',
                         style: GoogleFonts.merriweather(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.black
@@ -206,17 +208,17 @@ class _LoginPageState extends State<LoginPage> {
                       width: 60,
                       fit: BoxFit.cover,
                     ),
-                    SizedBox(width: 6),
+                    const SizedBox(width: 6),
                     Text(
                       'Connect to MetaMask',
                       style: GoogleFonts.abrilFatface(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.normal,
                               color: Colors.black
                           )),
                     ),
-                    SizedBox(width: 16)
+                    const SizedBox(width: 16)
                   ],
                 ),
               ),
@@ -224,5 +226,10 @@ class _LoginPageState extends State<LoginPage> {
           ,
       ),
     );
+  }
+
+  void checkIfUserInfoShouldUpdate() async{
+    final url = Uri.parse("${dotenv.env['backend_address']}/api/check-if-user-info-should-update?address=${context.read<MetaMask>().session.accounts[0]}");
+    http.get(url);
   }
 }
