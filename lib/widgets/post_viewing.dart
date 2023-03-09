@@ -8,7 +8,7 @@ import 'package:ios_proj01/utils/user_info.dart';
 import 'package:ios_proj01/widgets/additionaltext.dart';
 import '../utils/mood.dart';
 
-List num=[];
+List num=[];//暫存長文資料
 
 class PostViewingWidget extends StatefulWidget{
   final String? address;
@@ -218,7 +218,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                                   num.add(post.context.mood.index);
                                   num.add(post.context.datetime);
                                   Navigator.push(
-                                  context,
+                                    context,
                                   MaterialPageRoute(builder: (context) => Extratext()),
                                   );
                               } )

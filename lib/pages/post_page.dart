@@ -22,6 +22,7 @@ class UserPost extends StatefulWidget {
 
 class _UserPostState extends State<UserPost> {
   Mood _usermood = Mood.none; //temporarily store the input emotion (default: none)
+  String text="";
   final _textController = TextEditingController();
 
   Future<String> uploadToIPFS(String msg, Mood mood) async {
@@ -116,7 +117,7 @@ class _UserPostState extends State<UserPost> {
           ],
         ),
         duration: const Duration(seconds: 2),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white12,
       ),
     );
   }
@@ -138,7 +139,12 @@ class _UserPostState extends State<UserPost> {
       snackBarError(label: "Transaction failed!");
     }
   }
-
+  Text _printLatestValue(String text) {
+    setState(() {
+      text=_textController.text;
+    });
+    return Text(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +157,7 @@ class _UserPostState extends State<UserPost> {
       appBar: AppBar(
         elevation:0,
         centerTitle: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white60,
         flexibleSpace: FlexibleSpaceBar(
             background: Container(
               color: Colors.transparent,
@@ -165,6 +171,7 @@ class _UserPostState extends State<UserPost> {
                       color: Colors.black
                   )),
             ),
+
         ),
       ),
       body:
@@ -173,15 +180,151 @@ class _UserPostState extends State<UserPost> {
           child:
             Column(
                     children: [
-                      Padding(padding: EdgeInsets.only(top: 5),),
+                      const Padding(padding: EdgeInsets.only(bottom: 5),),
                       Container(
+                        alignment: Alignment.topCenter,
+                        decoration: const BoxDecoration(
+                            color: Colors.black12,
+                        ),
+                        constraints: const BoxConstraints(
+                          minHeight: 100,
+                          maxHeight: 110,
+                        ),
+                        child:
+                        Row( //showing the input area
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children:[
+                              Container(
+                                padding:const EdgeInsets.only(left:5,right: 5), color: Colors.transparent,
+                                width: MediaQuery.of(context).size.width-60,
+                                height: 100,
+                                alignment: Alignment.bottomCenter,
+                                child:
+                                TextFormField(
+                                  keyboardType: TextInputType.multiline,
+                                  minLines: 3,
+                                  maxLines:3,
+                                  controller: _textController,
+                                  decoration: InputDecoration(
+                                    hintText: 'How is your day?',
+                                    filled: true,
+                                    fillColor:Colors.black12,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      borderSide:
+                                      const BorderSide( width: 2,color: Colors.black12),
+                                    ),
+                                    focusedBorder:OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      borderSide:
+                                      const BorderSide( width: 2,color: Colors.black12),
+                                    ),
+                                    prefixIconConstraints: const BoxConstraints(
+                                        minWidth: 8
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        _textController.clear();
+                                      },
+                                      icon: const Icon(Icons.clear),
+                                    ),
+
+                                  ),
+                                ),
+                              ),
+                              //Container(padding:const EdgeInsets.only(right: 5), color: Colors.transparent,),
+                              Column(
+                                children: [
+                                  Container(
+                                    width: 50,
+                                    height: 55,
+                                    alignment: Alignment.bottomCenter,
+                                    child:
+                                    Row(
+                                      children: [
+                                        PopupMenuButton<int>(
+                                            offset: const Offset(5,-55),
+                                            color: Colors.black12,
+                                            constraints:const BoxConstraints(
+                                              minWidth: 7.0 * 56.0,
+                                              maxWidth: 8.0 * 56.0,
+                                            ),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),side: const BorderSide(
+                                              style: BorderStyle.none,
+                                            )),
+                                            icon:Text(
+                                                moodEmoji[_usermood.index], // Replace with desired emoji//happy
+                                                style: const TextStyle(fontSize: 20.0, color: Colors.white)
+                                            ),
+                                            onSelected: (int value) {
+                                              setState(() {
+                                                _usermood = Mood.values[value];
+                                              });
+                                            },
+                                            itemBuilder: (BuildContext int) {
+                                              return [
+                                                PopupMenuWidget(
+                                                  height: 40.0,
+                                                  width: 380,
+                                                  child:Row(
+                                                      children: [
+                                                        const Padding(padding: EdgeInsets.only(left:16,right:16),),
+                                                        for(var i = 1; i < Mood.values.length; i++)
+                                                          emojiSizedBox(Mood.values[i])
+                                                      ]
+                                                  ),
+                                                ),
+                                              ];
+                                            }
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 50,
+                                    height: 55,
+                                    alignment: Alignment.center,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.send_rounded,size: 28,),
+                                      onPressed: (){
+                                        post(_textController.text, _usermood);
+                                        if(!mounted)  return;
+                                        setState(() {
+                                          if(_usermood != Mood.none){
+                                            _textController.clear();
+                                            _usermood = Mood.none;
+                                          }
+                                        });
+                                      },
+                                      color: Colors.black45,
+                                      alignment: Alignment.center,
+                                    ),
+                                  ),
+                                ],
+                              )
+
+                            ]
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(bottom: 5),),
+                      Text("post preview",
+                        style: GoogleFonts.abrilFatface(
+                        textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                        ),),),
+                      Container(
+                        padding: const EdgeInsets.only(top: 5,bottom: 5),
                         decoration: const BoxDecoration(
                           //color:  Colors.grey,
 
                         ),
+                        height:410 ,
                         constraints: BoxConstraints(
                           minHeight: 200,
-                          maxHeight: 420,
+                          //maxHeight: 420,
                           maxWidth: MediaQuery.of(context).size.width,
                         ),
                         child: SingleChildScrollView(
@@ -223,9 +366,7 @@ class _UserPostState extends State<UserPost> {
                                                 color:  Colors.grey.shade200,
                                               ),
                                               child: Container( //未超出指定行数的话全部显示
-                                                child: Text(
-                                                  _textController.text,
-                                                ),
+                                                child: _printLatestValue(_textController.text),
                                               )
                                           )
                                       )
@@ -261,119 +402,7 @@ class _UserPostState extends State<UserPost> {
 
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        decoration: BoxDecoration(
-                          color: Colors.green
-                        ),
-                        constraints: const BoxConstraints(
-                          minHeight: 100,
-                          maxHeight: 120,
-                        ),
-                        child:
-                        Row( //showing the input area
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children:[
-                              Container(
-                                width: 48,
-                                height: 60,
-                                alignment: Alignment.topCenter,
-                                child:
-                                Row(
-                                  children: [
-                                    PopupMenuButton<int>(
-                                        offset: const Offset(5,-55),
-                                        color: Colors.black12,
-                                        constraints:const BoxConstraints(
-                                          minWidth: 7.0 * 56.0,
-                                          maxWidth: 8.0 * 56.0,
-                                        ),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),side: const BorderSide(
-                                          style: BorderStyle.none,
-                                        )),
-                                        icon:Text(
-                                            moodEmoji[_usermood.index], // Replace with desired emoji//happy
-                                            style: const TextStyle(fontSize: 20.0, color: Colors.white)
-                                        ),
-                                        onSelected: (int value) {
-                                          setState(() {
-                                            _usermood = Mood.values[value];
-                                          });
-                                        },
-                                        itemBuilder: (BuildContext int) {
-                                          return [
-                                            PopupMenuWidget(
-                                              height: 40.0,
-                                              width: 380,
-                                              child:Row(
-                                                  children: [
-                                                    const Padding(padding: EdgeInsets.only(left:16,right:16),),
-                                                    for(var i = 1; i < Mood.values.length; i++)
-                                                      emojiSizedBox(Mood.values[i])
-                                                  ]
-                                              ),
-                                            ),
-                                          ];
-                                        }
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width-105,
-                                height: 100,
-                                alignment: Alignment.bottomCenter,
-                                child:
-                                TextFormField(
-                                  keyboardType: TextInputType.multiline,
-                                  minLines: 1,
-                                  maxLines:5,
-                                  controller: _textController,
-                                  decoration: InputDecoration(
-                                    hintText: 'How is your day?',
-                                    filled: true,
-                                    fillColor:Colors.black12,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                      borderSide:
-                                      const BorderSide( width: 3,color: Colors.black12),
-                                    ),
-                                    prefixIconConstraints: const BoxConstraints(
-                                        minWidth: 8
-                                    ),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        _textController.clear();
-                                      },
-                                      icon: const Icon(Icons.clear),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 50,
-                                height: 60,
-                                alignment: Alignment.bottomCenter,
-                                child: IconButton(
-                                  icon: const Icon(Icons.send_rounded,size: 28,),
-                                  onPressed: (){
-                                    post(_textController.text, _usermood);
-                                    if(!mounted)  return;
-                                    setState(() {
-                                      if(_usermood != Mood.none){
-                                        _textController.clear();
-                                        _usermood = Mood.none;
-                                      }
-                                    });
-                                  },
-                                  color: Colors.black45,
-                                  alignment: Alignment.center,
-                                ),
-                              ),
-                            ]
-                        ),
-                      ),
+
 
                     ],
                   )
