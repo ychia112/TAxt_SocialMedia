@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:ios_proj01/utils/post.dart';
+import 'package:ios_proj01/utils/user_info.dart';
 import 'package:ios_proj01/widgets/additionaltext.dart';
 import '../utils/mood.dart';
 
@@ -22,34 +24,48 @@ class PostViewingWidget extends StatefulWidget{
 
 class _PostViewingWidgetState extends State<PostViewingWidget> {
   final GlobalKey expansionTileKey = GlobalKey();
-  late Future<List<dynamic>> _posts;
-  late Future<List<dynamic>> filteredPosts;
+  late Future<List<Post>> _posts;
+  late Future<List<Post>> filteredPosts;
   Mood filterMood = Mood.none;
-  Future<List<dynamic>> getAllPosts() async {
-    http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
-    return jsonDecode(res.body);
-  }
-  Future<List<dynamic>> filterPosts() async {
-    List<dynamic> filteredPosts = [];
-    filteredPosts.clear();
 
-    if(filterMood == Mood.none){
-      filteredPosts = await _posts;
-      return filteredPosts;
+  Future<List<Post>> getAllPosts() async {
+    http.Response res = await http.get(Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts"));
+    final rawPosts = jsonDecode(res.body);
+    List<Post> ret = [];
+    for(dynamic post in rawPosts){
+      ret.add(Post(
+        userInfo: post.containsKey('userInfo')? UserInfo.fromJson(post['userInfo']): UserInfo(),
+        context: PostContext.fromJson(post['context'])
+      ));
     }
-    
-    for(dynamic post in await _posts){
-      if(post['mood'] == filterMood.index){
-        filteredPosts.add(post);
+    return ret;
+  }
+
+  Future<List<Post>> filterPosts() async {
+    if(filterMood == Mood.none){
+      return _posts;
+    }
+    List<Post> ret = [];
+    for(Post post in await _posts){
+      if(post.context.mood == filterMood){
+        ret.add(post);
       }
     }
-    return filteredPosts;
+    return ret;
   }
 
-  Future<List<dynamic>> getUserPosts() async {
+  Future<List<Post>> getUserPosts() async {
     final url = Uri.parse("${dotenv.env['backend_address']}/api/get-all-posts-owned-by?owner=${widget.address}");
     http.Response res = await http.get(url);
-    return jsonDecode(res.body);
+    final rawPosts = jsonDecode(res.body);
+    List<Post> ret = [];
+    for(dynamic post in rawPosts){
+      ret.add(Post(
+        userInfo: post.containsKey('userInfo')? UserInfo.fromJson(post['userInfo']): UserInfo(),
+        context: PostContext.fromJson(post['context'])
+      ));
+    }
+    return ret;
   }
 
   @override
@@ -70,17 +86,12 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               filterBlock(),
               for(int i = snapshot.data!.length - 1; i >= 0; i--)
                 ...[
-                  singlePost(
-                    snapshot.data![i]['author'],
-                    snapshot.data![i]['context'],
-                    snapshot.data![i]['mood'],
-                    snapshot.data![i].containsKey('datetime')? snapshot.data![i]['datetime'] : "",
-                  ),
+                  singlePost(snapshot.data![i]),
                   const SizedBox(height: 20,),
                 ]
             ]
           );
-    }
+        }
         else{
           return Center(
             child: Column(
@@ -114,7 +125,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               _scrollToSelectedContent(expansionTileKey: expansionTileKey);
             }
           },
-            title: const Text("filter the mood"),
+            title: const Text("Filter"),
             controlAffinity: ListTileControlAffinity.leading,
             children: [
               Row(
@@ -146,7 +157,8 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       ),
     );
   }
-  Widget singlePost(String author, String postContext, int moodIndex, String dateTimeString){
+
+  Widget singlePost(Post post){
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -161,11 +173,11 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             children:[
               const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
               ClipOval(
-                child: Image.asset('assets/images/2.jpg', width: 50, height: 50, fit: BoxFit.cover,)
+                child: Image.network(post.userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
               ),
               const SizedBox(width: 8),
               Text(
-                author, // Replace with desired emoji//happy
+                post.userInfo.name, // Replace with desired emoji//happy
                 style: const TextStyle(fontSize: 11.0, color: Colors.black),
               ),
             ],
@@ -183,10 +195,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   decoration: BoxDecoration(
                     color:  Colors.grey.shade200,
                   ),
-                  child: _textPaint([TextSpan(text: postContext)]).didExceedMaxLines ? RichText(
+                  child: _textPaint([TextSpan(text: post.context.text)]).didExceedMaxLines ? RichText(
                       text: TextSpan(
                           //text:postContext,
-                          text: postContext.substring(0, _fontNum(postContext)),
+                          text: post.context.text.substring(0, _fontNum(post.context.text)),
                           style: const TextStyle(color: Colors.black),
                           recognizer: TapGestureRecognizer()
                           ..onTap = () {
@@ -201,10 +213,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                               recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   num.clear();
-                                  num.add(author);
-                                  num.add(postContext);
-                                  num.add(moodIndex);
-                                  num.add(dateTimeString);
+                                  num.add(post.context.author);
+                                  num.add(post.context.text);
+                                  num.add(post.context.mood.index);
+                                  num.add(post.context.datetime);
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => Extratext()),
@@ -215,10 +227,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                         textAlign: TextAlign.center,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 10,
+                        maxLines: 25,
                       ):Container( //未超出指定行数的话全部显示
                           child: Text(
-                          postContext,
+                          post.context.text,
                         ),
                 )
                 )
@@ -238,14 +250,14 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   hoverColor:Colors.transparent,
                   shape: const CircleBorder(),
                   child: Text(
-                    moodEmoji[moodIndex], // Replace with desired emoji//happy
+                    moodEmoji[post.context.mood.index], // Replace with desired emoji//happy
                     style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                 )
               ),
               const Spacer(),
-              if(dateTimeString != "")
-                Text(displayDateTime(dateTimeString)),
+              if(post.context.datetime != "")
+                Text(displayDateTime(post.context.datetime!)),
               const SizedBox(width: 10,)
             ],
           ),
@@ -253,6 +265,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       ),
     );
   }
+
   void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
     final keyContext = expansionTileKey.currentContext;
     if (keyContext != null) {
@@ -264,7 +277,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   }
   TextPainter _textPaint(List<InlineSpan> children) {
     return TextPainter(
-        maxLines: 10,
+        maxLines: 25,
         text: TextSpan(
             children: children
         ),

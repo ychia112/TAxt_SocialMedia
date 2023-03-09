@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'post.dart';
+import 'post_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/post_viewing.dart';
 

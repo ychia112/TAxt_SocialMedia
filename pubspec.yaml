@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  path: any
 
 
 
@@ -49,7 +50,7 @@ dependencies:
   shared_preferences: ^2.0.12
 
   #pick image
-  image_picker: ^0.7.4
+  image_picker: ^0.8.6+4
   #store image
   path_provider: ^2.0.1
 dev_dependencies:

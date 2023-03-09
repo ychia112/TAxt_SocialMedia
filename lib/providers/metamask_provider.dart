@@ -7,7 +7,6 @@ class MetaMask with ChangeNotifier{
   var _uri;
 
   dynamic get connector => _connector;
-  dynamic get session => _session;
   dynamic get uri => _uri;
 
   void setConnector(dynamic connector){
@@ -23,5 +22,7 @@ class MetaMask with ChangeNotifier{
     _uri = uri;
     notifyListeners();
   }
+
+  String getAddress() => _session.accounts[0].toLowerCase();
 
 }
