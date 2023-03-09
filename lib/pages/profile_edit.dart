@@ -137,9 +137,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     http.Response res = await http.post(
       Uri.parse("${dotenv.env['backend_address']}/api/setUserInfo"),
       body: data,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
-      }
+      headers: {'Content-Type': 'application/json'}
     );
     print('res.body: ${res.body}');
     String cid = res.body;

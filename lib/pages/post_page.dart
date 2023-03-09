@@ -15,7 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class UserPost extends StatefulWidget {
-  UserPost({Key? key}) : super(key: key);
+  const UserPost({Key? key}) : super(key: key);
   @override
   _UserPostState createState() => _UserPostState();
 }
@@ -34,9 +34,7 @@ class _UserPostState extends State<UserPost> {
         "mood": mood.index,
         "datetime": DateTime.now().toUtc().toString()
       }),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
-      }
+      headers: {'Content-Type': 'application/json'}
     );
     return res.body;
   }
