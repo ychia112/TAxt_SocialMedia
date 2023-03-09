@@ -230,9 +230,29 @@ class _LoginPageState extends State<LoginPage> {
   }
   
   void login(){
+    snackBar(label: 'Logging in');
     final url = Uri.parse("${dotenv.env['backend_address']}/api/check-if-user-info-should-update?address=${context.read<MetaMask>().getAddress()}");
     http.get(url).then((value) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
       Navigator.pushReplacementNamed(context, MyRoutes.homeRoute);
     });
+  }
+
+  snackBar({String? label}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label!),
+            const CircularProgressIndicator(
+              color: Colors.white,
+            )
+          ],
+        ),
+        duration: const Duration(days: 1),
+        backgroundColor: Colors.black,
+      ),
+    );
   }
 }
