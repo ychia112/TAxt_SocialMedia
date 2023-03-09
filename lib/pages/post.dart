@@ -39,7 +39,6 @@ class _UserPostState extends State<UserPost> {
     );
     return res.body;
   }
-
   Future<bool> postWithMetamask(String cid) async {
     var metamask = context.read<MetaMask>();
     var connector = metamask.connector;
@@ -149,11 +148,11 @@ class _UserPostState extends State<UserPost> {
         FocusScope.of(context).unfocus(),
       },
       child: Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset:false,
       appBar: AppBar(
-        elevation: 0,
+        elevation:0,
         centerTitle: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         flexibleSpace: FlexibleSpaceBar(
             background: Container(
               color: Colors.transparent,
@@ -170,125 +169,215 @@ class _UserPostState extends State<UserPost> {
         ),
       ),
       body:
+
         SafeArea(
           child:
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children:[
-                    Container(
-                      width: 48,
-                      height: 60,
-                      alignment: Alignment.bottomCenter,
-                      child:
-                        Row(
-                          children: [
-                            PopupMenuButton<int>(
-                                offset: const Offset(5,-55),
-                                color: Colors.black12,
-                                constraints:const BoxConstraints(
-                                  minWidth: 7.0 * 56.0,
-                                  maxWidth: 8.0 * 56.0,
-                                ),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),side: const BorderSide(
-                                  style: BorderStyle.none,
-                                )),
-                                icon:Text(
-                                  moodEmoji[_usermood.index], // Replace with desired emoji//happy
-                                  style: const TextStyle(fontSize: 20.0, color: Colors.white)
-                                ),
-                                onSelected: (int value) {
-                                  setState(() {
-                                    _usermood = Mood.values[value];
-                                  });
-                                },
-                                itemBuilder: (BuildContext int) {
-                                  return [
-                                    PopupMenuWidget(
-                                      height: 40.0,
-                                      width: 380,
-                                      child:Row(
-                                          children: [
-                                            const Padding(padding: EdgeInsets.only(left:16,right:16),),
-                                            for(var i = 1; i < Mood.values.length; i++)
-                                              emojiSizedBox(Mood.values[i])
-                                          ]
-                                      ),
+                    children: [
+                      Padding(padding: EdgeInsets.only(top: 5),),
+                      Container(
+                        decoration: const BoxDecoration(
+                          //color:  Colors.grey,
+
+                        ),
+                        constraints: BoxConstraints(
+                          minHeight: 200,
+                          maxHeight: 420,
+                          maxWidth: MediaQuery.of(context).size.width,
+                        ),
+                        child: SingleChildScrollView(
+                          child:
+                           Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24.0),
+                            color:  Colors.grey.shade300,
+                          ),
+                          child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children:[
+                                    const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
+                                    ClipOval(
+                                        child: Image.asset('assets/images/2.jpg', width: 50, height: 50, fit: BoxFit.cover,)
                                     ),
-                                  ];
-                                }
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      "author", // Replace with desired emoji//happy
+                                      style: TextStyle(fontSize: 11.0, color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                    children: [
+                                      Center(
+                                          child: Container(
+                                              padding: const EdgeInsets.all(16),
+                                              alignment: Alignment.center,
+                                              constraints: BoxConstraints(
+                                                minHeight: 200,
+                                                maxWidth: MediaQuery.of(context).size.width,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color:  Colors.grey.shade200,
+                                              ),
+                                              child: Container( //未超出指定行数的话全部显示
+                                                child: Text(
+                                                  _textController.text,
+                                                ),
+                                              )
+                                          )
+                                      )
+                                    ]),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                        width: 50,
+                                        height: 40,
+                                        //color: Colors.black26,
+                                        child: RawMaterialButton(
+                                          onPressed: () {},
+                                          // fillColor: Colors.transparent,
+                                          highlightColor:Colors.transparent,
+                                          splashColor:Colors.transparent,
+                                          hoverColor:Colors.transparent,
+                                          shape: const CircleBorder(),
+                                          child: Text(
+                                            moodEmoji[_usermood.index], // Replace with desired emoji//happy
+                                            style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                                          ),
+                                        )
+                                    ),
+                                    //const Spacer(),
+                                    // if(dateTimeString != "")
+                                    //   Text(displayDateTime(dateTimeString)),
+                                    //const SizedBox(width: 10,)
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+
                         ),
                       ),
-                    Container(
-                      width: MediaQuery.of(context).size.width-105,
-                      height: 280,
-                      alignment: Alignment.bottomCenter,
-                      child:
-                      TextFormField(
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        maxLines:10,
-                        controller: _textController,
-                        decoration: InputDecoration(
-                          hintText: 'How is your day?',
-                          filled: true,
-                          fillColor:Colors.black12,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide:
-                            const BorderSide( width: 3,color: Colors.black12),
-                          ),
-                          prefixIconConstraints: const BoxConstraints(
-                              minWidth: 8
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              _textController.clear();
-                            },
-                            icon: const Icon(Icons.clear),
-                          ),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(
+                          color: Colors.green
+                        ),
+                        constraints: const BoxConstraints(
+                          minHeight: 100,
+                          maxHeight: 120,
+                        ),
+                        child:
+                        Row( //showing the input area
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children:[
+                              Container(
+                                width: 48,
+                                height: 60,
+                                alignment: Alignment.topCenter,
+                                child:
+                                Row(
+                                  children: [
+                                    PopupMenuButton<int>(
+                                        offset: const Offset(5,-55),
+                                        color: Colors.black12,
+                                        constraints:const BoxConstraints(
+                                          minWidth: 7.0 * 56.0,
+                                          maxWidth: 8.0 * 56.0,
+                                        ),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),side: const BorderSide(
+                                          style: BorderStyle.none,
+                                        )),
+                                        icon:Text(
+                                            moodEmoji[_usermood.index], // Replace with desired emoji//happy
+                                            style: const TextStyle(fontSize: 20.0, color: Colors.white)
+                                        ),
+                                        onSelected: (int value) {
+                                          setState(() {
+                                            _usermood = Mood.values[value];
+                                          });
+                                        },
+                                        itemBuilder: (BuildContext int) {
+                                          return [
+                                            PopupMenuWidget(
+                                              height: 40.0,
+                                              width: 380,
+                                              child:Row(
+                                                  children: [
+                                                    const Padding(padding: EdgeInsets.only(left:16,right:16),),
+                                                    for(var i = 1; i < Mood.values.length; i++)
+                                                      emojiSizedBox(Mood.values[i])
+                                                  ]
+                                              ),
+                                            ),
+                                          ];
+                                        }
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width-105,
+                                height: 100,
+                                alignment: Alignment.bottomCenter,
+                                child:
+                                TextFormField(
+                                  keyboardType: TextInputType.multiline,
+                                  minLines: 1,
+                                  maxLines:5,
+                                  controller: _textController,
+                                  decoration: InputDecoration(
+                                    hintText: 'How is your day?',
+                                    filled: true,
+                                    fillColor:Colors.black12,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      borderSide:
+                                      const BorderSide( width: 3,color: Colors.black12),
+                                    ),
+                                    prefixIconConstraints: const BoxConstraints(
+                                        minWidth: 8
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        _textController.clear();
+                                      },
+                                      icon: const Icon(Icons.clear),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 50,
+                                height: 60,
+                                alignment: Alignment.bottomCenter,
+                                child: IconButton(
+                                  icon: const Icon(Icons.send_rounded,size: 28,),
+                                  onPressed: (){
+                                    post(_textController.text, _usermood);
+                                    if(!mounted)  return;
+                                    setState(() {
+                                      if(_usermood != Mood.none){
+                                        _textController.clear();
+                                        _usermood = Mood.none;
+                                      }
+                                    });
+                                  },
+                                  color: Colors.black45,
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                            ]
                         ),
                       ),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 60,
-                      alignment: Alignment.bottomCenter,
-                      child: IconButton(
-                        icon: const Icon(Icons.send_rounded,size: 28,),
-                        onPressed: (){
-                          post(_textController.text, _usermood);
-                          if(!mounted)  return;
-                          setState(() {
-                            if(_usermood != Mood.none){
-                              _textController.clear();
-                              _usermood = Mood.none;
-                            }
-                          });
-                        },
-                        color: Colors.black45,
-                        alignment: Alignment.center,
-                      ),
-                    ),
-                  ]
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 10,
-                    )
-                  ],
-                )
-              ],
-            )
+
+                    ],
+                  )
         )
       )
     );
@@ -322,8 +411,6 @@ class PopupMenuWidget<int> extends PopupMenuEntry<int> {
   final double width;
   @override
   final double height;
-
-
   @override
   bool get enabled => false;
 

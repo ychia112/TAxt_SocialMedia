@@ -146,7 +146,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       ),
     );
   }
-
   Widget singlePost(String author, String postContext, int moodIndex, String dateTimeString){
     return Container(
       alignment: Alignment.center,
@@ -254,7 +253,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
       ),
     );
   }
-
   void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
     final keyContext = expansionTileKey.currentContext;
     if (keyContext != null) {
