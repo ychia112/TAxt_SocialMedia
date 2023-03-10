@@ -202,6 +202,11 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                           style: const TextStyle(color: Colors.black),
                           recognizer: TapGestureRecognizer()
                           ..onTap = () {
+                            num.clear();
+                            num.add(post.context.author);
+                            num.add(post.context.text);
+                            num.add(post.context.mood.index);
+                            num.add(post.context.datetime);
                           Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Extratext()),

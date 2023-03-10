@@ -12,31 +12,41 @@ class Extratext extends StatefulWidget{
 class _Extratext extends State<Extratext> {
   //int moodIndex=0;
   //String dateTimeString="";
+  var _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: false,
-          iconTheme: const IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.transparent,),
-        body: SingleChildScrollView(
-            child:
-                Row(
+        appBar:
+          AppBar(
+              toolbarHeight:40,
+            elevation: 0,
+            centerTitle: false,
+            iconTheme: const IconThemeData(
+              color: Colors.white, //change your color here
+            ),
+            backgroundColor: Colors.black26),
+        body:SingleChildScrollView(
+            child:Row(
                   children: [
+                    const Padding(padding: EdgeInsets.only(left: 3,right: 3),),
+                    const Padding(padding: EdgeInsets.only(bottom: 5),),
                     Container(
                       //alignment: Alignment.center,
                       constraints: BoxConstraints(
                         minHeight: 400,
                         //maxHeight: 400,
-                        maxWidth: MediaQuery.of(context).size.width,
+                        maxWidth: MediaQuery.of(context).size.width-10,
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
-                        color:  Colors.grey.shade300,
-                      ),
+
+                      // decoration: BoxDecoration(
+                      //   //borderRadius: BorderRadius.circular(24.0),
+                      //   color:  Colors.grey.shade300,
+                      // ),
+                      // decoration: const BoxDecoration(
+                      //   border: Border(
+                      //     bottom: BorderSide(width: 16.0, color: Colors.black54),)
+                      // ),
+
                       child: Column(
                         //mainAxisAlignment: MainAxisAlignment.center,
                         //crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,13 +72,15 @@ class _Extratext extends State<Extratext> {
                                         alignment: Alignment.center,
                                         constraints: BoxConstraints(
                                           minHeight: 200,
-                                          maxWidth: MediaQuery.of(context).size.width,
+                                          maxWidth: MediaQuery.of(context).size.width-10,
                                         ),
                                         decoration: BoxDecoration(
                                           color:  Colors.grey.shade200,
+                                          border: const Border(
+                                              top: BorderSide(width: 4.0, color: Colors.black12),
+                                            bottom: BorderSide(width: 4.0, color: Colors.black12),),
                                         ),
                                         child: Text(
-                                          //"postContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContextpostContext",
                                           num[1],
                                           style: TextStyle(color: Colors.black),
                                         )
@@ -99,15 +111,15 @@ class _Extratext extends State<Extratext> {
                               const Spacer(),
                               if(num[3] != "")
                                 Text(displayDateTime(num[3])),
-                              //const SizedBox(width: 10,)
+
                             ],
                           ),
                         ],
                       ),
                     ),
                   ],
-                )
+                )),
 
-    ));
+    );
   }
 }
