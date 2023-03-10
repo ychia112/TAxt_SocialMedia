@@ -7,28 +7,24 @@ class DiaryPage extends StatefulWidget {
 }
 
 class _DiaryPageState extends State<DiaryPage> {
-  final List<Diary> _diaries = [
-    Diary(
-        title: 'Diary1',
-        author: 'a',
-        coverImage:
-        'https://marketplace.canva.com/EAFMUPbPgjs/1/0/1236w/canva-tan-beige-neutral-floral-illustrated-notebook-cover-72hqsit8LD4.jpg'),
-    Diary(
-        title: 'Diary2',
-        author: 'ab',
-        coverImage:
-        'https://marketplace.canva.com/EAFMUPbPgjs/1/0/1236w/canva-tan-beige-neutral-floral-illustrated-notebook-cover-72hqsit8LD4.jpg'),
-    Diary(
-        title: 'Diary3',
-        author: 'ac',
-        coverImage:
-        'https://marketplace.canva.com/EAFMUPbPgjs/1/0/1236w/canva-tan-beige-neutral-floral-illustrated-notebook-cover-72hqsit8LD4.jpg'),
-    Diary(
-        title: 'Diary4',
-        author: 'ac',
-        coverImage:
-        'https://marketplace.canva.com/EAFMUPbPgjs/1/0/1236w/canva-tan-beige-neutral-floral-illustrated-notebook-cover-72hqsit8LD4.jpg'),
+  final List diarybooks = [
+    'A',
+    'B',
+    'C',
+    'D',
   ];
+
+  void updateTiles(int oldIndex, int newIndex){
+    setState(() {
+      if(oldIndex < newIndex){
+        newIndex -= 1;
+      }
+
+      final String tile = diarybooks.removeAt(oldIndex);
+      diarybooks.insert(newIndex, tile);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,26 +42,34 @@ class _DiaryPageState extends State<DiaryPage> {
                   color: Colors.black
               )),
         ),
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.bookmark_add_rounded),
+          ),
+        ],
       ),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 24,
-          crossAxisSpacing: 0,
-          childAspectRatio: 0.75,
-        ),
-        itemCount: _diaries.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal:12),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(24.0),
-              child: Image.network(
-                _diaries[index].coverImage,
-                fit: BoxFit.cover,
+      body: ReorderableListView(
+        padding: const EdgeInsets.all(6),
+        children: [
+          for (final tile in diarybooks)
+            Padding(
+              key: ValueKey(tile),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+              child: Container(
+                height: 96,
+                decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24.0),
+                color:  Colors.grey.shade300,
+                  ),
+                child: ListTile(
+                  title: Text(tile.toString()),
+                ),
               ),
             ),
-          );
+        ],
+        onReorder: (oldIndex, newIndex){
+          updateTiles(oldIndex, newIndex);
         },
       ),
     );

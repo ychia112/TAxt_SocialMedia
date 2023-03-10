@@ -45,3 +45,6 @@ app.*.map.json
 
 # iOS related
 ios/Runner.xcodeproj
+
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
