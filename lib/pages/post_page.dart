@@ -182,7 +182,9 @@ class _UserPostState extends State<UserPost> {
                       Container(
                         alignment: Alignment.topCenter,
                         decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(topRight:Radius.circular(14),bottomRight:Radius.circular(14)),
                             color: Colors.black12,
+
                         ),
                         constraints: const BoxConstraints(
                           minHeight: 100,
@@ -207,7 +209,7 @@ class _UserPostState extends State<UserPost> {
                                   decoration: InputDecoration(
                                     hintText: 'How is your day?',
                                     filled: true,
-                                    fillColor:Colors.black12,
+                                    fillColor:Colors.white70,
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(25.0),
                                       borderSide:
