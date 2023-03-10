@@ -1,5 +1,9 @@
+import 'package:ethereum_addresses/ethereum_addresses.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ios_proj01/pages/profile.dart';
+import 'package:ios_proj01/providers/metamask_provider.dart';
+import 'package:provider/provider.dart';
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
@@ -19,7 +23,7 @@ class _SearchState extends State<Search> {
         title: Text(
           'Search',
           style: GoogleFonts.abrilFatface(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
                   color: Colors.black
@@ -29,7 +33,7 @@ class _SearchState extends State<Search> {
           IconButton(
             icon: const Icon(Icons.search,color: Colors.black,size: 30,),
             onPressed: (){
-              showSearch(context: context, delegate: MySearchDelegate(),
+                showSearch(context: context, delegate: MySearchDelegate(),
               );
             },
           )
@@ -39,13 +43,8 @@ class _SearchState extends State<Search> {
   }
 }
 class MySearchDelegate extends SearchDelegate{
-  List<String> searchResults= [
-    'Apple',
-    'Banana',
-    'Cat',
-    'Dog',
-    'Elephant',
-  ];
+  List<String> searchResults= [];
+
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
       onPressed: () => close(context, null),
@@ -65,13 +64,38 @@ class MySearchDelegate extends SearchDelegate{
         icon: const Icon(Icons.clear),
     ),
   ];
+  // @override
+  // Widget buildResults(BuildContext context) => Center(
+  //   child: Text(
+  //     query,
+  //     style: const TextStyle(fontSize: 64, fontWeight: FontWeight.bold),
+  //   ),
+  // );
+
   @override
-  Widget buildResults(BuildContext context) => Center(
-    child: Text(
-      query,
-      style: const TextStyle(fontSize: 64, fontWeight: FontWeight.bold),
-    ),
-  );
+  Widget buildResults(BuildContext context){
+    if(isValidEthereumAddress(query.toLowerCase())){
+      return UserProfile(
+        address: query.toLowerCase(),
+        viewByOwner: false,
+        isSearchPage: true,
+      );
+    }
+    if(query == ''){
+      return const Center(
+        child: Text(
+          'Please type the address',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      );
+    }
+    return const Center(
+      child: Text(
+        'It is not a valid Ethereum address',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 
   @override
   Widget buildSuggestions(BuildContext context){

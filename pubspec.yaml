@@ -53,6 +53,7 @@ dependencies:
   image_picker: ^0.8.6+4
   #store image
   path_provider: ^2.0.1
+  ethereum_addresses: ^1.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
