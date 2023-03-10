@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Diarydata.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'new_diary.dart';
 class DiaryPage extends StatefulWidget {
   @override
   State<DiaryPage> createState() => _DiaryPageState();
@@ -43,13 +44,21 @@ class _DiaryPageState extends State<DiaryPage> {
         ),
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NewDiary()),
+              );
+            },
             icon: Icon(Icons.bookmark_add_rounded),
           ),
         ],
       ),
       body: Theme(
-        data:ThemeData(canvasColor: Colors.transparent,shadowColor: Colors.transparent),
+        data:ThemeData(
+          canvasColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+        ),
         child:ReorderableListView(
         padding: const EdgeInsets.all(6),
         children: [
