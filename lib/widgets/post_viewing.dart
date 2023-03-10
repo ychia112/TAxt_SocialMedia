@@ -7,7 +7,7 @@ import 'package:ios_proj01/utils/post.dart';
 import 'package:ios_proj01/utils/user_info.dart';
 import 'package:ios_proj01/widgets/additionaltext.dart';
 import '../utils/mood.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 List num=[];//暫存長文資料
 
 class PostViewingWidget extends StatefulWidget{
@@ -175,10 +175,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
               ClipOval(
                 child: Image.network(post.userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 10),
               Text(
                 post.userInfo.name, // Replace with desired emoji//happy
-                style: const TextStyle(fontSize: 11.0, color: Colors.black),
+                style: GoogleFonts.merriweather(fontWeight: FontWeight.bold, fontSize: 14),
               ),
             ],
           ),

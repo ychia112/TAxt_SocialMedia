@@ -29,7 +29,6 @@ class _DiaryPageState extends State<DiaryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
         backgroundColor: Colors.transparent,
@@ -49,11 +48,13 @@ class _DiaryPageState extends State<DiaryPage> {
           ),
         ],
       ),
-      body: ReorderableListView(
+      body: Theme(
+        data:ThemeData(canvasColor: Colors.transparent,shadowColor: Colors.transparent),
+        child:ReorderableListView(
         padding: const EdgeInsets.all(6),
         children: [
           for (final tile in diarybooks)
-            Padding(
+            Container(
               key: ValueKey(tile),
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
               child: Container(
@@ -71,6 +72,7 @@ class _DiaryPageState extends State<DiaryPage> {
         onReorder: (oldIndex, newIndex){
           updateTiles(oldIndex, newIndex);
         },
+      ),
       ),
     );
   }
