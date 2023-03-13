@@ -2,19 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:ios_proj01/providers/metamask_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/user_info.dart';
 import '../widgets/post_viewing.dart';
 import 'profile_edit.dart';
-import 'package:ios_proj01/utils/user_preferences.dart';
 import 'package:ios_proj01/widgets/profile_widget.dart';
-import 'package:ios_proj01/model/user.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  final String address;
+  final bool viewByOwner;
+  final bool isSearchPage;
+
+  const UserProfile({
+    Key? key, 
+    required this.address, 
+    required this.viewByOwner,
+    required this.isSearchPage,
+  }) : super(key: key);
+  
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
@@ -32,25 +39,9 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = UserPreferences.getUser();
-
+    
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        // leading:
-        title: Text(
-          'Profile',
-          style: GoogleFonts.abrilFatface(
-              textStyle: const TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black
-              )),
-        ),
-      ),
+      appBar: getAppBar(),
       body: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -83,7 +74,7 @@ class _UserProfileState extends State<UserProfile> {
             },
           ),
           Container(height: 12,),
-          PostViewingWidget(address: context.read<MetaMask>().getAddress()),
+          PostViewingWidget(address: widget.address),
         ],
       ),
     );
@@ -94,11 +85,15 @@ class _UserProfileState extends State<UserProfile> {
       children: [
         ProfileWidget(
           imagePath: userInfo.getImagePath(),
-          onClicked: () async{
-            await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context)=> ProfileEdit(userInfo: userInfo))
-            );
-            setState(() {});
+          onlyImage: !widget.viewByOwner,
+          onClicked: (){
+            if(widget.viewByOwner){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context)=> ProfileEdit(userInfo: userInfo))
+              ).then((value) {
+                setState(() {});
+              });
+            }
           },
         ),
         buildName(userInfo.name, userInfo.location),
@@ -123,12 +118,94 @@ class _UserProfileState extends State<UserProfile> {
   );
 
   Future<UserInfo> getProfileInfo() async {
-    final url = Uri.parse("${dotenv.env['backend_address']}/api/getUserInfo?address=${context.read<MetaMask>().getAddress()}");
+    final url = Uri.parse("${dotenv.env['backend_address']}/api/getUserInfo?address=${widget.address}");
     http.Response res = await http.get(url);
     final infoObject = jsonDecode(res.body);
     if (!infoObject.containsKey('name')){
       return UserInfo();
     }
     return UserInfo.fromJson(infoObject);
+  }
+
+  snackBarSuccess({String? label}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Icon(Icons.done, color: Colors.white),
+            const SizedBox(width: 10,),
+            Text(label!),
+          ],
+        ),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  AppBar? getAppBar() {
+    if(widget.isSearchPage){
+      return AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.content_copy),
+            tooltip: 'Copy address',
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: widget.address)).then((value) {
+                snackBarSuccess(label: 'Copied address!');
+              });
+            },
+          ),
+        ]
+      );
+    }
+    if(widget.viewByOwner){
+      return AppBar(
+        centerTitle: false,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        // leading:
+        title: Text(
+          'Profile',
+          style: GoogleFonts.abrilFatface(
+              textStyle: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+              )),
+        ),
+      );
+    }
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      centerTitle: false,
+      title: Text(
+        widget.address,
+        style: GoogleFonts.lato(
+          textStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: Colors.black
+          )
+        ),
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.content_copy),
+          tooltip: 'Copy address',
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: widget.address)).then((value) {
+              snackBarSuccess(label: 'Copied address!');
+            });
+          },
+        ),
+      ]
+    );
   }
 }

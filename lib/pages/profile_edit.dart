@@ -70,6 +70,7 @@ class _ProfileEditState extends State<ProfileEdit> {
               imagePath: imagePath,
               imageFile: (image == null) ? null: File(image!.path),
               isEdit: true,
+              onlyImage: false,
               onClicked: () {
                 getImageFromDevice();
               },

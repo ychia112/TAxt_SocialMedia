@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:ios_proj01/providers/metamask_provider.dart';
+import 'package:provider/provider.dart';
 import 'pages/home.dart';
 import 'pages/diary.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
-import 'pages/profile_edit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,14 +15,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  var _pageController = PageController();
+  final _pageController = PageController();
 
-  final List<Widget> _pages = [
-    UserProfile(),
-    UserHome(),
-    DiaryPage(),
-    Search(),
-  ];
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    _pages = [
+      UserProfile(address: context.read<MetaMask>().getAddress(), viewByOwner: true, isSearchPage: false,),
+      const UserHome(),
+      DiaryPage(),
+      const Search(),
+    ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

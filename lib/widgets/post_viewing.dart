@@ -3,9 +3,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:ios_proj01/pages/profile.dart';
+import 'package:ios_proj01/providers/metamask_provider.dart';
 import 'package:ios_proj01/utils/post.dart';
 import 'package:ios_proj01/utils/user_info.dart';
 import 'package:ios_proj01/widgets/additionaltext.dart';
+import 'package:provider/provider.dart';
 import '../utils/mood.dart';
 import 'package:google_fonts/google_fonts.dart';
 List num=[];//暫存長文資料
@@ -173,7 +176,29 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             children:[
               const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
               ClipOval(
-                child: Image.network(post.userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
+                // child: Image.network(post.userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
+                child: Material(
+                  color: Colors.transparent,
+                  child:Ink.image(
+                    image: NetworkImage(post.userInfo.getImagePath()),
+                    fit: BoxFit.cover,
+                    width: 50,
+                    height: 50,
+                    child: InkWell(onTap: (){
+                      if(widget.address != post.context.author && context.read<MetaMask>().getAddress() != post.context.author){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context)=> UserProfile(
+                            address: post.context.author, 
+                            viewByOwner: false,
+                            isSearchPage: false)
+                          )
+                        ).then((value) {
+                          setState(() {});
+                        });
+                      }
+                    }),
+                  ),
+                ),
               ),
               const SizedBox(width: 10),
               Text(

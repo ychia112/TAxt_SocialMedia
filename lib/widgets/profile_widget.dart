@@ -1,19 +1,20 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileWidget extends StatelessWidget {
   final String imagePath;
   final bool isEdit;
   final VoidCallback onClicked;
   final File? imageFile;
+  final bool onlyImage;
 
   const ProfileWidget({
     Key? key,
     required this.imagePath,
     this.isEdit = false,
     required this.onClicked,
-    this.imageFile
+    this.imageFile,
+    required this.onlyImage,
   }) : super(key: key);
 
   @override
@@ -22,11 +23,12 @@ class ProfileWidget extends StatelessWidget {
       child: Stack(
         children:[
           buildImage(),
-          Positioned(
-            bottom: 0,
-            right: 4,
-            child: buildEditIcon(),
-          ),
+          if(!onlyImage)
+            Positioned(
+              bottom: 0,
+              right: 4,
+              child: buildEditIcon(),
+            ),
         ],
       ),
     );
