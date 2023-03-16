@@ -2,6 +2,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import '../utils/mood.dart';
 import 'post_viewing.dart';
+import '../pages/post_page.dart';
 import 'package:ios_proj01/homepage.dart';
 
 class Extratext extends StatefulWidget{
@@ -10,9 +11,6 @@ class Extratext extends StatefulWidget{
   _Extratext createState() => _Extratext();
 }
 class _Extratext extends State<Extratext> {
-  //int moodIndex=0;
-  //String dateTimeString="";
-  var _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +58,7 @@ class _Extratext extends State<Extratext> {
                               const SizedBox(width: 8),
                               Text(
                                 num[0], // Replace with desired emoji//happy
-                                style: TextStyle(fontSize: 11.0, color: Colors.black),
+                                style: const TextStyle(fontSize: 11.0, color: Colors.black),
                               ),
                             ],
                           ),
@@ -82,7 +80,7 @@ class _Extratext extends State<Extratext> {
                                         ),
                                         child: Text(
                                           num[1],
-                                          style: TextStyle(color: Colors.black),
+                                          style: const TextStyle(color: Colors.black),
                                         )
 
 

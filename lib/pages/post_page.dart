@@ -14,7 +14,9 @@ import '../utils/mood.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/additionaltext.dart';
+import '../widgets/post_viewing.dart';
 
+List num=[];//暫存長文資料
 
 class UserPost extends StatefulWidget {
   const UserPost({Key? key}) : super(key: key);
@@ -139,12 +141,6 @@ class _UserPostState extends State<UserPost> {
       snackBarError(label: "Transaction failed!");
     }
   }
-  Text _printLatestValue(String text) {
-    setState(() {
-      text=_textController.text;
-    });
-    return Text(text);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +181,7 @@ class _UserPostState extends State<UserPost> {
                         alignment: Alignment.topCenter,
                         decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(topRight:Radius.circular(14),bottomRight:Radius.circular(14)),
-                            color: Colors.black12,
+                            color: Colors.white12
                         ),
                         constraints: const BoxConstraints(
                           minHeight: 470,
@@ -313,11 +309,21 @@ class _UserPostState extends State<UserPost> {
                       ),
                       const Padding(padding: EdgeInsets.only(bottom: 5),),
                       OutlinedButton(
-                          onPressed: null,
+                          onPressed: (){
+                            num.clear();
+                            num.add("author");
+                            num.add(_textController.text);
+                            num.add(_usermood.index);
+                            num.add(DateTime.now().toUtc().toString());
+
+                            MaterialPageRoute materialPageRoute = MaterialPageRoute(
+                              builder: (context) => Extratext(),
+                            );
+                            Navigator.of(context).push(materialPageRoute); // error on of(context)
+                          },
                           style:OutlinedButton.styleFrom(
                             elevation: 3,
                             backgroundColor: Colors.white70,
-
                           ),
                           child: Text("post preview",
                             style: GoogleFonts.abrilFatface(
@@ -464,4 +470,8 @@ class PopupMenuWidget<int> extends PopupMenuEntry<int> {
 class _PopupMenuWidgetState extends State<PopupMenuWidget> {
   @override
   Widget build(BuildContext context) => widget.child;
+}
+
+List postnum (){
+  return num;
 }

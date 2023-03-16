@@ -11,7 +11,8 @@ import 'package:ios_proj01/widgets/additionaltext.dart';
 import 'package:provider/provider.dart';
 import '../utils/mood.dart';
 import 'package:google_fonts/google_fonts.dart';
-List num=[];//暫存長文資料
+import '../pages/post_page.dart';
+// List num=[];//暫存長文資料
 
 class PostViewingWidget extends StatefulWidget{
   final String? address;
@@ -96,10 +97,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
           );
         }
         else{
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 SizedBox(
                   width: 60,
                   height: 60,
@@ -351,14 +352,12 @@ String displayDateTime(String dateTimeString){
     output += '${duration.inHours}';
     output += (duration.inHours == 1? ' hour ago': ' hours ago');
   }
-  else {
+  else if(duration.inMinutes!=0){
     output += '${duration.inMinutes}';
     output += (duration.inMinutes <= 1? ' min ago': ' mins ago');
   }
-
+  else {
+    output+=('few seconds ago');
+  }
   return output;
-}
-
-List postnum (){
-  return num;
 }

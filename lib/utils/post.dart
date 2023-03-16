@@ -4,7 +4,6 @@ import 'user_info.dart';
 class Post{
   late UserInfo userInfo;
   late PostContext context;
-
   Post({required this.userInfo, required this.context});
 }
 
