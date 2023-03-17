@@ -229,7 +229,8 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                           recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             num.clear();
-                            num.add(post.context.author);
+                            num.add(post.userInfo.name);
+                            num.add(post.userInfo.getImagePath());
                             num.add(post.context.text);
                             num.add(post.context.mood.index);
                             num.add(post.context.datetime);
@@ -244,7 +245,8 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                               recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   num.clear();
-                                  num.add(post.context.author);
+                                  num.add(post.userInfo.name);
+                                  num.add(post.userInfo.getImagePath());
                                   num.add(post.context.text);
                                   num.add(post.context.mood.index);
                                   num.add(post.context.datetime);

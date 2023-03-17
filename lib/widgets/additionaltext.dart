@@ -52,9 +52,10 @@ class _Extratext extends State<Extratext> {
                           Row(
                             children:[
                               const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
-                              ClipOval(
-                                  child: Image.asset('assets/images/2.jpg', width: 50, height: 50, fit: BoxFit.cover,)
-                              ),
+                                  ClipOval(
+                                    child: Image.network(num[1], width: 50, height: 50, fit: BoxFit.cover),
+                                  ),
+                                  //child: Image.asset('assets/images/2.jpg', width: 50, height: 50, fit: BoxFit.cover,)
                               const SizedBox(width: 8),
                               Text(
                                 num[0], // Replace with desired emoji//happy
@@ -79,7 +80,7 @@ class _Extratext extends State<Extratext> {
                                             bottom: BorderSide(width: 4.0, color: Colors.black12),),
                                         ),
                                         child: Text(
-                                          num[1],
+                                          num[2],
                                           style: const TextStyle(color: Colors.black),
                                         )
 
@@ -101,14 +102,14 @@ class _Extratext extends State<Extratext> {
                                     hoverColor:Colors.transparent,
                                     shape: const CircleBorder(),
                                     child: Text(
-                                      moodEmoji[num[2]], // Replace with desired emoji//happy
+                                      moodEmoji[num[3]], // Replace with desired emoji//happy
                                       style: const TextStyle(fontSize: 20.0, color: Colors.white),
                                     ),
                                   )
                               ),
                               const Spacer(),
-                              if(num[3] != "")
-                                Text(displayDateTime(num[3])),
+                              if(num[4] != "")
+                                Text(displayDateTime(num[4])),
 
                             ],
                           ),
