@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Diarydata.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'new_diary.dart';
+
 class DiaryPage extends StatefulWidget {
   @override
   State<DiaryPage> createState() => _DiaryPageState();
@@ -63,20 +64,26 @@ class _DiaryPageState extends State<DiaryPage> {
         padding: const EdgeInsets.all(6),
         children: [
           for (final tile in diarybooks)
-            Container(
-              key: ValueKey(tile),
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-              child: Container(
-                height: 96,
-                decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24.0),
-                color:  Colors.grey.shade300,
+              GestureDetector(
+                key: ValueKey(tile),
+                onTap: () {
+                  //insert page
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  child: Container(
+                    height: 96,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24.0),
+                      color:  Colors.grey.shade300,
+                    ),
+                    child: ListTile(
+                      title: Text(tile.toString()),
+                    ),
                   ),
-                child: ListTile(
-                  title: Text(tile.toString()),
                 ),
               ),
-            ),
+
         ],
         onReorder: (oldIndex, newIndex){
           updateTiles(oldIndex, newIndex);

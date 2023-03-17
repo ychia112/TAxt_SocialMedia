@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,7 +14,6 @@ import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
-
 import '../providers/metamask_provider.dart';
 import '../utils/blockchain.dart';
 import 'package:ios_proj01/widgets/textfield_widget.dart';
@@ -30,13 +28,15 @@ class _NewDiaryState extends State<NewDiary> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title:Text(
-          'New Diary',
-          style: GoogleFonts.abrilFatface(
+    return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title:Text(
+            'New Diary',
+            style: GoogleFonts.abrilFatface(
               textStyle: const TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -130,9 +130,15 @@ class _NewDiaryState extends State<NewDiary> {
               ),
             ),
           ),
-
+          SizedBox(height: 12,),
+          ButtonWidget(
+            text: 'Send',
+            onClicked: (){
+            },
+          )
         ],
       ),
+    ),
     );
   }
 }

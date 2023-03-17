@@ -97,7 +97,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
           );
         }
         else{
-          return const Center(
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
