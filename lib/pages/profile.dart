@@ -10,6 +10,8 @@ import 'package:ios_proj01/widgets/profile_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 
+UserInfo theuser=UserInfo();
+
 class UserProfile extends StatefulWidget {
   final String address;
   final bool viewByOwner;
@@ -31,6 +33,7 @@ class _UserProfileState extends State<UserProfile> {
   final double profileHeight = 120;
   late Future<UserInfo> userInfo;
 
+
   @override
   void initState() {
     userInfo = getProfileInfo();
@@ -49,13 +52,14 @@ class _UserProfileState extends State<UserProfile> {
             future: userInfo,
             builder: (context, snapshot) {
               if(snapshot.hasData){
+                theuser=returnuser(snapshot.data!);
                 return profileBlock(snapshot.data!);
               }
               else{
-                return Center(
+                return const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
+                    children: <Widget>[
                       SizedBox(
                         width: 60,
                         height: 60,
@@ -208,4 +212,8 @@ class _UserProfileState extends State<UserProfile> {
       ]
     );
   }
+}
+
+UserInfo returnuser(userinfo){
+  return userinfo;
 }
