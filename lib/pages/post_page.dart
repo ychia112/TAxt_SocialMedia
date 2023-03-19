@@ -20,7 +20,13 @@ import '../widgets/post_viewing.dart';
 List num=[];//暫存長文資料
 
 class UserPost extends StatefulWidget {
-  const UserPost({Key? key}) : super(key: key);
+  final String? diaryId;
+
+  const UserPost({
+    Key? key,
+    this.diaryId
+  }) : super(key: key);
+
   @override
   _UserPostState createState() => _UserPostState();
 }
@@ -60,6 +66,36 @@ class _UserPostState extends State<UserPost> {
             contract: contract,
             function: function,
             parameters: [EthereumAddress.fromHex(metamask.getAddress()), cid]
+          ).data,
+          gas: 300000
+        );
+        return true;
+      } catch (exp) {
+        print("Error while signing transaction");
+        print(exp);
+        return false;
+      }
+    }
+    return false;
+  }
+
+  Future<bool> newPageWithMetamask(String cid) async {
+    var metamask = context.read<MetaMask>();
+    var connector = metamask.connector;
+    if (connector.connected) {
+      try {
+        EthereumWalletConnectProvider provider =
+            EthereumWalletConnectProvider(connector);
+        launchUrlString('wc:', mode: LaunchMode.externalApplication);
+        final contract = await Blockchain.getContract('DiaryNFT');
+        final function = contract.function("newPage");
+        await provider.sendTransaction(
+          from: metamask.getAddress(),
+          to: dotenv.env['contract_address_DiaryNFT'],
+          data: Transaction.callContract(
+            contract: contract,
+            function: function,
+            parameters: [BigInt.from(int.parse(widget.diaryId!)), cid]
           ).data,
           gas: 300000
         );
@@ -133,7 +169,7 @@ class _UserPostState extends State<UserPost> {
 
     snackBar(label: "Uploading");
     String cid = await uploadToIPFS(msg, mood);
-    bool success = await postWithMetamask(cid);
+    bool success = (widget.diaryId == null? await postWithMetamask(cid): await newPageWithMetamask(cid));
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     if(success){
       snackBarSuccess(label: "Success");

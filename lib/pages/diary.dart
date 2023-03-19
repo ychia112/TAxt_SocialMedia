@@ -1,4 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:ios_proj01/pages/in_diary.dart';
+import 'package:ios_proj01/widgets/post_viewing.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import '../providers/metamask_provider.dart';
 import 'Diarydata.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'new_diary.dart';
@@ -9,22 +17,20 @@ class DiaryPage extends StatefulWidget {
 }
 
 class _DiaryPageState extends State<DiaryPage> {
-  final List diarybooks = [
-    'A',
-    'B',
-    'C',
-    'D',
-  ];
+  late Future<List<dynamic>> _diaries;
+  String? diaryId;
 
-  void updateTiles(int oldIndex, int newIndex){
-    setState(() {
-      if(oldIndex < newIndex){
-        newIndex -= 1;
-      }
+  Future<List<dynamic>> getUserDiaries() async {
+    final url = Uri.parse("${dotenv.env['backend_address']}/api/diary/get-all-diaries-owned-by?owner=${context.read<MetaMask>().getAddress()}");
+    http.Response res = await http.get(url);
+    final ret = jsonDecode(res.body);
+    return ret;
+  }
 
-      final String tile = diarybooks.removeAt(oldIndex);
-      diarybooks.insert(newIndex, tile);
-    });
+  @override
+  void initState() {
+    _diaries = getUserDiaries();
+    super.initState();
   }
 
   @override
@@ -37,7 +43,7 @@ class _DiaryPageState extends State<DiaryPage> {
         title: Text(
           'Diaries',
           style: GoogleFonts.abrilFatface(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
                   color: Colors.black
@@ -51,45 +57,76 @@ class _DiaryPageState extends State<DiaryPage> {
                 MaterialPageRoute(builder: (context) => NewDiary()),
               );
             },
-            icon: Icon(Icons.bookmark_add_rounded),
+            icon: const Icon(Icons.bookmark_add_rounded),
           ),
         ],
       ),
-      body: Theme(
-        data:ThemeData(
-          canvasColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-        ),
-        child:ReorderableListView(
-        padding: const EdgeInsets.all(6),
-        children: [
-          for (final tile in diarybooks)
-              GestureDetector(
-                key: ValueKey(tile),
-                onTap: () {
-                  //insert page
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      body: diaryList(),
+    );
+  }
+
+  Widget diaryList() => FutureBuilder<List<dynamic>>(
+    future: _diaries,
+    builder: (context, snapshot) {
+      if(snapshot.hasData){
+        return Theme(
+          data:ThemeData(
+            canvasColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+          ),
+          child:Column(
+            children: [
+              for (final tile in snapshot.data!)
+                GestureDetector(
+                  key: ValueKey(tile['owner1'] == context.read<MetaMask>().getAddress()? tile['owner1']: tile['owner2']),
+                  onTap: () {
+                    //insert page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => InDiaryPage(
+                        diaryId: tile['id'], 
+                        anotherOwner: tile['owner1'] == context.read<MetaMask>().getAddress()? tile['owner2']: tile['owner1'],
+                      )),
+                    );
+                  },
                   child: Container(
-                    height: 96,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24.0),
-                      color:  Colors.grey.shade300,
-                    ),
-                    child: ListTile(
-                      title: Text(tile.toString()),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                    child: Container(
+                      height: 96,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24.0),
+                        color:  Colors.grey.shade300,
+                      ),
+                      child: ListTile(
+                        title: Text(tile['owner1'] == context.read<MetaMask>().getAddress()? tile['owner1']: tile['owner2']),
+                      ),
                     ),
                   ),
                 ),
+            ],
+          ),
+        );
+      }
+      else{
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(
+                  color: Colors.black,
+                ),
               ),
-
-        ],
-        onReorder: (oldIndex, newIndex){
-          updateTiles(oldIndex, newIndex);
-        },
-      ),
-      ),
-    );
-  }
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  );
 }
