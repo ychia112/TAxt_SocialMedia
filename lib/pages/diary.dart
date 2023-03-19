@@ -78,7 +78,7 @@ class _DiaryPageState extends State<DiaryPage> {
             children: [
               for (final tile in snapshot.data!)
                 GestureDetector(
-                  key: ValueKey(tile['owner1'] == context.read<MetaMask>().getAddress()? tile['owner1']: tile['owner2']),
+                  key: ValueKey(tile['owner1'] == context.read<MetaMask>().getAddress()? tile['owner2']: tile['owner1']),
                   onTap: () {
                     //insert page
                     Navigator.push(
@@ -98,7 +98,7 @@ class _DiaryPageState extends State<DiaryPage> {
                         color:  Colors.grey.shade300,
                       ),
                       child: ListTile(
-                        title: Text(tile['owner1'] == context.read<MetaMask>().getAddress()? tile['owner1']: tile['owner2']),
+                        title: Text(tile['owner1'] == context.read<MetaMask>().getAddress()? tile['owner2']: tile['owner1']),
                       ),
                     ),
                   ),
