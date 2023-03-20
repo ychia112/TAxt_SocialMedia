@@ -56,7 +56,7 @@ class _UserProfileState extends State<UserProfile> {
                 return profileBlock(snapshot.data!);
               }
               else{
-                return const Center(
+                return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
