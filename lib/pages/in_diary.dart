@@ -90,7 +90,9 @@ class _InDiaryPageState extends State<InDiaryPage> {
           ),
         ],
       ),
-      body: PostViewingWidget(diaryId: widget.diaryId)
+      body: ListView(
+        children: [PostViewingWidget(diaryId: widget.diaryId)]
+      )
     );
   }
 
