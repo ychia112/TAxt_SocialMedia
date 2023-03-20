@@ -59,7 +59,7 @@ class _UserProfileState extends State<UserProfile> {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
+                    children: const <Widget>[
                       SizedBox(
                         width: 60,
                         height: 60,

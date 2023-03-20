@@ -16,10 +16,12 @@ import '../pages/post_page.dart';
 
 class PostViewingWidget extends StatefulWidget{
   final String? address;
+  final String? diaryId;
 
   const PostViewingWidget({
     super.key,
     this.address,
+    this.diaryId
   });
 
   @override
@@ -72,9 +74,31 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
     return ret;
   }
 
+  Future<List<Post>> getDiaryPages() async {
+    final url = Uri.parse("${dotenv.env['backend_address']}/api/diary/get-all-pages-of-diary?diaryId=${widget.diaryId}");
+    http.Response res = await http.get(url);
+    final rawPosts = jsonDecode(res.body);
+    List<Post> ret = [];
+    for(dynamic post in rawPosts){
+      ret.add(Post(
+        userInfo: post.containsKey('userInfo')? UserInfo.fromJson(post['userInfo']): UserInfo(),
+        context: PostContext.fromJson(post['context'])
+      ));
+    }
+    return ret;
+  }
+
   @override
   void initState() {
-    _posts = (widget.address == null ? getAllPosts(): getUserPosts());
+    if(widget.address != null){
+      _posts = getUserPosts();
+    }
+    else if(widget.diaryId != null){
+      _posts = getDiaryPages();
+    }
+    else{
+      _posts = getAllPosts();
+    }
     filteredPosts = filterPosts();
     super.initState();
   }
@@ -100,7 +124,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: const <Widget>[
                 SizedBox(
                   width: 60,
                   height: 60,
