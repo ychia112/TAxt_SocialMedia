@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../utils/mood.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../pages/post_page.dart';
-// List num=[];//暫存長文資料
 
 class PostViewingWidget extends StatefulWidget{
   final String? address;
@@ -121,10 +120,10 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
           );
         }
         else{
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 SizedBox(
                   width: 60,
                   height: 60,
@@ -176,7 +175,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             filteredPosts = filterPosts();
           });
         },
-        //fillColor: Colors.white,
         shape: const CircleBorder(),
         child: Text(
           moodEmoji[mood.index], // Replace with desired emoji//happy
@@ -201,7 +199,6 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
             children:[
               const Padding(padding: EdgeInsets.only(top:60.0,left: 10)),
               ClipOval(
-                // child: Image.network(post.userInfo.getImagePath(), width: 50, height: 50, fit: BoxFit.cover),
                 child: Material(
                   color: Colors.transparent,
                   child:Ink.image(
@@ -341,7 +338,8 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
         textDirection: TextDirection.ltr)
       ..layout(maxWidth: MediaQuery.of(context).size.width - 40);
   }
-  int _fontNum(String postContext){ //计算最多可容纳正常字的数目，可优化
+  //count the most num of word showing
+  int _fontNum(String postContext){
     int num = 0;
     int skip = 1;
     String additionText="";

@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ios_proj01/pages/in_diary.dart';
-import 'package:ios_proj01/widgets/post_viewing.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../providers/metamask_provider.dart';
-import 'Diarydata.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'new_diary.dart';
 

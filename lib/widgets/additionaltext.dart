@@ -1,15 +1,16 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../utils/mood.dart';
 import 'post_viewing.dart';
 import '../pages/post_page.dart';
-import 'package:ios_proj01/homepage.dart';
 
 class Extratext extends StatefulWidget{
   @override
-  var num=postnum();
+  var num=postnum(); //retrieve the post num that is being press for read more
   _Extratext createState() => _Extratext();
 }
+
 class _Extratext extends State<Extratext> {
   @override
   Widget build(BuildContext context) {
@@ -29,25 +30,12 @@ class _Extratext extends State<Extratext> {
                     const Padding(padding: EdgeInsets.only(left: 3,right: 3),),
                     const Padding(padding: EdgeInsets.only(bottom: 5),),
                     Container(
-                      //alignment: Alignment.center,
                       constraints: BoxConstraints(
                         minHeight: 400,
                         //maxHeight: 400,
                         maxWidth: MediaQuery.of(context).size.width-10,
                       ),
-
-                      // decoration: BoxDecoration(
-                      //   //borderRadius: BorderRadius.circular(24.0),
-                      //   color:  Colors.grey.shade300,
-                      // ),
-                      // decoration: const BoxDecoration(
-                      //   border: Border(
-                      //     bottom: BorderSide(width: 16.0, color: Colors.black54),)
-                      // ),
-
                       child: Column(
-                        //mainAxisAlignment: MainAxisAlignment.center,
-                        //crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(
                             children:[
@@ -55,12 +43,11 @@ class _Extratext extends State<Extratext> {
                                   ClipOval(
                                     child: Image.network(num[1], width: 50, height: 50, fit: BoxFit.cover),
                                   ),
-                                  //child: Image.asset('assets/images/2.jpg', width: 50, height: 50, fit: BoxFit.cover,)
                               const SizedBox(width: 8),
                               Text(
-                                num[0], // Replace with desired emoji//happy
-                                style: const TextStyle(fontSize: 11.0, color: Colors.black),
-                              ),
+                                num[0],
+                                style: GoogleFonts.merriweather(fontWeight: FontWeight.bold, fontSize: 14),
+                              ),// Replace with desired emoji
                             ],
                           ),
                           Row(
@@ -83,8 +70,6 @@ class _Extratext extends State<Extratext> {
                                           num[2],
                                           style: const TextStyle(color: Colors.black),
                                         )
-
-
                                     )
                                 )
                               ]),
@@ -93,10 +78,8 @@ class _Extratext extends State<Extratext> {
                               SizedBox(
                                   width: 50,
                                   height: 40,
-                                  //color: Colors.black26,
                                   child: RawMaterialButton(
                                     onPressed: () {},
-                                    // fillColor: Colors.transparent,
                                     highlightColor:Colors.transparent,
                                     splashColor:Colors.transparent,
                                     hoverColor:Colors.transparent,
@@ -110,7 +93,6 @@ class _Extratext extends State<Extratext> {
                               const Spacer(),
                               if(num[4] != "")
                                 Text(displayDateTime(num[4])),
-
                             ],
                           ),
                         ],

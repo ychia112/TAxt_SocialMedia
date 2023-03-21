@@ -30,7 +30,6 @@ class UserPost extends StatefulWidget {
   @override
   _UserPostState createState() => _UserPostState();
 }
-
 class _UserPostState extends State<UserPost> {
   Mood _usermood = Mood.none; //temporarily store the input emotion (default: none)
   String text="";
@@ -78,7 +77,6 @@ class _UserPostState extends State<UserPost> {
     }
     return false;
   }
-
   Future<bool> newPageWithMetamask(String cid) async {
     var metamask = context.read<MetaMask>();
     var connector = metamask.connector;
@@ -126,7 +124,6 @@ class _UserPostState extends State<UserPost> {
       ),
     );
   }
-
   snackBarError({String? label}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -143,7 +140,6 @@ class _UserPostState extends State<UserPost> {
       ),
     );
   }
-
   snackBarSuccess({String? label}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -160,7 +156,6 @@ class _UserPostState extends State<UserPost> {
       ),
     );
   }
-
   void post(String msg, Mood mood) async {
     if(mood == Mood.none){
       snackBarError(label: "Please select a mood!");
@@ -192,14 +187,16 @@ class _UserPostState extends State<UserPost> {
         centerTitle: false,
         backgroundColor: Colors.white60,
         flexibleSpace: FlexibleSpaceBar(
+            titlePadding:const EdgeInsetsDirectional.only(start:60,bottom: 0),
             background: Container(
               color: Colors.transparent,
             ),
             title: Text(
-              dotenv.env['app_name']!,
+              //dotenv.env['app_name']!,
+              "TAxt",
               style: GoogleFonts.abrilFatface(
                   textStyle: const TextStyle(
-                      fontSize: 36,
+                      fontSize: 48,
                       fontWeight: FontWeight.bold,
                       color: Colors.black
                   )),
@@ -208,12 +205,12 @@ class _UserPostState extends State<UserPost> {
         ),
       ),
       body:
-
         SafeArea(
           child:
             Column(
                     children: [
                       const Padding(padding: EdgeInsets.only(bottom: 5),),
+                      //input part
                       Container(
                         alignment: Alignment.topCenter,
                         decoration: const BoxDecoration(
@@ -264,7 +261,6 @@ class _UserPostState extends State<UserPost> {
                                       icon: const Icon(Icons.clear),
                                       alignment: AlignmentDirectional.center,
                                     ),
-
                                   ),
                                 ),
                               ),
@@ -346,6 +342,7 @@ class _UserPostState extends State<UserPost> {
                         ),
                       ),
                       const Padding(padding: EdgeInsets.only(bottom: 5),),
+                      //preview button part
                       OutlinedButton(
                           onPressed: (){
                             num.clear();
@@ -364,13 +361,12 @@ class _UserPostState extends State<UserPost> {
                             elevation: 3,
                             backgroundColor: Colors.white70,
                           ),
-                          child: Text("post preview",
+                          child: Text("preview",
                             style: GoogleFonts.abrilFatface(
                               textStyle: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.black,
-
                               ),),),)
                     ],
                   )

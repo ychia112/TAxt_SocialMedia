@@ -51,9 +51,9 @@ class _NewDiaryState extends State<NewDiary> {
           body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             children:[
-              SizedBox(height: 12,),
+              const SizedBox(height: 12,),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Text(
                   'To :',
                   style: GoogleFonts.abrilFatface(
