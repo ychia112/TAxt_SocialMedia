@@ -282,6 +282,7 @@ class _UserPostState extends State<UserPost> {
                                       children: [
                                         PopupMenuButton<int>(
                                             offset: const Offset(5,-55),
+                                            elevation: 0,
                                             color: Colors.black12,
                                             constraints:const BoxConstraints(
                                               minWidth: 7.0 * 56.0,
