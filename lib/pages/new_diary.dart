@@ -175,22 +175,34 @@ class _NewDiaryState extends State<NewDiary> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12,),
-
-              ButtonWidget(
-                text: 'Send',
-                onClicked: (){
+              const Padding(padding: EdgeInsets.only(bottom: 5,)),
+              OutlinedButton(
+                onPressed: (){
                   newDiary(_textController_address.text, _textController_context.text, Mood.fascinated);
                   setState(() {
                     _textController_address.clear();
                     _textController_context.clear();
                   });
                 },
-              )
+                style:OutlinedButton.styleFrom(
+                  elevation: 3,
+                  backgroundColor: Colors.white70,
+
+                ),
+                child: Text("Send",
+                  style: GoogleFonts.abrilFatface(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    ),),),),
+              const Padding(padding: EdgeInsets.only(bottom: 5,)),
             ],
           ),
-        ),
-    );
+
+          ),
+        );
+
   }
   Widget emojiSizedBox(Mood mood){
     return SizedBox(

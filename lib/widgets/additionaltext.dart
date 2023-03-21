@@ -6,8 +6,8 @@ import 'post_viewing.dart';
 import '../pages/post_page.dart';
 
 class Extratext extends StatefulWidget{
-  @override
   var num=postnum(); //retrieve the post num that is being press for read more
+  @override
   _Extratext createState() => _Extratext();
 }
 
