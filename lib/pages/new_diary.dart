@@ -18,7 +18,6 @@ import 'package:path/path.dart' as p;
 import '../providers/metamask_provider.dart';
 import '../utils/blockchain.dart';
 import 'package:ios_proj01/widgets/textfield_widget.dart';
-
 import '../utils/mood.dart';
 
 class NewDiary extends StatefulWidget {
@@ -27,6 +26,7 @@ class NewDiary extends StatefulWidget {
 }
 
 class _NewDiaryState extends State<NewDiary> {
+  Mood _usermood = Mood.none;
   final _textController_address = TextEditingController();
   final _textController_context = TextEditingController();
   @override
@@ -35,118 +35,182 @@ class _NewDiaryState extends State<NewDiary> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title:Text(
-            'New Diary',
-            style: GoogleFonts.abrilFatface(
-              textStyle: const TextStyle(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title:Text(
+              'New Diary',
+              style: GoogleFonts.abrilFatface(
+                textStyle: const TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: Colors.black
+                )
+              ),
+            ),
+          ),
+          body: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children:[
+              SizedBox(height: 12,),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  'To :',
+                  style: GoogleFonts.abrilFatface(
+                      textStyle: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black
+                      )
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12,),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines:3,
+                  controller: _textController_address,
+                  decoration: InputDecoration(
+                    hintText: 'Send to',
+                    hintStyle: GoogleFonts.merriweather(
+                        textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black
+                        )),
+                    filled: true,
+                    fillColor:Colors.white70,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide:
+                      const BorderSide( width: 2,color: Colors.black12),
+                    ),
+                    focusedBorder:OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide:
+                      const BorderSide( width: 2,color: Colors.black12),
+                    ),
+                    prefixIconConstraints: const BoxConstraints(
+                        minWidth: 8
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _textController_address.clear();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 12,),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: PopupMenuButton<int>(
+                  elevation: 0,
+                  offset: const Offset(45,-4),
+                  color: Colors.transparent,
+                  constraints: const BoxConstraints(
+                    minWidth: 7.0 * 40.0,
+                    maxWidth: 8.0 * 40.0,
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      side: const BorderSide(
+                    style: BorderStyle.none,
+                  )),
+                  icon:Text(
+                      moodEmoji[_usermood.index], // Replace with desired emoji//happy
+                      style: const TextStyle(fontSize: 20.0, color: Colors.white)
+                  ),
+                  onSelected: (int value) {
+                    setState(() {
+                      _usermood = Mood.values[value];
+                    });
+                  },
+                  itemBuilder: (BuildContext int) {
+                    return [
+                      PopupMenuWidget(
+                        height: 40.0,
+                        width: 380.0,
+                        child:Row(
+                            children: [
+                              const Padding(padding: EdgeInsets.only(left:16,right:16),),
+                              for(var i = 1; i < Mood.values.length; i++)
+                                emojiSizedBox(Mood.values[i])
+                            ]
+                        ),
+                      ),
+                    ];
+                  }
+                ),
+              ),
+              const SizedBox(height: 12,),
+              TextFormField(
+                keyboardType: TextInputType.multiline,
+                minLines: 20,
+                maxLines:50,
+                controller: _textController_context,
+                decoration: InputDecoration(
+                  hintText: '',
+                  hintStyle: GoogleFonts.merriweather(
+                      textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black
+                      )),
+                  filled: true,
+                  fillColor:Colors.white70,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                    borderSide:
+                    const BorderSide( width: 2,color: Colors.black12),
+                  ),
+                  focusedBorder:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                    borderSide:
+                    const BorderSide( width: 2,color: Colors.black12),
+                  ),
+                  prefixIconConstraints: const BoxConstraints(
+                      minWidth: 8
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12,),
+
+              ButtonWidget(
+                text: 'Send',
+                onClicked: (){
+                  newDiary(_textController_address.text, _textController_context.text, Mood.fascinated);
+                  setState(() {
+                    _textController_address.clear();
+                    _textController_context.clear();
+                  });
+                },
               )
+            ],
           ),
         ),
+    );
+  }
+  Widget emojiSizedBox(Mood mood){
+    return SizedBox(
+      height: 40,
+      width: 35,
+      child: RawMaterialButton(
+        onPressed: () {
+          setState(() {
+            _usermood = mood;
+          });
+        },
+        //fillColor: Colors.transparent,
+        shape: const CircleBorder(),
+        child: Text(
+          moodEmoji[mood.index],
+          style: const TextStyle(
+              fontSize: 20.0,
+              color: Colors.white),
+        ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        children:[
-          SizedBox(height: 12,),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              'To :',
-              style: GoogleFonts.abrilFatface(
-                  textStyle: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
-                  )
-              ),
-            ),
-          ),
-          const SizedBox(height: 12,),
-            TextFormField(
-              keyboardType: TextInputType.multiline,
-              minLines: 1,
-              maxLines:3,
-              controller: _textController_address,
-              decoration: InputDecoration(
-                hintText: 'Send to',
-                hintStyle: GoogleFonts.merriweather(
-                    textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black
-                    )),
-                filled: true,
-                fillColor:Colors.white70,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24.0),
-                  borderSide:
-                  const BorderSide( width: 2,color: Colors.black12),
-                ),
-                focusedBorder:OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24.0),
-                  borderSide:
-                  const BorderSide( width: 2,color: Colors.black12),
-                ),
-                prefixIconConstraints: const BoxConstraints(
-                    minWidth: 8
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    _textController_address.clear();
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-              ),
-            ),
-          const SizedBox(height: 12,),
-          TextFormField(
-            keyboardType: TextInputType.multiline,
-            minLines: 20,
-            maxLines:50,
-            controller: _textController_context,
-            decoration: InputDecoration(
-              hintText: '',
-              hintStyle: GoogleFonts.merriweather(
-                  textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black
-                  )),
-              filled: true,
-              fillColor:Colors.white70,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(24.0),
-                borderSide:
-                const BorderSide( width: 2,color: Colors.black12),
-              ),
-              focusedBorder:OutlineInputBorder(
-                borderRadius: BorderRadius.circular(24.0),
-                borderSide:
-                const BorderSide( width: 2,color: Colors.black12),
-              ),
-              prefixIconConstraints: const BoxConstraints(
-                  minWidth: 8
-              ),
-            ),
-          ),
-          const SizedBox(height: 12,),
-          ButtonWidget(
-            text: 'Send',
-            onClicked: (){
-              newDiary(_textController_address.text, _textController_context.text, Mood.fascinated);
-              setState(() {
-                _textController_address.clear();
-                _textController_context.clear();
-              });
-            },
-          )
-        ],
-      ),
-    ),
     );
   }
 
@@ -269,4 +333,25 @@ class _NewDiaryState extends State<NewDiary> {
       ),
     );
   }
+}
+
+class PopupMenuWidget<int> extends PopupMenuEntry<int> {
+  const PopupMenuWidget({ Key? key, required this.height,required this.width, required this.child }) : super(key: key);
+  final Widget child;
+  final double width;
+  @override
+  final double height;
+  @override
+  bool get enabled => false;
+
+  @override
+  _PopupMenuWidgetState createState() =>  _PopupMenuWidgetState();
+
+  @override
+  bool represents(int? value) => false;
+
+}
+class _PopupMenuWidgetState extends State<PopupMenuWidget> {
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
