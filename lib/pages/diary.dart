@@ -97,7 +97,14 @@ class _DiaryPageState extends State<DiaryPage> {
                           color: Colors.grey.shade300,
                         ),
                         child: ListTile(
-                          title: Text(tile['name']),
+                          title: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 28, horizontal: 12),
+                              child:Text(tile['name'],
+                              textAlign: TextAlign.left,
+                              style: GoogleFonts.fasthand(
+                                  fontWeight: FontWeight.normal, fontSize: 28)
+                              ),
+                          ),
                         ),
                       ),
                     ),
