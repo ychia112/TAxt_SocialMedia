@@ -244,9 +244,8 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                   ),
                   child: _textPaint([TextSpan(text: post.context.text)]).didExceedMaxLines ? RichText(
                       text: TextSpan(
-                          //text:postContext,
                           text: post.context.text.substring(0, _fontNum(post.context.text)),
-                          style: const TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black,fontSize:14),
                           recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             num.clear();
@@ -278,13 +277,14 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
                               } )
                           ]
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.start,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 25,
                       ):Container( //未超出指定行数的话全部显示
                           child: Text(
                           post.context.text,
+                            style: const TextStyle(fontSize:14),
                         ),
                 )
                 )
@@ -341,7 +341,7 @@ class _PostViewingWidgetState extends State<PostViewingWidget> {
   //count the most num of word showing
   int _fontNum(String postContext){
     int num = 0;
-    int skip = 1;
+    int skip = 7;
     String additionText="";
     while(true){
       bool isExceed = postContext.length < num + skip ||  _textPaint([TextSpan(text: "${postContext.substring(0, num + skip)}...", ),
