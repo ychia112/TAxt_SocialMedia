@@ -27,7 +27,7 @@ class _Extratext extends State<Extratext> {
               Container(
             alignment: Alignment.center,
                 constraints: BoxConstraints(
-                  minHeight: 400,
+                  minHeight: 300,
                   //maxHeight: 400,
                   maxWidth: MediaQuery.of(context).size.width,
                 ),
