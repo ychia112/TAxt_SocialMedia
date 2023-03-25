@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,6 +44,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: getAppBar(),
       body: ListView(
         padding: EdgeInsets.zero,
@@ -87,6 +88,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget profileBlock(UserInfo userInfo){
     return Column(
       children: [
+        SizedBox(height: 128,),
         ProfileWidget(
           imagePath: userInfo.getImagePath(),
           onlyImage: !widget.viewByOwner,
@@ -107,17 +109,17 @@ class _UserProfileState extends State<UserProfile> {
   
   Widget buildName(name, location) => Column(
     children: [
-      const SizedBox(height: 8),
+      const SizedBox(height: 12),
       Text(//name
         name,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        style: GoogleFonts.merriweather(
+            fontWeight: FontWeight.bold, fontSize: 20),
       ),
       Container(height: 6,color: Colors.transparent,),
       Text(
         '@$location',
         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
       ),
-      const SizedBox(height: 10,),
     ],
   );
 
@@ -169,6 +171,14 @@ class _UserProfileState extends State<UserProfile> {
     }
     if(widget.viewByOwner){
       return AppBar(
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaY: 7, sigmaX: 7),
+            child: Container(
+              color: Colors.transparent,
+            ),
+          )
+        ),
         centerTitle: false,
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -186,6 +196,14 @@ class _UserProfileState extends State<UserProfile> {
       );
     }
     return AppBar(
+        flexibleSpace: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaY: 7, sigmaX: 7),
+              child: Container(
+                color: Colors.transparent,
+              ),
+            )
+        ),
       elevation: 0,
       backgroundColor: Colors.transparent,
       centerTitle: false,

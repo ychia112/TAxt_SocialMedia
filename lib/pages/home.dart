@@ -3,7 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'post_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/post_viewing.dart';
-
+import 'dart:ui';
 List num=[];
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
@@ -16,8 +16,17 @@ class _UserHome extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        flexibleSpace: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaY: 7, sigmaX: 7),
+              child: Container(
+                color: Colors.transparent,
+              ),
+            )
+        ),
         centerTitle: false,
         automaticallyImplyLeading: false,
         elevation: 0,
