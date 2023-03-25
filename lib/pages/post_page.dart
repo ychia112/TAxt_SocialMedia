@@ -192,11 +192,11 @@ class _UserPostState extends State<UserPost> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               elevation: 0,
-              centerTitle: false,
+              centerTitle: true,
               backgroundColor: Colors.white60,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
-                    const EdgeInsetsDirectional.only(start: 0, bottom: 0),
+                    const EdgeInsetsDirectional.symmetric(vertical: 0),
                 background: Container(
                   color: Colors.transparent,
                 ),
