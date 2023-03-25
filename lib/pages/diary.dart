@@ -101,8 +101,8 @@ class _DiaryPageState extends State<DiaryPage> {
                             padding: EdgeInsets.symmetric(vertical: 28, horizontal: 12),
                               child:Text(tile['name'],
                               textAlign: TextAlign.left,
-                              style: GoogleFonts.fasthand(
-                                  fontWeight: FontWeight.normal, fontSize: 28)
+                              style: GoogleFonts.kalam(
+                                  fontWeight: FontWeight.normal, fontSize: 24)
                               ),
                           ),
                         ),
