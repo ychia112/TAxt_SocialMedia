@@ -4,8 +4,7 @@ This is the front-end of our social media platform, TAxt.
 
 <img src="./TAxt_appIcon.png" width = "200" height = "200">
 
-</br></br>
-For the back-end, please check out [here](https://github.com/aidencj/TAxt-back-end).
+>For the back-end, please check out [here](https://github.com/aidencj/TAxt-back-end).
 
 ## How to use it
 
